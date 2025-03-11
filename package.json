@@ -1,0 +1,25 @@
+{
+  "name": "comfyui-workflow-ux",
+  "version": "1.0.0",
+  "description": "This project is a web application that allows users to generate and set a custom background image for a new browser tab. The application provides a user-friendly interface for uploading an image, generating a stylized background, and setting it as the background for the new tab.\r The image generation is done using ComfyUI which is running in the background.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "npx http-server public -o -c-1 --mimetypes mime.types",
+    "start": "npm run build && npm run serve",
+    "dev": "concurrently \"npm run watch\" \"npm run serve\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ace": "^0.0.52",
+    "@types/bootstrap": "^5.2.10",
+    "@types/jquery": "^3.5.32",
+    "bootstrap": "^5.2.3",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "typescript": "^5.8.2"
+  }
+}
