@@ -5,7 +5,7 @@
     "module": "ES2020",
     "rootDir": "./src",
     "moduleResolution": "node",
-    "outDir": "./public/js",
+    "outDir": "./docs/js",
     "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,5 +14,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "public/js"]
+  "exclude": ["node_modules", "docs/js"]
 }

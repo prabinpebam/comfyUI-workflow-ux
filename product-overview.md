@@ -20,7 +20,7 @@ This project is an attempt at making the power of ComfyUI available for all user
 6. All of these workflows are automatically scanned and picked up by the code and displayed as options that a user can select in the interface.
 7. The app has 3 clear steps of progression.
     1. Selection of workflow
-    A list of available workflows are displayed. The user has to select a workflow to continue.
+       1. A list of available workflows are displayed. The user has to select a workflow to continue.
     2. Once a workflow is selected, the user editable parameters are displayed appropriately. The user is able to change these parameters and initiate a generate command.
     3. The image is generated in the server with the given workflow and the output is presented in the UI.
 
