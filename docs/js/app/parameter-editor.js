@@ -23,7 +23,7 @@ export class ParameterEditor {
      */
     async loadUserEditableParameters() {
         try {
-            const response = await fetch("/workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper-user-editable-parameters.json");
+            const response = await fetch("workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper-user-editable-parameters.json");
             if (!response.ok)
                 throw new Error("Failed to load user editable parameters.");
             const paramsJson = await response.json();
