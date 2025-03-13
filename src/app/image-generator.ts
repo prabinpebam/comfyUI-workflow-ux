@@ -58,7 +58,7 @@ export class ImageGenerator {
   
     this.progressDiv.textContent = "Loading workflow...";
     try {
-      const workflowResponse = await fetch("/workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.json");
+      const workflowResponse = await fetch("workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.json");
       if (!workflowResponse.ok) throw new Error("Failed to load workflow JSON.");
       const baseWorkflow = await workflowResponse.json() as Workflow;
       
