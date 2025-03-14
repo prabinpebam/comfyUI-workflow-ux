@@ -1,47 +1,57 @@
 import { ParameterEditor } from './parameter-editor.js';
 import { ImageGenerator } from './image-generator.js';
+import { WorkflowBrowser } from './workflow-browser.js';
 document.addEventListener("DOMContentLoaded", () => {
-    // If a background image is saved in local storage, use it.
-    const savedBackground = localStorage.getItem("backgroundImage");
-    if (savedBackground) {
-        document.body.style.backgroundImage = `url(${savedBackground})`;
-        document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundPosition = "center";
-    }
-    // Global variables with type annotations
-    const progressDiv = document.getElementById("progress");
-    const generatedGrid = document.getElementById("generatedGrid");
-    const rightPane = document.getElementById("rightPane");
-    const generateButton = document.getElementById("generateBackgroundButton");
-    const closePaneButton = document.getElementById("closePaneButton");
-    const startGenerationButton = document.getElementById("startGenerationButton");
-    const noiseCanvas = document.getElementById("noiseCanvas");
+    // Get DOM elements
+    // UI control elements
+    const openWorkflowButton = document.getElementById("openWorkflowButton");
+    const generateButton = document.getElementById("generateButton");
+    const workflowModal = document.getElementById("workflowSelectionModal");
+    // Container elements
+    const workflowContainer = document.getElementById("workflowContainer");
     const editableFieldsContainer = document.getElementById("editableFieldsContainer");
-    // Initialize the parameter editor
-    const paramEditor = new ParameterEditor(editableFieldsContainer, progressDiv);
-    // Initialize the image generator
-    const imageGenerator = new ImageGenerator(progressDiv, generatedGrid, noiseCanvas);
-    // UI control event listeners
-    generateButton.addEventListener("click", () => {
-        rightPane.classList.add("show");
+    const generatedImagesGrid = document.getElementById("generatedImagesGrid");
+    // Status and display elements
+    const progressStatus = document.getElementById("progressStatus");
+    const elapsedTime = document.getElementById("elapsedTime");
+    const noiseCanvas = document.getElementById("noiseCanvas");
+    // UI state containers
+    const generationInProgress = document.getElementById("generationInProgress");
+    const emptyState = document.getElementById("emptyState");
+    const generatedImagesContainer = document.getElementById("generatedImagesContainer");
+    // Lightbox elements
+    const lightboxElement = document.getElementById("imageLightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    // Initialize the components
+    const workflowBrowser = new WorkflowBrowser(workflowContainer, workflowModal);
+    const paramEditor = new ParameterEditor(editableFieldsContainer, progressStatus, generateButton);
+    const imageGenerator = new ImageGenerator(progressStatus, generatedImagesGrid, noiseCanvas, elapsedTime, generationInProgress, emptyState, generatedImagesContainer, lightboxElement, lightboxImage);
+    // Set up event listeners
+    openWorkflowButton.addEventListener("click", () => {
+        workflowBrowser.showModal();
     });
-    closePaneButton.addEventListener("click", () => {
-        rightPane.classList.remove("show");
-    });
-    startGenerationButton.addEventListener("click", () => {
-        const currentWorkflow = {};
-        // Get user-edited values and update workflow
-        const userValues = paramEditor.getUserEditableValues();
-        const updatedWorkflow = paramEditor.updateWorkflowWithUserValues(currentWorkflow);
-        // Start image generation
-        imageGenerator.generateBackground(updatedWorkflow);
-        // Show the results section using Bootstrap 5 collapse
-        const collapseElement = document.querySelector('#collapseTwo');
-        if (collapseElement) {
-            new bootstrap.Collapse(collapseElement, { toggle: true });
+    generateButton.addEventListener("click", async () => {
+        const selectedWorkflow = workflowBrowser.getSelectedWorkflow();
+        if (selectedWorkflow) {
+            // Get user-edited values and update workflow
+            const userValues = paramEditor.getUserEditableValues();
+            const workflowToGenerate = {
+                id: selectedWorkflow,
+                ...paramEditor.updateWorkflowWithUserValues({})
+            };
+            // Start image generation
+            await imageGenerator.generateBackground(workflowToGenerate);
+        }
+        else {
+            // If no workflow selected, show an error
+            progressStatus.textContent = "Please select a workflow first.";
         }
     });
-    // Load parameters on page load
-    paramEditor.loadUserEditableParameters().catch(console.error);
+    // Connect the workflow selection to the parameter editor
+    workflowBrowser.setOnWorkflowSelectedCallback(async (workflowId, metadata) => {
+        await paramEditor.setWorkflow(workflowId, metadata.title);
+    });
+    // Load workflows on page load
+    workflowBrowser.loadWorkflows().catch(console.error);
 });
 //# sourceMappingURL=index.js.map

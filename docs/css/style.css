@@ -1,10 +1,13 @@
 body {
   overflow: hidden;
   margin: 0;
-  padding: 0 20px;
+  padding: 0;
   width: 100%;
   height: 100vh;
+  display: flex;
+  background-image: url(./../images/bg-light.png);
 }
+
 /* Style for drag and drop area */
 #node169DropArea {
   border: 2px dashed #ccc;
@@ -13,12 +16,14 @@ body {
   cursor: pointer;
   margin-bottom: 10px;
 }
+
 /* Wrapper for the generated grid */
 #gridWrapper {
   max-width: 50vw;
   min-width: 400px;
   margin: 0 auto;
 }
+
 /* Grid for images */
 #imagesContainer {
   display: grid;
@@ -26,18 +31,32 @@ body {
   grid-gap: 10px;
   width: 526px;
 }
+
 #generatedGrid img {
   width: 100%;
   cursor: pointer;
   border: 2px solid transparent;
 }
+
 #generatedGrid img.selected {
   border-color: blue;
 }
-#noiseCanvas{
-  border-radius: 20px;
+
+#noiseAnimationContainer {
+  width: 600px;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 
+#noiseCanvas {
+  width: 600px;
+  height: 600px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 /* Right pane */
 #rightPane {
@@ -53,7 +72,199 @@ body {
   transition: transform 0.3s ease-in-out;
   z-index: 1050;
 }
+
 #rightPane.show {
   transform: translateX(0);
+}
+
+/* Left parameter editing pane */
+.left-pane {
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  border-right: 1px solid #dee2e6;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+}
+
+.parameter-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 70px; /* Space for the sticky bottom */
+}
+
+.sticky-bottom {
+  background-color: white;
+  border-top: 1px solid #dee2e6;
+  position: sticky;
+  bottom: 0;
+}
+
+/* Main content area for generated images */
+.main-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Workflow selection modal */
+.workflow-container {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.workflow-card {
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.workflow-card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.workflow-card.selected {
+  border: 2px solid var(--bs-primary);
+}
+
+.workflow-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}
+
+.workflow-card .card-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.workflow-card .card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Image upload/display areas */
+.image-upload-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+.image-upload-area:hover {
+  border-color: var(--bs-primary);
+}
+
+.image-upload-area img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Generated images grid */
+#generatedImagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+#generatedImagesGrid img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+#generatedImagesGrid img:hover {
+  transform: scale(1.03);
+}
+
+/* Lightbox for image preview */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 20px;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+#closeLightbox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2010;
+  cursor: pointer;
+}
+
+#prevImage, #nextImage {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2010;
+  cursor: pointer;
+}
+
+#prevImage {
+  left: 20px;
+}
+
+#nextImage {
+  right: 20px;
+}
+
+/* Progress display */
+#progressStatus {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: var(--bs-secondary);
 }
 

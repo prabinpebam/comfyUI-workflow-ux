@@ -6,16 +6,24 @@ import { UserEditableParameters } from '../shared/types';
 export class ParameterEditor {
   private editableFieldsContainer: HTMLDivElement;
   private userEditableValues: Record<string, Record<string, any>> = {};
-  private progressDiv: HTMLElement;
+  private statusElement: HTMLElement;
+  private currentWorkflowId: string | null = null;
+  private generateButton: HTMLButtonElement;
   
   /**
    * Constructor for the ParameterEditor class
    * @param containerElement - The DOM element that will contain the parameter fields
-   * @param progressElement - The DOM element that displays progress/status messages
+   * @param statusElement - The DOM element that displays progress/status messages
+   * @param generateButton - The button that initiates generation
    */
-  constructor(containerElement: HTMLDivElement, progressElement: HTMLElement) {
+  constructor(
+    containerElement: HTMLDivElement, 
+    statusElement: HTMLElement,
+    generateButton: HTMLButtonElement
+  ) {
     this.editableFieldsContainer = containerElement;
-    this.progressDiv = progressElement;
+    this.statusElement = statusElement;
+    this.generateButton = generateButton;
   }
   
   /**
@@ -24,13 +32,41 @@ export class ParameterEditor {
   getUserEditableValues(): Record<string, Record<string, any>> {
     return this.userEditableValues;
   }
+
+  /**
+   * Set the workflow to edit parameters for
+   * @param workflowId - The ID of the workflow to load
+   * @param workflowTitle - The title to display for the workflow
+   */
+  async setWorkflow(workflowId: string, workflowTitle: string): Promise<void> {
+    this.currentWorkflowId = workflowId;
+    
+    // Set the title in the UI
+    const titleElement = document.getElementById("workflowTitle");
+    if (titleElement) {
+      titleElement.textContent = workflowTitle;
+    }
+    
+    // Enable the generate button
+    this.generateButton.disabled = false;
+    
+    // Load the parameters for this workflow
+    await this.loadUserEditableParameters();
+  }
   
   /**
    * Load user editable parameters from the specified workflow and create form fields
    */
   async loadUserEditableParameters(): Promise<void> {
+    // Reset previous values
+    this.userEditableValues = {};
+    
     try {
-      const response = await fetch("workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper-user-editable-parameters.json");
+      if (!this.currentWorkflowId) {
+        throw new Error("No workflow selected");
+      }
+      
+      const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`);
       if (!response.ok) throw new Error("Failed to load user editable parameters.");
       
       const paramsJson = await response.json() as UserEditableParameters;
@@ -46,9 +82,21 @@ export class ParameterEditor {
         this.userEditableValues[nodeId] = {};
         const nodeData = paramsJson[nodeId];
         
-        // Create a container for this node's fields
+        // Create a container for this node's fields with Bootstrap card styling
         const nodeContainer = document.createElement("div");
-        nodeContainer.classList.add("mb-3");
+        nodeContainer.classList.add("card", "mb-4");
+        
+        // Add a header for the node if the node has a title
+        if (nodeData.title) {
+          const nodeHeader = document.createElement("div");
+          nodeHeader.classList.add("card-header");
+          nodeHeader.textContent = nodeData.title;
+          nodeContainer.appendChild(nodeHeader);
+        }
+        
+        // Create card body for the form elements
+        const nodeBodyContainer = document.createElement("div");
+        nodeBodyContainer.classList.add("card-body");
         
         // Iterate over each input in the node
         for (const inputKey in nodeData.inputs) {
@@ -56,12 +104,13 @@ export class ParameterEditor {
           
           const inputData = nodeData.inputs[inputKey];
           
-          // Create a form group
+          // Create a form group with margins
           const formGroup = document.createElement("div");
-          formGroup.classList.add("form-group");
+          formGroup.classList.add("form-group", "mb-4");
           
           // Create a label using the input's label as primary identifier
           const label = document.createElement("label");
+          label.classList.add("form-label", "fw-bold", "mb-2");
           label.textContent = inputData.label || inputKey;
           formGroup.appendChild(label);
           
@@ -78,14 +127,17 @@ export class ParameterEditor {
             this.createTextInput(formGroup, nodeId, inputKey, strValue);
           }
           
-          nodeContainer.appendChild(formGroup);
+          nodeBodyContainer.appendChild(formGroup);
         }
         
+        nodeContainer.appendChild(nodeBodyContainer);
         this.editableFieldsContainer.appendChild(nodeContainer);
       }
     } catch (error) {
       console.error("Error loading parameters:", error);
       this.editableFieldsContainer.innerHTML = `<div class="alert alert-danger">Failed to load parameters: ${error instanceof Error ? error.message : String(error)}</div>`;
+      // Disable generate button on error
+      this.generateButton.disabled = true;
     }
   }
   
@@ -98,39 +150,27 @@ export class ParameterEditor {
     
     // Create a drop area with updated styles and structure
     const dropArea = document.createElement("div");
-    dropArea.classList.add("p-3", "text-center");
-    dropArea.style.cursor = "pointer";
-    dropArea.style.position = "relative";
-    dropArea.style.height = "350px";
-    dropArea.style.maxHeight = "350px";
-    dropArea.style.border = "2px dashed #ccc";
-    dropArea.style.borderRadius = "20px";
+    dropArea.classList.add("image-upload-area", "d-flex", "flex-column", "align-items-center", "justify-content-center");
     dropArea.id = `dropArea-${fieldId}`;
     
-    // Create an instructional overlay (absolutely positioned)
+    // Create an instructional text
     const instruction = document.createElement("div");
-    instruction.style.position = "absolute";
-    instruction.style.top = "0";
-    instruction.style.left = "0";
-    instruction.style.width = "100%";
-    instruction.style.height = "100%";
-    instruction.style.display = "flex";
-    instruction.style.alignItems = "center";
-    instruction.style.justifyContent = "center";
-    instruction.style.pointerEvents = "none";
-    instruction.style.color = "#888";
+    instruction.classList.add("text-secondary", "mb-2");
     instruction.textContent = "Drop an image or click to select a file.";
     dropArea.appendChild(instruction);
     
-    // Create an img element for preview, center aligned, using object-fit to contain the image
+    // Add an icon (using Bootstrap icons)
+    const iconDiv = document.createElement("div");
+    iconDiv.classList.add("text-secondary", "mb-3");
+    iconDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+      <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+    </svg>`;
+    dropArea.appendChild(iconDiv);
+    
+    // Create an img element for preview, center aligned, initially hidden
     const previewImg = document.createElement("img");
-    previewImg.style.maxWidth = "100%";
-    previewImg.style.maxHeight = "100%";
     previewImg.style.display = "none";
-    previewImg.style.objectFit = "contain";
-    previewImg.style.position = "relative";
-    previewImg.style.zIndex = "1";
-    previewImg.style.margin = "0 auto";
     previewImg.id = `preview-${fieldId}`;
     dropArea.appendChild(previewImg);
     
@@ -143,19 +183,28 @@ export class ParameterEditor {
     formGroup.appendChild(dropArea);
     formGroup.appendChild(fileInput);
     
+    // Create a status message element for this upload field
+    const uploadStatus = document.createElement("div");
+    uploadStatus.classList.add("upload-status", "mt-2", "small");
+    uploadStatus.id = `status-${fieldId}`;
+    formGroup.appendChild(uploadStatus);
+    
     // Event listeners for drag and drop and click-to-upload
     dropArea.addEventListener("click", () => fileInput.click());
     dropArea.addEventListener("dragover", (e) => {
       e.preventDefault();
-      dropArea.style.borderColor = "#000";
+      dropArea.style.borderColor = "var(--bs-primary)";
+      dropArea.classList.add("border-primary");
     });
     dropArea.addEventListener("dragleave", (e) => {
       e.preventDefault();
       dropArea.style.borderColor = "#ccc";
+      dropArea.classList.remove("border-primary");
     });
     dropArea.addEventListener("drop", (e) => {
       e.preventDefault();
       dropArea.style.borderColor = "#ccc";
+      dropArea.classList.remove("border-primary");
       if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
         this.handleEditableFile(e.dataTransfer.files[0], nodeId, inputKey, fieldId);
       }
@@ -168,7 +217,7 @@ export class ParameterEditor {
   }
   
   /**
-   * Create a number input field
+   * Create a number input field with Bootstrap styling
    */
   private createNumberInput(formGroup: HTMLDivElement, nodeId: string, inputKey: string, defaultValue: number): void {
     const numberInput = document.createElement("input");
@@ -176,7 +225,7 @@ export class ParameterEditor {
     numberInput.classList.add("form-control");
     numberInput.value = defaultValue.toString();
     numberInput.addEventListener("change", () => {
-      this.userEditableValues[nodeId][inputKey] = numberInput.value;
+      this.userEditableValues[nodeId][inputKey] = parseFloat(numberInput.value);
     });
     formGroup.appendChild(numberInput);
     // Initialize with default value
@@ -184,7 +233,7 @@ export class ParameterEditor {
   }
   
   /**
-   * Create a text input field
+   * Create a text input field with Bootstrap styling
    */
   private createTextInput(formGroup: HTMLDivElement, nodeId: string, inputKey: string, defaultValue: string): void {
     const textarea = document.createElement("textarea");
@@ -206,14 +255,36 @@ export class ParameterEditor {
     const previewImg = document.getElementById(`preview-${fieldId}`) as HTMLImageElement;
     const fileInput = document.getElementById(`fileInput-${fieldId}`) as HTMLInputElement;
     const dropArea = document.getElementById(`dropArea-${fieldId}`) as HTMLDivElement;
+    const uploadStatus = document.getElementById(`status-${fieldId}`) as HTMLDivElement;
+    
+    // Safely get elements, using optional chaining and null checks
+    const instructionEl = dropArea.querySelector(".text-secondary");
+    const iconEl = dropArea.querySelector("svg")?.parentElement;
     
     try {
+      // Show loading state in the upload status element
+      if (uploadStatus) {
+        uploadStatus.innerHTML = `
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="ms-2">Uploading image for ${inputKey}...</span>
+        `;
+      }
+      
+      // Show loading state in the main status element too
+      this.statusElement.textContent = `Uploading image for ${inputKey}...`;
+      console.log(`[ParameterEditor] Starting upload of image for ${nodeId}.${inputKey}`);
+      
       // Convert the uploaded file to JPEG
       const jpegDataUrl = await this.convertBlobToJpeg(file);
       previewImg.src = jpegDataUrl;
       previewImg.style.display = "block";
       
-      this.progressDiv.textContent = `Uploading image for ${nodeId} - ${inputKey}...`;
+      // Hide the instruction text and icon when showing the preview
+      if (instructionEl instanceof HTMLElement) instructionEl.style.display = "none";
+      if (iconEl instanceof HTMLElement) iconEl.style.display = "none";
+      
       // Convert the data URL back to a blob for uploading
       const responseDataUrl = await fetch(jpegDataUrl);
       const jpegBlob = await responseDataUrl.blob();
@@ -221,6 +292,7 @@ export class ParameterEditor {
       const jpegFormData = new FormData();
       jpegFormData.append("image", jpegBlob, "converted.jpg");
       
+      console.log(`[ParameterEditor] Sending image upload request to server for ${nodeId}.${inputKey}`);
       const uploadResponse = await fetch("http://127.0.0.1:8000/upload/image", {
         method: "POST",
         body: jpegFormData
@@ -228,13 +300,38 @@ export class ParameterEditor {
       
       if (!uploadResponse.ok) throw new Error("Upload failed.");
       const data = await uploadResponse.json();
-      console.log(data);
+      console.log(`[ParameterEditor] Image upload successful for ${nodeId}.${inputKey}`, data);
+      
       // Save the uploaded filename
       this.userEditableValues[nodeId][inputKey] = data.name;
-      this.progressDiv.textContent = "Image uploaded successfully.";
+      
+      // Update status messages
+      this.statusElement.textContent = "Image uploaded successfully.";
+      if (uploadStatus) {
+        uploadStatus.innerHTML = `
+          <div class="text-success">
+            <i class="bi bi-check-circle-fill me-1"></i>
+            Image uploaded successfully (${data.name})
+          </div>
+        `;
+      }
     } catch (error) {
-      console.error("Error uploading image:", error);
-      this.progressDiv.textContent = `Error uploading image: ${error instanceof Error ? error.message : String(error)}`;
+      console.error("[ParameterEditor] Error uploading image:", error);
+      this.statusElement.textContent = `Error uploading image: ${error instanceof Error ? error.message : String(error)}`;
+      
+      if (uploadStatus) {
+        uploadStatus.innerHTML = `
+          <div class="text-danger">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+            Upload failed: ${error instanceof Error ? error.message : String(error)}
+          </div>
+        `;
+      }
+      
+      // Reset the preview if there was an error
+      previewImg.style.display = "none";
+      if (instructionEl instanceof HTMLElement) instructionEl.style.display = "block";
+      if (iconEl instanceof HTMLElement) iconEl.style.display = "block";
     }
   }
   
@@ -276,11 +373,16 @@ export class ParameterEditor {
   updateWorkflowWithUserValues(workflow: Record<string, any>): Record<string, any> {
     for (const nodeId in this.userEditableValues) {
       if (this.userEditableValues.hasOwnProperty(nodeId)) {
-        if (workflow[nodeId] && workflow[nodeId].inputs) {
-          for (const inputKey in this.userEditableValues[nodeId]) {
-            if (this.userEditableValues[nodeId].hasOwnProperty(inputKey)) {
-              workflow[nodeId].inputs[inputKey] = this.userEditableValues[nodeId][inputKey];
-            }
+        if (!workflow[nodeId]) {
+          workflow[nodeId] = { inputs: {} };
+        }
+        if (!workflow[nodeId].inputs) {
+          workflow[nodeId].inputs = {};
+        }
+        
+        for (const inputKey in this.userEditableValues[nodeId]) {
+          if (this.userEditableValues[nodeId].hasOwnProperty(inputKey)) {
+            workflow[nodeId].inputs[inputKey] = this.userEditableValues[nodeId][inputKey];
           }
         }
       }

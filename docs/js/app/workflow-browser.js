@@ -1,15 +1,19 @@
 /**
- * WorkflowBrowser class - Handles loading and displaying available workflows
+ * WorkflowBrowser class - Handles loading and displaying available workflows in the modal
  */
 export class WorkflowBrowser {
     /**
      * Create a new WorkflowBrowser
      * @param containerElement - The element to display workflows in
+     * @param modalElement - The modal element that contains the workflow selection UI
      */
-    constructor(containerElement) {
+    constructor(containerElement, modalElement = null) {
         this.selectedWorkflow = null;
         this.workflows = [];
+        this.modalElement = null;
+        this.onWorkflowSelectedCallback = null;
         this.container = containerElement;
+        this.modalElement = modalElement;
     }
     /**
      * Get the currently selected workflow
@@ -18,19 +22,54 @@ export class WorkflowBrowser {
         return this.selectedWorkflow;
     }
     /**
+     * Set callback function for when a workflow is selected
+     */
+    setOnWorkflowSelectedCallback(callback) {
+        this.onWorkflowSelectedCallback = callback;
+    }
+    /**
+     * Show the workflow selection modal
+     */
+    showModal() {
+        if (this.modalElement) {
+            const modal = new window.bootstrap.Modal(this.modalElement);
+            modal.show();
+        }
+    }
+    /**
+     * Hide the workflow selection modal
+     */
+    hideModal() {
+        if (this.modalElement) {
+            const modal = window.bootstrap.Modal.getInstance(this.modalElement);
+            if (modal) {
+                modal.hide();
+            }
+        }
+    }
+    /**
      * Load available workflows from the server
      */
     async loadWorkflows() {
         try {
-            // This would typically fetch from an API endpoint that lists available workflows
-            // For now, we'll just include the hardcoded Win11 example
+            // We'll simulate fetching from server by listing workflow directories
+            // In a real implementation, this would be an API call to the server
             this.workflows = [
                 {
+                    id: "Win11-stylized-wallpaper",
                     title: "Win11 Stylized Wallpaper",
                     description: "Generate stylized wallpapers in the Windows 11 style",
-                    previewImage: "/workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.jpg"
+                    previewImage: "workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.jpg"
+                },
+                {
+                    id: "landscape-in-a-bottle",
+                    title: "Landscape in a Bottle",
+                    description: "Create beautiful miniature landscapes contained within glass bottles",
+                    previewImage: "workflow/landscape-in-a-bottle/landscape-in-a-bottle.png"
                 }
             ];
+            // Sort workflows alphabetically by title
+            this.workflows.sort((a, b) => a.title.localeCompare(b.title));
             this.renderWorkflows();
         }
         catch (error) {
@@ -39,60 +78,63 @@ export class WorkflowBrowser {
         }
     }
     /**
-     * Render the workflows in the container
+     * Render the workflows in the container as cards
      */
     renderWorkflows() {
         this.container.innerHTML = "";
         this.workflows.forEach((workflow, index) => {
             const card = document.createElement("div");
-            card.classList.add("card", "mb-3", "workflow-card");
+            card.classList.add("card", "workflow-card");
+            if (workflow.id === this.selectedWorkflow) {
+                card.classList.add("selected");
+            }
             card.innerHTML = `
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="${workflow.previewImage}" class="img-fluid rounded-start" alt="${workflow.title}">
+            <div class="square-img-container">
+              <img src="${workflow.previewImage}" class="img-fluid" alt="${workflow.title}">
+            </div>
           </div>
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">${workflow.title}</h5>
               <p class="card-text">${workflow.description}</p>
-              <button class="btn btn-primary select-workflow-btn" data-index="${index}">Select</button>
             </div>
           </div>
         </div>
       `;
-            this.container.appendChild(card);
-            // Add event listener to the button
-            const selectBtn = card.querySelector(".select-workflow-btn");
-            selectBtn.addEventListener("click", () => {
-                this.selectWorkflow(index);
+            // Make the entire card clickable
+            card.addEventListener("click", () => {
+                this.selectWorkflow(workflow.id);
             });
+            this.container.appendChild(card);
         });
     }
     /**
-     * Select a workflow by index
+     * Select a workflow by id
      */
-    selectWorkflow(index) {
-        if (index >= 0 && index < this.workflows.length) {
-            // Highlight the selected workflow
+    selectWorkflow(workflowId) {
+        // Find the workflow metadata
+        const selectedWorkflowMetadata = this.workflows.find(workflow => workflow.id === workflowId);
+        if (selectedWorkflowMetadata) {
+            // Update the selected workflow
+            this.selectedWorkflow = workflowId;
+            // Update UI to show which workflow is selected
             const cards = this.container.querySelectorAll(".workflow-card");
-            cards.forEach((card, i) => {
-                if (i === index) {
+            cards.forEach(card => {
+                if (card.querySelector(`.card-title`)?.textContent === selectedWorkflowMetadata.title) {
                     card.classList.add("selected");
                 }
                 else {
                     card.classList.remove("selected");
                 }
             });
-            // Store the selected workflow path (this would be updated for multiple workflows)
-            this.selectedWorkflow = "Win11-stylized-wallpaper";
-            // Trigger a custom event to notify listeners
-            const event = new CustomEvent("workflowSelected", {
-                detail: {
-                    workflow: this.selectedWorkflow,
-                    metadata: this.workflows[index]
-                }
-            });
-            this.container.dispatchEvent(event);
+            // Call the callback if provided
+            if (this.onWorkflowSelectedCallback) {
+                this.onWorkflowSelectedCallback(workflowId, selectedWorkflowMetadata);
+            }
+            // Hide the modal
+            this.hideModal();
         }
     }
 }

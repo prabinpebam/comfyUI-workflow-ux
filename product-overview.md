@@ -39,7 +39,7 @@ This project is an attempt at making the power of ComfyUI available for all user
 
 ## Details of the UI for editable UI parameters
 1. Detail of the editable UI parameters are to be taken from workflow-name-user-editable-parameters.json
-2. The editable parameters should be presented as a left pane with max width of 600px.
+2. The editable parameters should be presented as a left pane with max width of 600px. This left pane should be independently scrollable.
 3. There should be an overall sticky title bar at the top with the "workflow name" as the title. There should be a button on the right of this title bar that says "Open". Clicking this opens the modal for selecting a workflow.
 4. The left pane should take up the height of the available viewport.
 5. There should be a bottom sticky bar with the primary CTA button that says "Generate". This is the button that initiates the generation of image using workflows.
@@ -53,16 +53,16 @@ This project is an attempt at making the power of ComfyUI available for all user
 1. The main body of the page is used for displaying the generated images.
 2. There can be single or multiple images generated from the workflow.
 3. There should be an empty state when the page is loaded for the first time with a message that says "Generate something to see a preview here."
-4. When a generation start, the noise animation shhould be show in the center of the viewport as a square as pect ration of 600x600px.
+4. When a generation start, the empty state should be replaced by the noise animation canvas which is shown in the center of the viewport as a square as pect ration of 600x600px.
 5. A time counter should be displayed right below the noise animation canvas that shows the elapsed time from the moment generation is started. The time time counter should be in this format "hh:mm:ss". This counter should stop the moment the generation is completed completely. There's a possibility of false trgigger of completion as there are multiple sub steps that gets completed which can be mistaken as completion of the workflow. The whole generation needs to be completed to stop this timer. Use h3 for the time counter.
 6. The status of the generation from the web socket connection should be clearly displayed just below the time counter.
-7. The generated images are to be represented as a grid array of thumbnails.
+7. Once the generation is complete, the noise canvas should be hidden and the generated images are to be represented as a grid array of thumbnails below the time counter and the status message.
 8. Clicking on any of the images should open the images in a lightbox that covers up the full viewport with proper padding around the image.
    1. There should be a left and right navigation option that will allow the uver to move to the next or previous image, in case there are more than one image. The left and righ navigation should also work with the arrow keys.
    2. There should be a clop button at the top to close the lightbox.
 
 # things to be deprecated from the current implementation
-1. The accordion in the right pane.
+
     
 
 
