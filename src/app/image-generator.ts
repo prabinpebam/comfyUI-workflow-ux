@@ -634,20 +634,6 @@ export class ImageGenerator {
     });
     
     cardDiv.appendChild(imgElement);
-    
-    // Add a footer with an "Apply as background" button
-    const cardFooter = document.createElement("div");
-    cardFooter.className = "card-footer";
-    
-    const applyButton = document.createElement("button");
-    applyButton.className = "btn btn-sm btn-outline-primary w-100";
-    applyButton.textContent = "Apply as Background";
-    applyButton.addEventListener("click", () => {
-      this.applyAsBackground(index);
-    });
-    
-    cardFooter.appendChild(applyButton);
-    cardDiv.appendChild(cardFooter);
     colDiv.appendChild(cardDiv);
     
     return colDiv;
