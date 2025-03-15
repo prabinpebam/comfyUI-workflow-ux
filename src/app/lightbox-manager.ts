@@ -43,11 +43,13 @@ export class LightboxManager {
     
     const prevImage = document.getElementById('prevImage');
     if (prevImage) {
+      prevImage.innerHTML = '<i class="bi bi-chevron-left"></i>';
       prevImage.addEventListener('click', () => this.showPrevImage());
     }
     
     const nextImage = document.getElementById('nextImage');
     if (nextImage) {
+      nextImage.innerHTML = '<i class="bi bi-chevron-right"></i>';
       nextImage.addEventListener('click', () => this.showNextImage());
     }
     
@@ -202,13 +204,9 @@ export class LightboxManager {
       const nextButton = document.getElementById('nextImage');
       
       if (prevButton && nextButton) {
-        if (this.generatedImages.length <= 1) {
-          prevButton.style.display = 'none';
-          nextButton.style.display = 'none';
-        } else {
-          prevButton.style.display = 'flex';
-          nextButton.style.display = 'flex';
-        }
+        const shouldShowNavigation = this.generatedImages.length > 1;
+        prevButton.style.display = shouldShowNavigation ? 'flex' : 'none';
+        nextButton.style.display = shouldShowNavigation ? 'flex' : 'none';
       }
     }
   }

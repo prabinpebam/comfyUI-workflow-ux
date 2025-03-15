@@ -39,6 +39,11 @@ interface Point {
   y: number;
 }
 
+interface GradientColor {
+  color: string;
+  position: number;
+}
+
 // Declare the external noise library
 declare const noise: {
   perlin2(x: number, y: number): number;
@@ -69,6 +74,7 @@ export class NoiseAnimation {
   private noiseTexture: WebGLTexture | null = null;
   private displacementTextureGL: WebGLTexture | null = null;
   private animationFrameId: number | null = null;
+  private colorGradient: GradientColor[] = [];
 
   /**
    * Constructor for the NoiseAnimation class
@@ -147,6 +153,9 @@ export class NoiseAnimation {
 
     // Initialize WebGL shaders and program
     this.initWebGL();
+
+    // Initialize color gradient
+    this.initializeColorGradient();
 
     // Add mousemove listener to create ripples
     this.canvas.addEventListener('mousemove', (e) => {
@@ -514,19 +523,17 @@ export class NoiseAnimation {
    * Draw stipple (dotted) overlay
    */
   private drawStipple(imageData: ImageData): void {
-    this.compositeCtx.fillStyle = 'black';
-    this.compositeCtx.fillRect(0, 0, this.compositeCanvas.width, this.compositeCanvas.height);
+    this.compositeCtx.clearRect(0, 0, this.compositeCanvas.width, this.compositeCanvas.height);
     
     const scaleX = this.compositeCanvas.width / this.offCanvas.width;
     const scaleY = this.compositeCanvas.height / this.baseOffHeight;
-    
-    this.compositeCtx.fillStyle = 'white';
     
     for (const pt of this.stipplePoints) {
       const brightnessVal = this.sampleBrightness(imageData, pt.x, pt.y);
       if (brightnessVal > this.options.brightnessThreshold) continue;
       
-      const radius = this.options.minDotSize + (1 - brightnessVal / 255) * 
+      const dotSizeRatio = (1 - brightnessVal / 255);
+      const radius = this.options.minDotSize + dotSizeRatio * 
                     (this.options.maxDotSize - this.options.minDotSize);
       
       let drawX = pt.x * scaleX;
@@ -537,6 +544,7 @@ export class NoiseAnimation {
         drawY -= disp;
       }
       
+      this.compositeCtx.fillStyle = this.getGradientColor(dotSizeRatio);
       this.compositeCtx.beginPath();
       this.compositeCtx.arc(drawX, drawY, radius, 0, Math.PI * 2);
       this.compositeCtx.fill();
@@ -566,6 +574,71 @@ export class NoiseAnimation {
   }
 
   /**
+   * Generate a random color
+   */
+  private generateColor(hue: number): string {
+    const saturation = 50 + Math.random() * 50; // 50-100% saturation for vibrant colors
+    const lightness = 30 + Math.random() * 40;  // 30-70% lightness for good visibility
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  /**
+   * Initialize tetradic color harmony gradient with random positions
+   */
+  private initializeColorGradient(): void {
+    // Start with a random hue
+    const baseHue = Math.random() * 360;
+    // Generate tetradic harmony (four colors 90 degrees apart)
+    const colors = [
+      this.generateColor(baseHue),
+      this.generateColor((baseHue + 90) % 360),
+      this.generateColor((baseHue + 180) % 360),
+      this.generateColor((baseHue + 270) % 360)
+    ];
+
+    // Assign random positions to each color
+    this.colorGradient = colors.map(color => ({
+      color,
+      position: Math.random() * 100
+    }));
+
+    // Sort by position
+    this.colorGradient.sort((a, b) => a.position - b.position);
+  }
+
+  /**
+   * Get color from gradient based on position (0-1)
+   */
+  private getGradientColor(position: number): string {
+    const p = position * 100;
+    
+    // Find the surrounding colors
+    const lower = this.colorGradient.reduce((prev, curr) => 
+      curr.position <= p ? curr : prev, this.colorGradient[0]);
+    const upper = this.colorGradient.reduce((prev, curr) => 
+      curr.position > p && curr.position < prev.position ? curr : prev, 
+      { color: this.colorGradient[0].color, position: 101 });
+    
+    // If exact match or at start/end, return the color
+    if (p <= this.colorGradient[0].position) return this.colorGradient[0].color;
+    if (p >= this.colorGradient[this.colorGradient.length - 1].position) 
+      return this.colorGradient[this.colorGradient.length - 1].color;
+    
+    // Interpolate between colors
+    const range = upper.position - lower.position;
+    const factor = (p - lower.position) / range;
+    
+    // Parse colors to interpolate
+    const color1 = lower.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
+    const color2 = upper.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
+    
+    // Return interpolated color
+    return `hsl(${
+      Math.round(color1[0] + (color2[0] - color1[0]) * factor)
+    }, 70%, 80%)`;
+  }
+
+  /**
    * Main animation loop
    */
   private animate(): void {
@@ -580,6 +653,7 @@ export class NoiseAnimation {
     if (this.options.rippleEnabled) {
       this.updateDisplacementTexture();
       noiseImageData = this.applyRippleEffect(noiseImageData);
+      this.compositeCtx.clearRect(0, 0, this.compositeCanvas.width, this.compositeCanvas.height);
       this.compositeCtx.putImageData(noiseImageData, 0, 0);
     } else {
       this.drawNoise(noiseImageData);
@@ -589,6 +663,7 @@ export class NoiseAnimation {
       this.drawStipple(noiseImageData);
     }
     
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.drawImage(this.compositeCanvas, 0, 0, this.canvas.width, this.canvas.height);
   }
 
@@ -597,6 +672,7 @@ export class NoiseAnimation {
    */
   start(): void {
     if (!this.animationFrameId) {
+      this.initializeColorGradient(); // Reinitialize colors when starting
       this.animate();
     }
   }
@@ -608,6 +684,20 @@ export class NoiseAnimation {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;
+      this.initializeColorGradient(); // Reinitialize colors when stopping
     }
+  }
+
+  /**
+   * Clear the canvas and reset animation state
+   */
+  clear(): void {
+    this.stop();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.compositeCtx.clearRect(0, 0, this.compositeCanvas.width, this.compositeCanvas.height);
+    this.dispCtx.clearRect(0, 0, this.displacementCanvas.width, this.displacementCanvas.height);
+    this.time = 0;
+    this.ripples = [];
+    this.initializeColorGradient(); // Reinitialize colors when clearing
   }
 }

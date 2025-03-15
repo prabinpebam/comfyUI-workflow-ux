@@ -54,8 +54,7 @@ body {
 #noiseCanvas {
   width: 600px;
   height: 600px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;  
 }
 
 /* Right pane */
@@ -79,7 +78,7 @@ body {
 
 /* Left parameter editing pane */
 .left-pane {
-  width: 380px;
+  width: 600px;
   height: 100vh;
   overflow-y: auto;
   border-right: 1px solid #dee2e6;
@@ -116,7 +115,6 @@ body {
 .workflow-container {
   max-height: 70vh;
   overflow-y: auto;
-  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
 }
@@ -257,26 +255,47 @@ body {
 }
 
 #prevImage, #nextImage {
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 50vh;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2010;
   cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: background-color 0.2s ease;
 }
 
 #prevImage {
-  left: 20px;
+  left: 32px;
 }
 
 #nextImage {
-  right: 20px;
+  right: 32px;
+}
+
+#prevImage:hover, #nextImage:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#prevImage i, #nextImage i {
+  font-size: 24px;
+  color: #000;
+}
+
+.lightbox-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Progress display */
