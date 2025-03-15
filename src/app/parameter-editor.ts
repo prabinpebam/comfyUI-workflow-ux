@@ -94,6 +94,9 @@ export class ParameterEditor {
       
       // Iterate over each node in the parameters JSON
       for (const nodeId in paramsJson) {
+        // Skip the workflowDetails node as it's not a parameter for users to edit
+        if (nodeId === "workflowDetails") continue;
+        
         if (!paramsJson.hasOwnProperty(nodeId)) continue;
         
         // Initialize storage for this node

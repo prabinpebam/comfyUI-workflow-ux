@@ -40,7 +40,7 @@
   },
   "workflowDetails": {
     "title": "Win11 stylized wallpaper",
-    "image": "Win11-stylized-wallpaper.jpg",
+    "image": "Win11-stylized-wallpaper.png",
     "description": "Drop a style reference and this will generate the Windows 11 Bloom wallpaper with that style. Optionally, you can provide a text description along with the style reference image."
   }
 }

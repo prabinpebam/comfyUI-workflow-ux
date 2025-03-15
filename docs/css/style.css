@@ -79,9 +79,9 @@ body {
 
 /* Left parameter editing pane */
 .left-pane {
-  width: 100%;
-  max-width: 600px;
+  width: 380px;
   height: 100vh;
+  overflow-y: auto;
   border-right: 1px solid #dee2e6;
   display: flex;
   flex-direction: column;
@@ -94,6 +94,7 @@ body {
   flex: 1;
   overflow-y: auto;
   padding-bottom: 70px; /* Space for the sticky bottom */
+  margin-bottom: 60px;
 }
 
 .sticky-bottom {
@@ -115,6 +116,9 @@ body {
 .workflow-container {
   max-height: 70vh;
   overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
 .workflow-card {
@@ -208,6 +212,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
 }
 
 .lightbox-content {
@@ -215,12 +222,23 @@ body {
   max-width: 90%;
   max-height: 90%;
   padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lightbox img {
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
+  user-select: none;
+  cursor: grab;
+}
+
+.lightbox img:active {
+  cursor: grabbing;
 }
 
 #closeLightbox {
@@ -266,5 +284,47 @@ body {
   font-size: 1rem;
   margin-top: 1rem;
   color: var(--bs-secondary);
+}
+
+/* Minimap Styles */
+.lightbox-controls {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  z-index: 1055;
+}
+
+.minimap-container {
+  position: relative;
+  width: 150px;
+  height: 100px;
+  border: 1px solid #444;
+  overflow: hidden;
+}
+
+#minimapCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+#minimapViewport {
+  position: absolute;
+  border: 1px solid #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+}
+
+#zoomPercentage {
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+#zoomSlider {
+  width: 100px;
 }
 

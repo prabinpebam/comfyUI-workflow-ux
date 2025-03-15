@@ -96,25 +96,16 @@ export class WorkflowBrowser {
                     if (!response.ok)
                         continue;
                     const paramsJson = await response.json();
-                    // Debug output to verify what's in the JSON file
-                    console.log(`Loading workflow ${workflowPath}`, {
-                        workflowDetails: paramsJson.workflowDetails,
-                        title: paramsJson.workflowDetails?.title,
-                        fullJson: paramsJson
-                    });
                     if (!paramsJson.workflowDetails || !paramsJson.workflowDetails.title)
                         continue;
                     // Ensure we're using the exact title without any transformations
                     const workflowTitle = String(paramsJson.workflowDetails.title);
-                    console.log(`Workflow title (exact): "${workflowTitle}"`);
                     this.workflows.push({
                         id: workflowPath,
                         title: workflowTitle,
                         description: paramsJson.workflowDetails.description || '',
                         previewImage: `workflow/${workflowPath}/${paramsJson.workflowDetails.image || `${workflowPath}.png`}`
                     });
-                    // Debug output for added workflow
-                    console.log(`Added workflow to list:`, this.workflows[this.workflows.length - 1]);
                 }
                 catch (error) {
                     console.warn(`Failed to load workflow ${workflowPath}:`, error);
@@ -153,16 +144,11 @@ export class WorkflowBrowser {
                 throw new Error(`Failed to refresh workflow metadata (${response.status})`);
             }
             const paramsJson = await response.json();
-            console.log(`Refreshing metadata for workflow ${workflowPath}`, {
-                workflowDetails: paramsJson.workflowDetails,
-                title: paramsJson.workflowDetails?.title
-            });
             if (!paramsJson.workflowDetails || !paramsJson.workflowDetails.title) {
                 throw new Error("Workflow metadata is missing title");
             }
             // Ensure we're using the exact title without any transformations
             const workflowTitle = String(paramsJson.workflowDetails.title);
-            console.log(`Refreshed workflow title (exact): "${workflowTitle}"`);
             // Find the workflow in our array and update its metadata
             const workflowIndex = this.workflows.findIndex(w => w.id === this.selectedWorkflow);
             if (workflowIndex >= 0) {

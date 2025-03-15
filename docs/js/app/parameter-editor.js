@@ -46,7 +46,7 @@ export class ParameterEditor {
         }
     }
     /**
-     * Load user editable parameters from the specified workflow and create form fields
+     * Load user editable parameters for the current workflow
      */
     async loadUserEditableParameters() {
         // Reset previous values
@@ -63,19 +63,18 @@ export class ParameterEditor {
             if (!response.ok)
                 throw new Error("Failed to load user editable parameters.");
             const paramsJson = await response.json();
-            // Debug output to verify what's in the JSON file
-            console.log(`Parameter Editor loading workflow ${this.currentWorkflowId}`, {
-                workflowDetails: paramsJson.workflowDetails,
-                title: paramsJson.workflowDetails?.title,
-            });
             // Always update the title from the latest data in the JSON file
             if (paramsJson.workflowDetails && paramsJson.workflowDetails.title) {
-                this.updateWorkflowTitle(paramsJson.workflowDetails.title);
+                const workflowTitle = String(paramsJson.workflowDetails.title);
+                this.updateWorkflowTitle(workflowTitle);
             }
             // Clear existing fields
             this.editableFieldsContainer.innerHTML = "";
             // Iterate over each node in the parameters JSON
             for (const nodeId in paramsJson) {
+                // Skip the workflowDetails node as it's not a parameter for users to edit
+                if (nodeId === "workflowDetails")
+                    continue;
                 if (!paramsJson.hasOwnProperty(nodeId))
                     continue;
                 // Initialize storage for this node
@@ -254,7 +253,6 @@ export class ParameterEditor {
             }
             // Show loading state in the main status element too
             this.statusElement.textContent = `Uploading image for ${inputKey}...`;
-            console.log(`[ParameterEditor] Starting upload of image for ${nodeId}.${inputKey}`);
             // Convert the uploaded file to JPEG
             const jpegDataUrl = await this.convertBlobToJpeg(file);
             previewImg.src = jpegDataUrl;
@@ -269,7 +267,6 @@ export class ParameterEditor {
             const jpegBlob = await responseDataUrl.blob();
             const jpegFormData = new FormData();
             jpegFormData.append("image", jpegBlob, "converted.jpg");
-            console.log(`[ParameterEditor] Sending image upload request to server for ${nodeId}.${inputKey}`);
             const uploadResponse = await fetch("http://127.0.0.1:8000/upload/image", {
                 method: "POST",
                 body: jpegFormData
@@ -277,7 +274,6 @@ export class ParameterEditor {
             if (!uploadResponse.ok)
                 throw new Error("Upload failed.");
             const data = await uploadResponse.json();
-            console.log(`[ParameterEditor] Image upload successful for ${nodeId}.${inputKey}`, data);
             // Save the uploaded filename
             this.userEditableValues[nodeId][inputKey] = data.name;
             // Update status messages
@@ -292,7 +288,6 @@ export class ParameterEditor {
             }
         }
         catch (error) {
-            console.error("[ParameterEditor] Error uploading image:", error);
             this.statusElement.textContent = `Error uploading image: ${error instanceof Error ? error.message : String(error)}`;
             if (uploadStatus) {
                 uploadStatus.innerHTML = `

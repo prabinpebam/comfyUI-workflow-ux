@@ -20,6 +20,6 @@
   "workflowDetails": {
     "title": "Moana 2 wallpaper",
     "image": "Moana2-wallpaper.png",
-    "description": "Default ComfyUI workflow with landscape in a bottle."
+    "description": "Provide a face reference for Moana and Maui, and this will generate a wallpaper with those face as Moana and Maui in the movie wallpaper. The image is the thumbnail is exactly what you will get."
   }
 }
