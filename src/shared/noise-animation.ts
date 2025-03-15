@@ -32,6 +32,7 @@ interface Ripple {
   x: number;
   y: number;
   startTime: number;
+  hue: number;  // Add hue to track color for each ripple
 }
 
 interface Point {
@@ -42,6 +43,13 @@ interface Point {
 interface GradientColor {
   color: string;
   position: number;
+}
+
+interface ColorRipple {
+  x: number;
+  y: number;
+  startTime: number;
+  hue: number;
 }
 
 // Declare the external noise library
@@ -75,6 +83,8 @@ export class NoiseAnimation {
   private displacementTextureGL: WebGLTexture | null = null;
   private animationFrameId: number | null = null;
   private colorGradient: GradientColor[] = [];
+  private currentHue: number = 0;  // Add property to track current hue
+  private colorRipples: ColorRipple[] = [];
 
   /**
    * Constructor for the NoiseAnimation class
@@ -157,12 +167,25 @@ export class NoiseAnimation {
     // Initialize color gradient
     this.initializeColorGradient();
 
-    // Add mousemove listener to create ripples
+    // Add mousemove listener to create ripples with color
     this.canvas.addEventListener('mousemove', (e) => {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      this.ripples.push({ x, y, startTime: performance.now() });
+      
+      // Add ripple with current hue and increment hue
+      this.ripples.push({ x, y, startTime: performance.now(), hue: this.currentHue });
+      this.currentHue = (this.currentHue + 2) % 360; // Increment hue by 2 degrees each move
+    });
+
+    // Add mousemove listener for color ripples
+    this.canvas.addEventListener('mousemove', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      this.colorRipples.push({ x, y, startTime: performance.now(), hue: this.currentHue });
+      this.currentHue = (this.currentHue + 2) % 360;
     });
 
     // Bind animate so that we can call it recursively
@@ -334,7 +357,6 @@ export class NoiseAnimation {
    */
   private updateDisplacementTexture(): void {
     this.dispCtx.clearRect(0, 0, this.displacementCanvas.width, this.displacementCanvas.height);
-    this.dispCtx.globalCompositeOperation = 'lighter';
     
     const currentTime = performance.now();
     const rippleDuration = 1.5; // seconds
@@ -353,8 +375,11 @@ export class NoiseAnimation {
       const amplitude = this.options.rippleAmount * (1 - age / rippleDuration);
       const a = Math.min(amplitude, 1.0);
       
+      // Use HSL for the ripple color with 100% saturation
+      const color = `hsla(${ripple.hue}, 100%, 50%, ${a})`;
+      
       const grad = this.dispCtx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, radius);
-      grad.addColorStop(0, `rgba(${Math.floor(a * 255)}, ${Math.floor(a * 255)}, ${Math.floor(a * 255)}, 1)`);
+      grad.addColorStop(0, color);
       grad.addColorStop(1, 'rgba(0,0,0,1)');
       
       this.dispCtx.fillStyle = grad;
@@ -543,12 +568,92 @@ export class NoiseAnimation {
         const disp = (brightnessVal / 255) * this.options.displacementAmount;
         drawY -= disp;
       }
+
+      // Get base color from gradient
+      let baseColor = this.getGradientColor(dotSizeRatio);
       
-      this.compositeCtx.fillStyle = this.getGradientColor(dotSizeRatio);
+      // Check for color ripple influence
+      const rippleEffect = this.getColorRippleInfluence(drawX, drawY);
+      
+      if (rippleEffect) {
+        // Parse the base color to get its components
+        const baseComponents = baseColor.match(/\d+/g)?.map(Number) || [0, 70, 80];
+        
+        // Interpolate between base color and ripple color based on influence
+        const blendedHue = Math.round(baseComponents[0] * (1 - rippleEffect.influence) + rippleEffect.hue * rippleEffect.influence);
+        const dotColor = `hsl(${blendedHue}, 100%, 50%)`;
+        this.compositeCtx.fillStyle = dotColor;
+      } else {
+        this.compositeCtx.fillStyle = baseColor;
+      }
+      
       this.compositeCtx.beginPath();
       this.compositeCtx.arc(drawX, drawY, radius, 0, Math.PI * 2);
       this.compositeCtx.fill();
     }
+  }
+
+  /**
+   * Calculate color influence from ripples at a specific point
+   */
+  private getColorRippleInfluence(x: number, y: number): { hue: number, influence: number } | null {
+    const currentTime = performance.now();
+    const rippleDuration = 2.0; // seconds
+    const maxRippleRadius = 300; // maximum radius the ripple can reach
+    
+    // Remove old ripples
+    this.colorRipples = this.colorRipples.filter(ripple => 
+      (currentTime - ripple.startTime) / 1000 <= rippleDuration
+    );
+
+    if (this.colorRipples.length === 0) return null;
+
+    // Find the nearest ripple and calculate its influence
+    let maxInfluence = 0;
+    let resultHue = 0;
+
+    for (const ripple of this.colorRipples) {
+      const dx = x - ripple.x;
+      const dy = y - ripple.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const age = (currentTime - ripple.startTime) / 1000;
+      
+      // Calculate current radius based on age
+      const currentRadius = (age / rippleDuration) * maxRippleRadius;
+      const rippleWidth = maxRippleRadius * 0.2; // Width of the ripple ring
+      
+      // Calculate distance from the expanding ripple ring
+      const distanceFromRing = Math.abs(distance - currentRadius);
+      
+      if (distanceFromRing <= rippleWidth) {
+        // Calculate influence based on distance from ring and age
+        const ringInfluence = 1 - (distanceFromRing / rippleWidth);
+        const ageInfluence = 1 - (age / rippleDuration);
+        const influence = ringInfluence * ageInfluence;
+        
+        if (influence > maxInfluence) {
+          maxInfluence = influence;
+          resultHue = ripple.hue;
+        }
+      }
+    }
+
+    return maxInfluence > 0 ? { hue: resultHue, influence: maxInfluence } : null;
+  }
+
+  private findNearestRipple(x: number, y: number): Ripple | null {
+    if (this.ripples.length === 0) return null;
+    
+    return this.ripples.reduce((nearest, ripple) => {
+      const dx = ripple.x - x;
+      const dy = ripple.y - y;
+      const distSq = dx * dx + dy * dy;
+      
+      if (!nearest || distSq < nearest.distSq) {
+        return { ripple, distSq };
+      }
+      return nearest;
+    }, null as { ripple: Ripple, distSq: number } | null)?.ripple || null;
   }
 
   /**
@@ -630,7 +735,7 @@ export class NoiseAnimation {
     
     // Parse colors to interpolate
     const color1 = lower.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
-    const color2 = upper.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
+    const color2 = upper.color.match(/\d+/g)?. map(Number) || [0, 0, 0];
     
     // Return interpolated color
     return `hsl(${
@@ -698,6 +803,8 @@ export class NoiseAnimation {
     this.dispCtx.clearRect(0, 0, this.displacementCanvas.width, this.displacementCanvas.height);
     this.time = 0;
     this.ripples = [];
+    this.colorRipples = [];
+    this.currentHue = 0;
     this.initializeColorGradient(); // Reinitialize colors when clearing
   }
 }
