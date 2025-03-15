@@ -1,0 +1,16 @@
+{
+  "60": {
+    "inputs": {
+      "text": {
+        "value": "How AI is so expensive",
+        "selectedType": "String",
+        "label": "Meme about"
+      }
+    }
+  },
+  "workflowDetails": {
+    "title": "Meme generator",
+    "image": "Meme-generator.png",
+    "description": "A meme generator"
+  }
+}

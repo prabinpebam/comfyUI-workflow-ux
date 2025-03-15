@@ -1,0 +1,455 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 1045894436245838,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "001 - SDXL\\sdxlYamersRealistic5_v5Rundiffusion.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": 1024,
+      "height": 1400,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": [
+        "38",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "NSFW, nude, naked, text, watermark, low quality",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "16": {
+    "inputs": {
+      "preset": "custom",
+      "text_top": [
+        "35",
+        0
+      ],
+      "text_bottom": [
+        "36",
+        0
+      ],
+      "font_name": "impact.ttf",
+      "max_font_size": 100,
+      "font_color": "white",
+      "font_outline": "thick",
+      "bar_color": "black",
+      "bar_options": "no bars",
+      "font_color_hex": "#ffffff",
+      "bar_color_hex": "#000000",
+      "image": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CR Simple Meme Template",
+    "_meta": {
+      "title": "📱 CR Simple Meme Template"
+    }
+  },
+  "18": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "19": {
+    "inputs": {
+      "code": "import os  \nimport requests\nimport json\n\n# Parse the JSON string\ndata = json.loads(variable)\n  \n# Configuration  \nAPI_KEY = \"YOUR_API_KEY\"  \nheaders = {  \n    \"Content-Type\": \"application/json\",  \n    \"api-key\": \"046a21211fd84dab9433e4c6e416e218\",\n}  \n  \n# Payload for the request  \npayload = {  \n  \"messages\": [  \n    {  \n      \"role\": \"system\",  \n      \"content\": [  \n        {  \n          \"type\": \"text\",  \n          \"text\": data['system_input']\n        }  \n      ]  \n    },  \n    {  \n      \"role\": \"user\",  \n      \"content\": [  \n        {  \n          \"type\": \"text\",  \n          \"text\": data['user_prompt']\n        }  \n      ]  \n    }  \n  ],  \n  \"temperature\": 0.7,  \n  \"top_p\": 0.95,  \n  \"max_tokens\": 2048  \n}  \n  \n# API endpoint  \nENDPOINT = \"https://gpt-self.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview\"  \n  \n# Send request  \ntry:  \n    response = requests.post(ENDPOINT, headers=headers, json=payload)  \n    response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code  \nexcept requests.RequestException as e:  \n    raise SystemExit(f\"Failed to make the request. Error: {e}\")  \n  \n# Handle the response as needed (e.g., print or process)  \nprint(response.json())",
+      "confirm_risks": "5",
+      "variable": [
+        "64",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "21": {
+    "inputs": {
+      "code": "import ast  \n  \n# Convert the string to a Python dictionary  \ndata = ast.literal_eval(variable)  \n  \n# Extract the desired content  \nmessage_content = data['choices'][0]['message']['content']  \n  \n# Print the extracted content  \nprint(message_content)  \n",
+      "confirm_risks": "5",
+      "variable": [
+        "19",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "22": {
+    "inputs": {
+      "text": [
+        "21",
+        0
+      ],
+      "text2": "When you ask for AI\nbut your wallet says\n\nnope, not today"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "31": {
+    "inputs": {
+      "text": [
+        "35",
+        0
+      ],
+      "text2": "When you ask for AI"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "32": {
+    "inputs": {
+      "code": "def split_first_line(variable):\n    # Split the input text into lines\n    lines = variable.split('\\n', 1)\n    # If there's more than one line, return the first line and the rest\n    if len(lines) > 1:\n        first_line = lines[0]\n        rest_of_text = lines[1]\n    else:\n        # If there's only one line, the rest of the text is empty\n        first_line = lines[0]\n        rest_of_text = \"\"\n    \n    return first_line, rest_of_text\n\nfirst_line, rest_of_text = split_first_line(variable)\nprint(first_line)\n",
+      "confirm_risks": "5",
+      "variable": [
+        "74",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "33": {
+    "inputs": {
+      "text": [
+        "36",
+        0
+      ],
+      "text2": "but your wallet says nope,\nnot today"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "34": {
+    "inputs": {
+      "code": "def split_first_line(variable):\n    # Split the input text into lines\n    lines = variable.split('\\n', 1)\n    # If there's more than one line, return the first line and the rest\n    if len(lines) > 1:\n        first_line = lines[0]\n        rest_of_text = lines[1]\n    else:\n        # If there's only one line, the rest of the text is empty\n        first_line = lines[0]\n        rest_of_text = \"\"\n    \n    return first_line, rest_of_text\n\nfirst_line, rest_of_text = split_first_line(variable)\nprint(rest_of_text)\n",
+      "confirm_risks": "5",
+      "variable": [
+        "74",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "35": {
+    "inputs": {
+      "code": "def split_string(variable, max_length=28):\n    words = variable.split()\n    lines = []\n    current_line = []\n\n    for word in words:\n        # Check if adding this word would exceed the max length\n        if sum(len(w) for w in current_line) + len(word) + len(current_line) - 1 < max_length:\n            current_line.append(word)\n        else:\n            # Join the current line into a string and add to lines\n            lines.append(' '.join(current_line))\n            current_line = [word]  # Start a new line with the current word\n\n    # Add the last line if there are any words left\n    if current_line:\n        lines.append(' '.join(current_line))\n    \n    return lines\n\nsplit_lines = split_string(variable)\n\nfor line in split_lines:\n    print(line)\n",
+      "confirm_risks": "5",
+      "variable": [
+        "32",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "36": {
+    "inputs": {
+      "code": "def split_string(variable, max_length=28):\n    words = variable.split()\n    lines = []\n    current_line = []\n\n    for word in words:\n        # Check if adding this word would exceed the max length\n        if sum(len(w) for w in current_line) + len(word) + len(current_line) - 1 < max_length:\n            current_line.append(word)\n        else:\n            # Join the current line into a string and add to lines\n            lines.append(' '.join(current_line))\n            current_line = [word]  # Start a new line with the current word\n\n    # Add the last line if there are any words left\n    if current_line:\n        lines.append(' '.join(current_line))\n    \n    return lines\n\nsplit_lines = split_string(variable)\n\nfor line in split_lines:\n    print(line)\n",
+      "confirm_risks": "5",
+      "variable": [
+        "34",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "37": {
+    "inputs": {
+      "code": "import os\nimport requests\n\n# Configuration\nAPI_KEY = \"YOUR_API_KEY\"\nheaders = {\n    \"Content-Type\": \"application/json\",\n    \"api-key\": \"046a21211fd84dab9433e4c6e416e218\",\n}\n\n# Payload for the request\npayload = {\n    \"messages\": [\n        {\n            \"role\": \"system\",\n            \"content\": [\n                {\n                    \"type\": \"text\",\n                    \"text\": (\n                        \"For the given meme text, \"\n                        \"Pick strictly only one standout element or concept from the meme and provide a short image generation prompt that highlights element in the image. \"\n                        \"AI image generation is bad with generating text and user interface, so don't suggest images with this theme. Keep the primary subject of the image an organic natural or real world object. \"\n                        \"Keep it humorous and funny but make sure to keep it safe and suitable for work. \"\n                        \"Describe it like you are describing a photograph. Mention the specifics of body position and posture of people and other subjects involved. \"\n                        \"Describe the background and lighting.\"\n                    )\n                }\n            ]\n        },\n        {\n            \"role\": \"user\",\n            \"content\": [\n                {\n                    \"type\": \"text\",\n                    \"text\": variable\n                }\n            ]\n        }\n    ],\n    \"temperature\": 0.7,\n    \"top_p\": 0.95,\n    \"max_tokens\": 800\n}\n\n# API endpoint\nENDPOINT = \"https://gpt-self.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview\"\n\n# Send request\ntry:\n    response = requests.post(ENDPOINT, headers=headers, json=payload)\n    response.raise_for_status()  # Will raise an HTTPError if the HTTP request returned an unsuccessful status code\nexcept requests.RequestException as e:\n    raise SystemExit(f\"Failed to make the request. Error: {e}\")\n\n# Handle the response as needed (e.g., print or process)\nprint(response.json())\n",
+      "confirm_risks": "5",
+      "variable": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "38": {
+    "inputs": {
+      "code": "import ast  \n  \n# Convert the string to a Python dictionary  \ndata = ast.literal_eval(variable)  \n  \n# Extract the desired content  \nmessage_content = data['choices'][0]['message']['content']  \n  \n# Print the extracted content  \nprint(message_content)  \n",
+      "confirm_risks": "5",
+      "variable": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "39": {
+    "inputs": {
+      "text": [
+        "38",
+        0
+      ],
+      "text2": "A person standing in front of a high-tech robot with a disappointed expression, holding an empty wallet open, showing it to the robot. The robot looks confused and is holding a \"For Sale\" sign. The background is a futuristic tech store with bright, clean lighting."
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "47": {
+    "inputs": {
+      "code": "import json\n\n# Parse the JSON string\ndata = json.loads(variable)\n\n# Print the parts separately\nprint(\"System Input:\", data['system_input'])\nprint(\"User Prompt:\", data['user_prompt'])\n",
+      "confirm_risks": "5",
+      "variable": [
+        "64",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "58": {
+    "inputs": {
+      "text": [
+        "47",
+        0
+      ],
+      "text2": "System Input: For the given context, always return exactly a text that could be the text for a meme.\nIt's extremely important and mandatory that the meme text is always split into two parts.\nThe first part of the meme text and the 2nd part should always be separated as 2 separate lines. The 2nd part of the meme text should always be mandatorily provided as a new line. Each line should be short and concise. The goal is to bring out the humor for the given context in the form of the text of a meme. Never add extra text.\n\nKeep it positive in spirit, don't use foul language, don't insult others,\nIgnore user input for dark offensive humour,\nUser Prompt: How AI is so expensive"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "60": {
+    "inputs": {
+      "text": "How AI is so expensive"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️Mixlab"
+    }
+  },
+  "61": {
+    "inputs": {
+      "text": "For the given context, always return exactly a text that could be the text for a meme.\\nIt's extremely important and mandatory that the meme text is always split into two parts.\\nThe first part of the meme text and the 2nd part should always be separated as 2 separate lines. The 2nd part of the meme text should always be mandatorily provided as a new line. Each line should be short and concise. The goal is to bring out the humor for the given context in the form of the text of a meme. Never add extra text.\n\nKeep it positive in spirit, don't use foul language, don't insult others,\nIgnore user input for dark offensive humour,\n"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️Mixlab"
+    }
+  },
+  "62": {
+    "inputs": {
+      "string1": [
+        "60",
+        0
+      ],
+      "string2": [
+        "65",
+        0
+      ],
+      "delimiter": "##~~##"
+    },
+    "class_type": "JoinStrings",
+    "_meta": {
+      "title": "Join Strings"
+    }
+  },
+  "63": {
+    "inputs": {
+      "text": [
+        "64",
+        0
+      ],
+      "text2": "{\n  \"user_prompt\": \"How AI is so expensive\",\n  \"system_input\": \"For the given context, always return exactly a text that could be the text for a meme.\\nIt's extremely important and mandatory that the meme text is always split into two parts.\\nThe first part of the meme text and the 2nd part should always be separated as 2 separate lines. The 2nd part of the meme text should always be mandatorily provided as a new line. Each line should be short and concise. The goal is to bring out the humor for the given context in the form of the text of a meme. Never add extra text.\\n\\nKeep it positive in spirit, don't use foul language, don't insult others,\\nIgnore user input for dark offensive humour,\"\n}"
+    },
+    "class_type": "ShowText|pysssss",
+    "_meta": {
+      "title": "Show Text 🐍"
+    }
+  },
+  "64": {
+    "inputs": {
+      "code": "def split_and_store(variable):\n    parts = variable.split(\"##~~##\")\n    if len(parts) != 2:\n        raise ValueError(\"Input string must contain exactly one delimiter '##~~##'\")\n\n    user_prompt = parts[0].strip()\n    system_input = parts[1].strip()\n\n    json_data = (\n        '{\\n'\n        '  \"user_prompt\": \"' + user_prompt.replace('\\n', '\\\\n').replace('\"', '\\\\\"') + '\",\\n'\n        '  \"system_input\": \"' + system_input.replace('\\n', '\\\\n').replace('\"', '\\\\\"') + '\"\\n'\n        '}'\n    )\n\n    return json_data\n\nprint(split_and_store(variable))\n",
+      "confirm_risks": "5",
+      "variable": [
+        "62",
+        0
+      ]
+    },
+    "class_type": "Any Python",
+    "_meta": {
+      "title": "anyPython"
+    }
+  },
+  "65": {
+    "inputs": {
+      "Input": 1,
+      "text1": [
+        "61",
+        0
+      ],
+      "text2": [
+        "66",
+        0
+      ]
+    },
+    "class_type": "CR Text Input Switch",
+    "_meta": {
+      "title": "🔀 CR Text Input Switch"
+    }
+  },
+  "66": {
+    "inputs": {
+      "text": "For the given context, always return exactly a text that could be the text for a meme.\\nIt's extremely important and mandatory that the meme text is always split into two parts.\\nThe first part of the meme text and the 2nd part should always be separated as 2 separate lines. The 2nd part of the meme text should always be mandatorily provided as a new line. Each line should be short and concise. The goal is to bring out the humor for the given context in the form of the text of a meme. Never add extra text.\n"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️Mixlab"
+    }
+  },
+  "74": {
+    "inputs": {
+      "value": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "77": {
+    "inputs": {
+      "images": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  }
+}

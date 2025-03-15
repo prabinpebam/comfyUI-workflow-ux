@@ -51,7 +51,15 @@ document.addEventListener("DOMContentLoaded", () => {
     workflowBrowser.setOnWorkflowSelectedCallback(async (workflowId, metadata) => {
         await paramEditor.setWorkflow(workflowId, metadata.title);
     });
-    // Load workflows on page load
-    workflowBrowser.loadWorkflows().catch(console.error);
+    // Load workflows on page load and handle initial state
+    workflowBrowser.loadWorkflows().then(() => {
+        // If there's already a selected workflow, refresh its title and parameters
+        const selectedWorkflow = workflowBrowser.getSelectedWorkflow();
+        const selectedMetadata = workflowBrowser.getSelectedWorkflowMetadata();
+        if (selectedWorkflow && selectedMetadata) {
+            // This will refresh the title in the UI from the JSON file
+            paramEditor.setWorkflow(selectedWorkflow, selectedMetadata.title);
+        }
+    }).catch(console.error);
 });
 //# sourceMappingURL=index.js.map

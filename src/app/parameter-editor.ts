@@ -42,10 +42,7 @@ export class ParameterEditor {
     this.currentWorkflowId = workflowId;
     
     // Set the title in the UI
-    const titleElement = document.getElementById("workflowTitle");
-    if (titleElement) {
-      titleElement.textContent = workflowTitle;
-    }
+    this.updateWorkflowTitle(workflowTitle);
     
     // Enable the generate button
     this.generateButton.disabled = false;
@@ -55,9 +52,20 @@ export class ParameterEditor {
   }
   
   /**
-   * Load user editable parameters from the specified workflow and create form fields
+   * Update the workflow title in the UI
+   * @param title - The title to display
    */
-  async loadUserEditableParameters(): Promise<void> {
+  private updateWorkflowTitle(title: string): void {
+    const titleElement = document.getElementById("workflowTitle");
+    if (titleElement) {
+      titleElement.textContent = title;
+    }
+  }
+
+  /**
+   * Load user editable parameters for the current workflow
+   */
+  private async loadUserEditableParameters(): Promise<void> {
     // Reset previous values
     this.userEditableValues = {};
     
@@ -66,10 +74,20 @@ export class ParameterEditor {
         throw new Error("No workflow selected");
       }
       
-      const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`);
+      const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`, {
+        // Add cache busting to ensure we're getting the latest version of the file
+        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' },
+        cache: 'no-store'
+      });
       if (!response.ok) throw new Error("Failed to load user editable parameters.");
       
       const paramsJson = await response.json() as UserEditableParameters;
+      
+      // Always update the title from the latest data in the JSON file
+      if (paramsJson.workflowDetails && paramsJson.workflowDetails.title) {
+        const workflowTitle = String(paramsJson.workflowDetails.title);
+        this.updateWorkflowTitle(workflowTitle);
+      }
       
       // Clear existing fields
       this.editableFieldsContainer.innerHTML = "";
@@ -274,7 +292,6 @@ export class ParameterEditor {
       
       // Show loading state in the main status element too
       this.statusElement.textContent = `Uploading image for ${inputKey}...`;
-      console.log(`[ParameterEditor] Starting upload of image for ${nodeId}.${inputKey}`);
       
       // Convert the uploaded file to JPEG
       const jpegDataUrl = await this.convertBlobToJpeg(file);
@@ -292,7 +309,6 @@ export class ParameterEditor {
       const jpegFormData = new FormData();
       jpegFormData.append("image", jpegBlob, "converted.jpg");
       
-      console.log(`[ParameterEditor] Sending image upload request to server for ${nodeId}.${inputKey}`);
       const uploadResponse = await fetch("http://127.0.0.1:8000/upload/image", {
         method: "POST",
         body: jpegFormData
@@ -300,7 +316,6 @@ export class ParameterEditor {
       
       if (!uploadResponse.ok) throw new Error("Upload failed.");
       const data = await uploadResponse.json();
-      console.log(`[ParameterEditor] Image upload successful for ${nodeId}.${inputKey}`, data);
       
       // Save the uploaded filename
       this.userEditableValues[nodeId][inputKey] = data.name;
@@ -316,7 +331,6 @@ export class ParameterEditor {
         `;
       }
     } catch (error) {
-      console.error("[ParameterEditor] Error uploading image:", error);
       this.statusElement.textContent = `Error uploading image: ${error instanceof Error ? error.message : String(error)}`;
       
       if (uploadStatus) {

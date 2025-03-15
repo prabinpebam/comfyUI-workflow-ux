@@ -17,7 +17,7 @@ This project is an attempt at making the power of ComfyUI available for all user
             └── workflow-name.jpg //the image to represent workflow in UI
 
 5. There can be multiple workflows in the main workflow folder.
-6. All of these workflows are automatically scanned and picked up by the code and displayed as options that a user can select in the interface.
+6. All of these workflows are automatically scanned from the folder and loaded in the workflow selection modal. Any new worflow added will be automatically picked up without any change in the code.
 7. The app has 3 clear steps of progression.
     1. Selection of workflow
        1. A list of available workflows are displayed. The user has to select a workflow to continue.
@@ -61,7 +61,6 @@ This project is an attempt at making the power of ComfyUI available for all user
    1. There should be a left and right navigation option that will allow the uver to move to the next or previous image, in case there are more than one image. The left and righ navigation should also work with the arrow keys.
    2. There should be a clop button at the top to close the lightbox.
 
-# things to be deprecated from the current implementation
 
     
 

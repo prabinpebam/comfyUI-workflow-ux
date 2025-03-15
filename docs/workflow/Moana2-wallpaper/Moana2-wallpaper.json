@@ -1,0 +1,1371 @@
+{
+  "632": {
+    "inputs": {
+      "seed": 806145090846015,
+      "steps": 20,
+      "cfg": 3,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "689",
+        0
+      ],
+      "positive": [
+        "689",
+        1
+      ],
+      "negative": [
+        "689",
+        2
+      ],
+      "latent_image": [
+        "649",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "637": {
+    "inputs": {
+      "padding": 15,
+      "constraints": "keep_ratio",
+      "constraint_x": 1016,
+      "constraint_y": 1016,
+      "min_width": 0,
+      "min_height": 0,
+      "batch_behavior": "match_size",
+      "mask": [
+        "643",
+        0
+      ]
+    },
+    "class_type": "Mask To Region",
+    "_meta": {
+      "title": "Mask To Region"
+    }
+  },
+  "638": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "643",
+        0
+      ],
+      "mask": [
+        "637",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "639": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "667",
+        0
+      ],
+      "mask": [
+        "637",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "642": {
+    "inputs": {
+      "mask": [
+        "673",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "643": {
+    "inputs": {
+      "radius": 15,
+      "sigma_factor": 3,
+      "image": [
+        "642",
+        0
+      ]
+    },
+    "class_type": "Blur",
+    "_meta": {
+      "title": "Blur"
+    }
+  },
+  "644": {
+    "inputs": {
+      "pixels": [
+        "639",
+        0
+      ],
+      "vae": [
+        "692",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "645": {
+    "inputs": {
+      "samples": [
+        "632",
+        0
+      ],
+      "vae": [
+        "696",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "646": {
+    "inputs": {
+      "resize_behavior": "resize",
+      "image_base": [
+        "668",
+        0
+      ],
+      "image_to_paste": [
+        "645",
+        0
+      ],
+      "mask": [
+        "670",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  },
+  "647": {
+    "inputs": {
+      "method": "intensity",
+      "image": [
+        "638",
+        0
+      ]
+    },
+    "class_type": "Image To Mask",
+    "_meta": {
+      "title": "Image To Mask"
+    }
+  },
+  "649": {
+    "inputs": {
+      "samples": [
+        "644",
+        0
+      ],
+      "mask": [
+        "647",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask"
+    }
+  },
+  "653": {
+    "inputs": {
+      "value": [
+        "675",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "667": {
+    "inputs": {
+      "value": [
+        "653",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "668": {
+    "inputs": {
+      "value": [
+        "667",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "669": {
+    "inputs": {
+      "value": [
+        "637",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "670": {
+    "inputs": {
+      "value": [
+        "669",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "671": {
+    "inputs": {
+      "value": [
+        "677",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "673": {
+    "inputs": {
+      "kernel_size": 20,
+      "sigma": 10,
+      "mask": [
+        "674",
+        0
+      ]
+    },
+    "class_type": "ImpactGaussianBlurMask",
+    "_meta": {
+      "title": "Gaussian Blur Mask"
+    }
+  },
+  "674": {
+    "inputs": {
+      "expand": 10,
+      "tapered_corners": true,
+      "mask": [
+        "677",
+        1
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask"
+    }
+  },
+  "675": {
+    "inputs": {
+      "value": [
+        "671",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "677": {
+    "inputs": {
+      "image": "clipspace/clipspace-mask-25993190.png [input]"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "678": {
+    "inputs": {
+      "ckpt_name": "001 - SDXL\\sdxlYamersRealistic5_v5Rundiffusion.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "679": {
+    "inputs": {
+      "text": [
+        "684",
+        0
+      ],
+      "clip": [
+        "681",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "680": {
+    "inputs": {
+      "text": "hair bang, plastic, hair bun, text, watermark, low quality, cropped",
+      "clip": [
+        "681",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "681": {
+    "inputs": {
+      "value": [
+        "678",
+        1
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "682": {
+    "inputs": {
+      "value": [
+        "685",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "684": {
+    "inputs": {
+      "text": "Disney style illustration of the face of a young woman,\n\n(looking at the viewer:1.2)\n\nCurly long waving hair,"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️Mixlab"
+    }
+  },
+  "685": {
+    "inputs": {
+      "lora_name": "001 - SDXL\\xl_more_art-full_v1.safetensors",
+      "strength_model": 1,
+      "model": [
+        "678",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "686": {
+    "inputs": {
+      "instantid_file": "ip-adapter.bin"
+    },
+    "class_type": "InstantIDModelLoader",
+    "_meta": {
+      "title": "Load InstantID Model"
+    }
+  },
+  "687": {
+    "inputs": {
+      "control_net_name": "instantid\\diffusion_pytorch_model.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "688": {
+    "inputs": {
+      "provider": "CPU"
+    },
+    "class_type": "InstantIDFaceAnalysis",
+    "_meta": {
+      "title": "InstantID Face Analysis"
+    }
+  },
+  "689": {
+    "inputs": {
+      "weight": 0.8,
+      "start_at": 0,
+      "end_at": 1,
+      "instantid": [
+        "686",
+        0
+      ],
+      "insightface": [
+        "688",
+        0
+      ],
+      "control_net": [
+        "687",
+        0
+      ],
+      "image": [
+        "710",
+        0
+      ],
+      "model": [
+        "682",
+        0
+      ],
+      "positive": [
+        "679",
+        0
+      ],
+      "negative": [
+        "680",
+        0
+      ],
+      "image_kps": [
+        "690",
+        0
+      ]
+    },
+    "class_type": "ApplyInstantID",
+    "_meta": {
+      "title": "Apply InstantID"
+    }
+  },
+  "690": {
+    "inputs": {
+      "value": [
+        "639",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "691": {
+    "inputs": {
+      "value": [
+        "678",
+        2
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "692": {
+    "inputs": {
+      "value": [
+        "691",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "696": {
+    "inputs": {
+      "value": [
+        "692",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "701": {
+    "inputs": {
+      "prompt": "Face",
+      "threshold": 0.3,
+      "sam_model": [
+        "702",
+        0
+      ],
+      "grounding_dino_model": [
+        "703",
+        0
+      ],
+      "image": [
+        "706",
+        0
+      ]
+    },
+    "class_type": "GroundingDinoSAMSegment (segment anything)",
+    "_meta": {
+      "title": "GroundingDinoSAMSegment (segment anything)"
+    }
+  },
+  "702": {
+    "inputs": {
+      "model_name": "sam_vit_l_0b3195.pth",
+      "device_mode": "Prefer GPU"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "703": {
+    "inputs": {
+      "model_name": "GroundingDINO_SwinB (938MB)"
+    },
+    "class_type": "GroundingDinoModelLoader (segment anything)",
+    "_meta": {
+      "title": "GroundingDinoModelLoader (segment anything)"
+    }
+  },
+  "706": {
+    "inputs": {
+      "image": "Laija-profile-pic.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "707": {
+    "inputs": {
+      "value": [
+        "706",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "708": {
+    "inputs": {
+      "padding": 15,
+      "constraints": "keep_ratio",
+      "constraint_x": 1016,
+      "constraint_y": 1016,
+      "min_width": 0,
+      "min_height": 0,
+      "batch_behavior": "match_size",
+      "mask": [
+        "712",
+        0
+      ]
+    },
+    "class_type": "Mask To Region",
+    "_meta": {
+      "title": "Mask To Region"
+    }
+  },
+  "710": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "715",
+        0
+      ],
+      "mask": [
+        "708",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "711": {
+    "inputs": {
+      "mask": [
+        "701",
+        1
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "712": {
+    "inputs": {
+      "radius": 15,
+      "sigma_factor": 3,
+      "image": [
+        "711",
+        0
+      ]
+    },
+    "class_type": "Blur",
+    "_meta": {
+      "title": "Blur"
+    }
+  },
+  "714": {
+    "inputs": {
+      "value": [
+        "707",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "715": {
+    "inputs": {
+      "value": [
+        "714",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "718": {
+    "inputs": {
+      "seed": 163161584390708,
+      "steps": 20,
+      "cfg": 3,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "752",
+        0
+      ],
+      "positive": [
+        "752",
+        1
+      ],
+      "negative": [
+        "752",
+        2
+      ],
+      "latent_image": [
+        "728",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "719": {
+    "inputs": {
+      "padding": 15,
+      "constraints": "keep_ratio",
+      "constraint_x": 1016,
+      "constraint_y": 1016,
+      "min_width": 0,
+      "min_height": 0,
+      "batch_behavior": "match_size",
+      "mask": [
+        "723",
+        0
+      ]
+    },
+    "class_type": "Mask To Region",
+    "_meta": {
+      "title": "Mask To Region"
+    }
+  },
+  "720": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "723",
+        0
+      ],
+      "mask": [
+        "719",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "721": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "730",
+        0
+      ],
+      "mask": [
+        "719",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "722": {
+    "inputs": {
+      "mask": [
+        "736",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "723": {
+    "inputs": {
+      "radius": 15,
+      "sigma_factor": 3,
+      "image": [
+        "722",
+        0
+      ]
+    },
+    "class_type": "Blur",
+    "_meta": {
+      "title": "Blur"
+    }
+  },
+  "724": {
+    "inputs": {
+      "pixels": [
+        "721",
+        0
+      ],
+      "vae": [
+        "755",
+        0
+      ]
+    },
+    "class_type": "VAEEncode",
+    "_meta": {
+      "title": "VAE Encode"
+    }
+  },
+  "725": {
+    "inputs": {
+      "samples": [
+        "718",
+        0
+      ],
+      "vae": [
+        "757",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "726": {
+    "inputs": {
+      "resize_behavior": "resize",
+      "image_base": [
+        "731",
+        0
+      ],
+      "image_to_paste": [
+        "725",
+        0
+      ],
+      "mask": [
+        "733",
+        0
+      ]
+    },
+    "class_type": "Paste By Mask",
+    "_meta": {
+      "title": "Paste By Mask"
+    }
+  },
+  "727": {
+    "inputs": {
+      "method": "intensity",
+      "image": [
+        "720",
+        0
+      ]
+    },
+    "class_type": "Image To Mask",
+    "_meta": {
+      "title": "Image To Mask"
+    }
+  },
+  "728": {
+    "inputs": {
+      "samples": [
+        "724",
+        0
+      ],
+      "mask": [
+        "727",
+        0
+      ]
+    },
+    "class_type": "SetLatentNoiseMask",
+    "_meta": {
+      "title": "Set Latent Noise Mask"
+    }
+  },
+  "729": {
+    "inputs": {
+      "value": [
+        "738",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "730": {
+    "inputs": {
+      "value": [
+        "729",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "731": {
+    "inputs": {
+      "value": [
+        "730",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "732": {
+    "inputs": {
+      "value": [
+        "719",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "733": {
+    "inputs": {
+      "value": [
+        "732",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "734": {
+    "inputs": {
+      "value": [
+        "774",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "736": {
+    "inputs": {
+      "kernel_size": 20,
+      "sigma": 10,
+      "mask": [
+        "737",
+        0
+      ]
+    },
+    "class_type": "ImpactGaussianBlurMask",
+    "_meta": {
+      "title": "Gaussian Blur Mask"
+    }
+  },
+  "737": {
+    "inputs": {
+      "expand": 10,
+      "tapered_corners": true,
+      "mask": [
+        "773",
+        1
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask"
+    }
+  },
+  "738": {
+    "inputs": {
+      "value": [
+        "734",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "741": {
+    "inputs": {
+      "ckpt_name": "001 - SDXL\\sdxlYamersRealistic5_v5Rundiffusion.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "742": {
+    "inputs": {
+      "text": [
+        "747",
+        0
+      ],
+      "clip": [
+        "744",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "743": {
+    "inputs": {
+      "text": "hair bang, plastic, hair bun, text, watermark, low quality, cropped",
+      "clip": [
+        "744",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "744": {
+    "inputs": {
+      "value": [
+        "741",
+        1
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "745": {
+    "inputs": {
+      "value": [
+        "748",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "747": {
+    "inputs": {
+      "text": "Disney style illustration of the face of a chubby man with mouth open Disney Maui with curly afro hair\n"
+    },
+    "class_type": "TextInput_",
+    "_meta": {
+      "title": "Text Input ♾️Mixlab"
+    }
+  },
+  "748": {
+    "inputs": {
+      "lora_name": "001 - SDXL\\xl_more_art-full_v1.safetensors",
+      "strength_model": 1,
+      "model": [
+        "741",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "749": {
+    "inputs": {
+      "instantid_file": "ip-adapter.bin"
+    },
+    "class_type": "InstantIDModelLoader",
+    "_meta": {
+      "title": "Load InstantID Model"
+    }
+  },
+  "750": {
+    "inputs": {
+      "control_net_name": "instantid\\diffusion_pytorch_model.safetensors"
+    },
+    "class_type": "ControlNetLoader",
+    "_meta": {
+      "title": "Load ControlNet Model"
+    }
+  },
+  "751": {
+    "inputs": {
+      "provider": "CPU"
+    },
+    "class_type": "InstantIDFaceAnalysis",
+    "_meta": {
+      "title": "InstantID Face Analysis"
+    }
+  },
+  "752": {
+    "inputs": {
+      "weight": 0.7000000000000001,
+      "start_at": 0,
+      "end_at": 1,
+      "instantid": [
+        "749",
+        0
+      ],
+      "insightface": [
+        "751",
+        0
+      ],
+      "control_net": [
+        "750",
+        0
+      ],
+      "image": [
+        "767",
+        0
+      ],
+      "model": [
+        "745",
+        0
+      ],
+      "positive": [
+        "742",
+        0
+      ],
+      "negative": [
+        "743",
+        0
+      ],
+      "image_kps": [
+        "753",
+        0
+      ]
+    },
+    "class_type": "ApplyInstantID",
+    "_meta": {
+      "title": "Apply InstantID"
+    }
+  },
+  "753": {
+    "inputs": {
+      "value": [
+        "721",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "754": {
+    "inputs": {
+      "value": [
+        "741",
+        2
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "755": {
+    "inputs": {
+      "value": [
+        "754",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "756": {
+    "inputs": {
+      "images": [
+        "726",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "757": {
+    "inputs": {
+      "value": [
+        "755",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "760": {
+    "inputs": {
+      "prompt": "Face",
+      "threshold": 0.3,
+      "sam_model": [
+        "761",
+        0
+      ],
+      "grounding_dino_model": [
+        "762",
+        0
+      ],
+      "image": [
+        "764",
+        0
+      ]
+    },
+    "class_type": "GroundingDinoSAMSegment (segment anything)",
+    "_meta": {
+      "title": "GroundingDinoSAMSegment (segment anything)"
+    }
+  },
+  "761": {
+    "inputs": {
+      "model_name": "sam_vit_l_0b3195.pth",
+      "device_mode": "Prefer GPU"
+    },
+    "class_type": "SAMLoader",
+    "_meta": {
+      "title": "SAMLoader (Impact)"
+    }
+  },
+  "762": {
+    "inputs": {
+      "model_name": "GroundingDINO_SwinB (938MB)"
+    },
+    "class_type": "GroundingDinoModelLoader (segment anything)",
+    "_meta": {
+      "title": "GroundingDinoModelLoader (segment anything)"
+    }
+  },
+  "764": {
+    "inputs": {
+      "image": "pasted/image.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "765": {
+    "inputs": {
+      "value": [
+        "764",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "766": {
+    "inputs": {
+      "padding": 15,
+      "constraints": "keep_ratio",
+      "constraint_x": 1016,
+      "constraint_y": 1016,
+      "min_width": 0,
+      "min_height": 0,
+      "batch_behavior": "match_size",
+      "mask": [
+        "769",
+        0
+      ]
+    },
+    "class_type": "Mask To Region",
+    "_meta": {
+      "title": "Mask To Region"
+    }
+  },
+  "767": {
+    "inputs": {
+      "force_resize_width": 1016,
+      "force_resize_height": 1016,
+      "image": [
+        "771",
+        0
+      ],
+      "mask": [
+        "766",
+        0
+      ]
+    },
+    "class_type": "Cut By Mask",
+    "_meta": {
+      "title": "Cut By Mask"
+    }
+  },
+  "768": {
+    "inputs": {
+      "mask": [
+        "760",
+        1
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "769": {
+    "inputs": {
+      "radius": 15,
+      "sigma_factor": 3,
+      "image": [
+        "768",
+        0
+      ]
+    },
+    "class_type": "Blur",
+    "_meta": {
+      "title": "Blur"
+    }
+  },
+  "770": {
+    "inputs": {
+      "value": [
+        "765",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "771": {
+    "inputs": {
+      "value": [
+        "770",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "773": {
+    "inputs": {
+      "image": "clipspace/clipspace-mask-78561.70000000019.png [input]"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "774": {
+    "inputs": {
+      "value": [
+        "646",
+        0
+      ]
+    },
+    "class_type": "ReroutePrimitive|pysssss",
+    "_meta": {
+      "title": "Reroute Primitive 🐍"
+    }
+  },
+  "780": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "726",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

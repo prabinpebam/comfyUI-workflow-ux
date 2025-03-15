@@ -1,0 +1,25 @@
+{
+  "706": {
+    "inputs": {
+      "image": {
+        "value": "Laija-profile-pic.png",
+        "selectedType": "Image",
+        "label": "Moana"
+      }
+    }
+  },
+  "764": {
+    "inputs": {
+      "image": {
+        "value": "pasted/image.png",
+        "selectedType": "Image",
+        "label": "Maui"
+      }
+    }
+  },
+  "workflowDetails": {
+    "title": "Moana 2 wallpaper",
+    "image": "Moana2-wallpaper.png",
+    "description": "Default ComfyUI workflow with landscape in a bottle."
+  }
+}

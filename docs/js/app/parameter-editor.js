@@ -29,14 +29,21 @@ export class ParameterEditor {
     async setWorkflow(workflowId, workflowTitle) {
         this.currentWorkflowId = workflowId;
         // Set the title in the UI
-        const titleElement = document.getElementById("workflowTitle");
-        if (titleElement) {
-            titleElement.textContent = workflowTitle;
-        }
+        this.updateWorkflowTitle(workflowTitle);
         // Enable the generate button
         this.generateButton.disabled = false;
         // Load the parameters for this workflow
         await this.loadUserEditableParameters();
+    }
+    /**
+     * Update the workflow title in the UI
+     * @param title - The title to display
+     */
+    updateWorkflowTitle(title) {
+        const titleElement = document.getElementById("workflowTitle");
+        if (titleElement) {
+            titleElement.textContent = title;
+        }
     }
     /**
      * Load user editable parameters from the specified workflow and create form fields
@@ -48,10 +55,23 @@ export class ParameterEditor {
             if (!this.currentWorkflowId) {
                 throw new Error("No workflow selected");
             }
-            const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`);
+            const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`, {
+                // Add cache busting to ensure we're getting the latest version of the file
+                headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' },
+                cache: 'no-store'
+            });
             if (!response.ok)
                 throw new Error("Failed to load user editable parameters.");
             const paramsJson = await response.json();
+            // Debug output to verify what's in the JSON file
+            console.log(`Parameter Editor loading workflow ${this.currentWorkflowId}`, {
+                workflowDetails: paramsJson.workflowDetails,
+                title: paramsJson.workflowDetails?.title,
+            });
+            // Always update the title from the latest data in the JSON file
+            if (paramsJson.workflowDetails && paramsJson.workflowDetails.title) {
+                this.updateWorkflowTitle(paramsJson.workflowDetails.title);
+            }
             // Clear existing fields
             this.editableFieldsContainer.innerHTML = "";
             // Iterate over each node in the parameters JSON
