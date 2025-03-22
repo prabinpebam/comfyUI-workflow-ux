@@ -1,0 +1,12 @@
+{
+  "workflows": [
+    {
+      "id": "landscape-in-a-bottle",
+      "path": "landscape-in-a-bottle"
+    },
+    {
+      "id": "Win11-stylized-wallpaper",
+      "path": "Win11-stylized-wallpaper"
+    }
+  ]
+}

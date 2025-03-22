@@ -1,7 +1,7 @@
 {
   "10": {
     "inputs": {
-      "ckpt_name": "001 - SDXL\\juggernautXL_v9Rdphoto2Lightning.safetensors"
+      "ckpt_name": "001 - SDXL\\sdxlYamersRealistic5_v5Rundiffusion.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
@@ -11,7 +11,7 @@
   "11": {
     "inputs": {
       "text": [
-        "172",
+        "257",
         0
       ],
       "clip": [
@@ -71,12 +71,24 @@
       "title": "Load ControlNet Model"
     }
   },
+  "84": {
+    "inputs": {
+      "images": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
   "97": {
     "inputs": {
       "lora_name": "001 - SDXL\\xl_more_art-full_v1.safetensors",
       "strength_model": 0.75,
       "model": [
-        "236",
+        "10",
         0
       ]
     },
@@ -107,10 +119,10 @@
         "232",
         3
       ],
-      "steps": 8,
-      "cfg": 2,
-      "sampler_name": "lcm",
-      "scheduler": "sgm_uniform",
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
       "denoise": 0.75,
       "model": [
         "166",
@@ -193,7 +205,7 @@
       "low_threshold": 0.4,
       "high_threshold": 0.8,
       "image": [
-        "191",
+        "168",
         0
       ]
     },
@@ -233,7 +245,7 @@
         1
       ],
       "image": [
-        "193",
+        "169",
         0
       ]
     },
@@ -246,7 +258,7 @@
     "inputs": {
       "preset": "PLUS (high strength)",
       "model": [
-        "237",
+        "97",
         0
       ]
     },
@@ -263,7 +275,7 @@
       "average_color": "on",
       "fill_color": "#FFFFFF",
       "image": [
-        "243",
+        "238",
         0
       ]
     },
@@ -274,38 +286,24 @@
   },
   "169": {
     "inputs": {
-      "image": "bda2671c3b78f9ba9f0264f59782e1cc.jpg",
-      "upload": "image"
+      "image": "893d319367fb1f10576f96eb912380e5.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
     }
   },
-  "171": {
+  "173": {
     "inputs": {
-      "text": "(Cloth texture, fabric pattern, cloth fold, fold, 3D layers, cloth fold, wave) Abstract 3D render,\nhigh quality, illustration, painting, "
-    },
-    "class_type": "TextInput_",
-    "_meta": {
-      "title": "Text Input ♾️Mixlab"
-    }
-  },
-  "172": {
-    "inputs": {
-      "string1": [
-        "249",
+      "text": [
+        "257",
         0
       ],
-      "string2": [
-        "171",
-        0
-      ],
-      "delimiter": " "
+      "text2": " The image is a vibrant and colorful painting of a large, fluffy cloud formation. It's painted with a variety of colors ranging from yellows to blues, whites, and pinks. The texture of the clouds gives them a soft, almost ethereal appearance, and they are rendered with soft brushstrokes that give depth and dimension to the image.\n\nThe sky is depicted in shades of blue, with sunlight filtering through it, casting light and shadows on the cloud masses. The overall feel of the image is peaceful and serene, evoking a sense of tranquility and wonder at the beauty of nature. The artwork captures the dynamic and ever-changing nature of clouds, as well as the majesty of the sky.  (Cloth texture, fabric pattern, cloth fold, fold, 3D layers, cloth fold, wave),\nhigh quality, illustration, painting, "
     },
-    "class_type": "JoinStrings",
+    "class_type": "ShowText|pysssss",
     "_meta": {
-      "title": "Join Strings"
+      "title": "Show Text 🐍"
     }
   },
   "186": {
@@ -357,46 +355,10 @@
       "title": "Reroute Primitive 🐍"
     }
   },
-  "190": {
-    "inputs": {
-      "value": [
-        "168",
-        0
-      ]
-    },
-    "class_type": "ReroutePrimitive|pysssss",
-    "_meta": {
-      "title": "Reroute Primitive 🐍"
-    }
-  },
-  "191": {
-    "inputs": {
-      "value": [
-        "190",
-        0
-      ]
-    },
-    "class_type": "ReroutePrimitive|pysssss",
-    "_meta": {
-      "title": "Reroute Primitive 🐍"
-    }
-  },
   "192": {
     "inputs": {
       "value": [
         "168",
-        0
-      ]
-    },
-    "class_type": "ReroutePrimitive|pysssss",
-    "_meta": {
-      "title": "Reroute Primitive 🐍"
-    }
-  },
-  "193": {
-    "inputs": {
-      "value": [
-        "169",
         0
       ]
     },
@@ -421,16 +383,28 @@
       "title": "VAE Decode"
     }
   },
+  "210": {
+    "inputs": {
+      "images": [
+        "209",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
   "211": {
     "inputs": {
       "seed": [
         "232",
         3
       ],
-      "steps": 8,
-      "cfg": 2,
-      "sampler_name": "lcm",
-      "scheduler": "sgm_uniform",
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
       "denoise": 0.65,
       "model": [
         "166",
@@ -483,16 +457,28 @@
       "title": "VAE Decode"
     }
   },
+  "214": {
+    "inputs": {
+      "images": [
+        "213",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
   "215": {
     "inputs": {
       "seed": [
         "232",
         3
       ],
-      "steps": 8,
-      "cfg": 2,
-      "sampler_name": "lcm",
-      "scheduler": "sgm_uniform",
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
       "denoise": 0.55,
       "model": [
         "166",
@@ -516,19 +502,6 @@
       "title": "KSampler"
     }
   },
-  "216": {
-    "inputs": {
-      "file_path": "D:\\AI\\ComfyUI\\output\\Wallpaper",
-      "images": [
-        "227",
-        0
-      ]
-    },
-    "class_type": "SaveImageToLocal",
-    "_meta": {
-      "title": "Save Image To Local ♾️Mixlab"
-    }
-  },
   "217": {
     "inputs": {
       "samples": [
@@ -545,16 +518,28 @@
       "title": "VAE Decode"
     }
   },
+  "218": {
+    "inputs": {
+      "images": [
+        "217",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
   "219": {
     "inputs": {
       "seed": [
         "232",
         3
       ],
-      "steps": 8,
-      "cfg": 2,
-      "sampler_name": "lcm",
-      "scheduler": "sgm_uniform",
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m_sde",
+      "scheduler": "karras",
       "denoise": 0.45,
       "model": [
         "166",
@@ -576,19 +561,6 @@
     "class_type": "KSampler",
     "_meta": {
       "title": "KSampler"
-    }
-  },
-  "220": {
-    "inputs": {
-      "file_path": "D:\\AI\\ComfyUI\\output\\Wallpaper",
-      "images": [
-        "228",
-        0
-      ]
-    },
-    "class_type": "SaveImageToLocal",
-    "_meta": {
-      "title": "Save Image To Local ♾️Mixlab"
     }
   },
   "224": {
@@ -641,82 +613,40 @@
   },
   "232": {
     "inputs": {
-      "seed": 81213790435962
+      "seed": 711406048567783
     },
     "class_type": "Seed",
     "_meta": {
       "title": "Seed"
     }
   },
-  "236": {
-    "inputs": {
-      "value": [
-        "10",
-        0
-      ]
-    },
-    "class_type": "ReroutePrimitive|pysssss",
-    "_meta": {
-      "title": "Reroute Primitive 🐍"
-    }
-  },
-  "237": {
-    "inputs": {
-      "value": [
-        "244",
-        0
-      ]
-    },
-    "class_type": "ReroutePrimitive|pysssss",
-    "_meta": {
-      "title": "Reroute Primitive 🐍"
-    }
-  },
   "238": {
     "inputs": {
-      "image": "image (110).png",
-      "upload": "image"
+      "image": "image (110).png"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
     }
   },
-  "243": {
+  "246": {
     "inputs": {
-      "value": [
-        "238",
-        0
-      ]
+      "text": "(Cloth texture, fabric pattern, cloth fold, fold, 3D layers, cloth fold, wave),\nhigh quality, illustration, painting, "
     },
-    "class_type": "ReroutePrimitive|pysssss",
+    "class_type": "TextInput_",
     "_meta": {
-      "title": "Reroute Primitive 🐍"
+      "title": "Text Input ♾️Mixlab"
     }
   },
-  "244": {
+  "256": {
     "inputs": {
-      "lora_name": "002 - Illustrations\\Illustration_style.safetensors",
-      "strength_model": 1,
-      "model": [
-        "97",
-        0
-      ]
-    },
-    "class_type": "LoraLoaderModelOnly",
-    "_meta": {
-      "title": "LoraLoaderModelOnly"
-    }
-  },
-  "249": {
-    "inputs": {
-      "query": "describe the image",
+      "query": "describe the image, Mention the object, color, texture, and feel in the image, keep it short and to the point",
       "debug": "enable",
       "url": "http://127.0.0.1:11434",
       "model": "llava:7b-v1.6",
       "keep_alive": 5,
       "format": "text",
-      "seed": 1729640230,
+      "seed": 133223876,
       "images": [
         "169",
         0
@@ -727,52 +657,47 @@
       "title": "Ollama Vision"
     }
   },
-  "250": {
+  "257": {
     "inputs": {
-      "images": [
-        "15",
+      "string1": [
+        "256",
         0
-      ]
+      ],
+      "string2": [
+        "246",
+        0
+      ],
+      "delimiter": " "
     },
-    "class_type": "PreviewImage",
+    "class_type": "JoinStrings",
     "_meta": {
-      "title": "Preview Image"
+      "title": "Join Strings"
     }
   },
-  "251": {
+  "259": {
     "inputs": {
+      "file_path": "D:\\AI\\ComfyUI\\output\\Wallpaper",
       "images": [
-        "209",
+        "227",
         0
       ]
     },
-    "class_type": "PreviewImage",
+    "class_type": "SaveImageToLocal",
     "_meta": {
-      "title": "Preview Image"
+      "title": "Save Image To Local ♾️Mixlab"
     }
   },
-  "252": {
+  "260": {
     "inputs": {
+      "file_path": "D:\\AI\\ComfyUI\\output\\Wallpaper",
       "images": [
-        "213",
+        "228",
         0
       ]
     },
-    "class_type": "PreviewImage",
+    "class_type": "SaveImageToLocal",
     "_meta": {
-      "title": "Preview Image"
-    }
-  },
-  "253": {
-    "inputs": {
-      "images": [
-        "217",
-        0
-      ]
-    },
-    "class_type": "PreviewImage",
-    "_meta": {
-      "title": "Preview Image"
+      "title": "Save Image To Local ♾️Mixlab"
     }
   }
 }

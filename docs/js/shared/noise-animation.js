@@ -23,6 +23,8 @@ export class NoiseAnimation {
         this.colorGradient = [];
         this.currentHue = 0; // Add property to track current hue
         this.colorRipples = [];
+        this.lastRipplePos = null;
+        this.lastColorRippleTime = null;
         this.canvas = canvas;
         const ctx = canvas.getContext('2d');
         if (!ctx)
@@ -97,8 +99,27 @@ export class NoiseAnimation {
             const rect = this.canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            // Add ripple with current hue and increment hue
-            this.ripples.push({ x, y, startTime: performance.now(), hue: this.currentHue });
+            // Throttle ripple creation based on distance moved
+            if (this.lastRipplePos) {
+                const dx = x - this.lastRipplePos.x;
+                const dy = y - this.lastRipplePos.y;
+                const distSq = dx * dx + dy * dy;
+                // Only create new ripple if moved enough distance
+                if (distSq < 25)
+                    return; // Minimum distance squared (5px)
+            }
+            // Create ripple with physical properties
+            this.ripples.push({
+                x,
+                y,
+                startTime: performance.now(),
+                hue: this.currentHue,
+                amplitude: 0.2 + Math.random() * 0.3, // Random amplitude between 0.2 and 0.5
+                speed: 100 + Math.random() * 50, // Random speed between 100-150 pixels/sec
+                lifetime: 2.0 + Math.random() * 1.5 // Increased lifetime for more gradual fade (2.0-3.5 seconds)
+            });
+            // Remember last position for throttling
+            this.lastRipplePos = { x, y };
             this.currentHue = (this.currentHue + 2) % 360; // Increment hue by 2 degrees each move
         });
         // Add mousemove listener for color ripples
@@ -106,8 +127,13 @@ export class NoiseAnimation {
             const rect = this.canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
+            // Throttle color ripple creation
+            if (this.lastColorRippleTime && (performance.now() - this.lastColorRippleTime) < 100) {
+                return; // Skip if less than 100ms since last ripple
+            }
             this.colorRipples.push({ x, y, startTime: performance.now(), hue: this.currentHue });
-            this.currentHue = (this.currentHue + 2) % 360;
+            this.lastColorRippleTime = performance.now();
+            this.currentHue = (this.currentHue + 5) % 360; // Increased hue change for more variation
         });
         // Bind animate so that we can call it recursively
         this.animate = this.animate.bind(this);
@@ -257,28 +283,56 @@ export class NoiseAnimation {
     updateDisplacementTexture() {
         this.dispCtx.clearRect(0, 0, this.displacementCanvas.width, this.displacementCanvas.height);
         const currentTime = performance.now();
-        const rippleDuration = 1.5; // seconds
-        const rippleSpeed = 150; // pixels per second
+        // Apply composite operation for ripple overlap
+        this.dispCtx.globalCompositeOperation = 'lighter';
         for (let i = this.ripples.length - 1; i >= 0; i--) {
             const ripple = this.ripples[i];
-            const age = (currentTime - ripple.startTime) / 1000;
-            if (age > rippleDuration) {
+            const age = (currentTime - ripple.startTime) / 1000; // Age in seconds
+            if (age > ripple.lifetime) {
                 this.ripples.splice(i, 1);
                 continue;
             }
-            const radius = rippleSpeed * age;
-            const amplitude = this.options.rippleAmount * (1 - age / rippleDuration);
-            const a = Math.min(amplitude, 1.0);
-            // Use HSL for the ripple color with 100% saturation
-            const color = `hsla(${ripple.hue}, 100%, 50%, ${a})`;
-            const grad = this.dispCtx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, radius);
-            grad.addColorStop(0, color);
-            grad.addColorStop(1, 'rgba(0,0,0,1)');
+            // Calculate ripple radius based on age and speed
+            const radius = ripple.speed * age;
+            // Calculate ripple thickness - thinner as it expands
+            const thickness = Math.max(1, 8 * (1 - age / ripple.lifetime));
+            // Normalized age (0 to 1)
+            const normalizedAge = age / ripple.lifetime;
+            // Modified fade function for smoother transitions:
+            // - Start with gentle increase (easeIn)
+            // - Maintain amplitude in the middle
+            // - Gradually fade out toward the end (easeOut)
+            let fadeFunction;
+            if (normalizedAge < 0.2) {
+                // Smooth ease-in (0-0.2)
+                fadeFunction = Math.pow(normalizedAge / 0.2, 2) * 0.8 + 0.2;
+            }
+            else if (normalizedAge > 0.7) {
+                // Extended smooth ease-out (0.7-1.0)
+                fadeFunction = Math.pow(1.0 - (normalizedAge - 0.7) / 0.3, 2) * 0.8;
+            }
+            else {
+                // Maintain amplitude with slight curve in the middle (0.2-0.7)
+                fadeFunction = 0.8 + Math.sin((normalizedAge - 0.2) / 0.5 * Math.PI) * 0.2;
+            }
+            const amplitude = ripple.amplitude * fadeFunction;
+            // Create radial gradient for the ripple ring
+            const innerRadius = Math.max(0, radius - thickness);
+            const outerRadius = radius + thickness;
+            const grad = this.dispCtx.createRadialGradient(ripple.x, ripple.y, innerRadius, ripple.x, ripple.y, outerRadius);
+            // Inner edge of ripple (transparent)
+            grad.addColorStop(0, `rgba(0,0,0,0)`);
+            // Peak of the ripple wave with the ripple's hue
+            grad.addColorStop(0.5, `hsla(${ripple.hue}, 100%, 50%, ${amplitude})`);
+            // Outer edge of ripple (transparent)
+            grad.addColorStop(1.0, `rgba(0,0,0,0)`);
+            // Draw the ripple
             this.dispCtx.fillStyle = grad;
             this.dispCtx.beginPath();
-            this.dispCtx.arc(ripple.x, ripple.y, radius, 0, Math.PI * 2);
+            this.dispCtx.arc(ripple.x, ripple.y, outerRadius, 0, Math.PI * 2);
             this.dispCtx.fill();
         }
+        // Reset composite operation
         this.dispCtx.globalCompositeOperation = 'source-over';
     }
     /**
@@ -305,12 +359,25 @@ export class NoiseAnimation {
       uniform float rippleAmount;
       varying vec2 vUv;
       float PI = 3.141592653589793238;
+      
       void main() {
         vec2 vUvScreen = gl_FragCoord.xy / winResolution.xy;
         vec4 displacement = texture2D(uDisplacement, vUvScreen);
-        float theta = displacement.r * 2.0 * PI;
-        vec2 dir = vec2(sin(theta), cos(theta));
-        vec2 uv = vUvScreen + dir * displacement.r * rippleAmount;
+        
+        // Get the displacement direction from the red and green channels
+        // treating them as a vector field
+        vec2 dir = displacement.rg * 2.0 - 1.0;
+        
+        // Calculate displacement magnitude for more realistic water-like effect
+        // with a non-linear curve
+        float magnitude = length(dir) * rippleAmount * sin(PI * displacement.r);
+        
+        // Apply displacement to texture coordinates with proper normalization
+        vec2 uv = vUvScreen + normalize(dir) * magnitude;
+        
+        // Clamp the coordinates to prevent sampling outside the texture
+        uv = clamp(uv, 0.0, 1.0);
+        
         vec4 color = texture2D(uTexture, uv);
         gl_FragColor = color;
       }
@@ -394,7 +461,8 @@ export class NoiseAnimation {
         gl.bindTexture(gl.TEXTURE_2D, this.displacementTextureGL);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.displacementCanvas);
         gl.uniform1i(this.uDisplacementLoc, 1);
-        gl.uniform1f(this.rippleAmountLoc, this.options.rippleAmount);
+        // Apply the ripple amount setting - reduced for smoother effect
+        gl.uniform1f(this.rippleAmountLoc, this.options.rippleAmount * 0.03); // Reduced from 0.04 for subtler transition
         gl.viewport(0, 0, this.rippleCanvas.width, this.rippleCanvas.height);
         gl.clearColor(0, 0, 0, 1);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -428,11 +496,25 @@ export class NoiseAnimation {
             // Check for color ripple influence
             const rippleEffect = this.getColorRippleInfluence(drawX, drawY);
             if (rippleEffect) {
-                // Parse the base color to get its components
-                const baseComponents = baseColor.match(/\d+/g)?.map(Number) || [0, 70, 80];
-                // Interpolate between base color and ripple color based on influence
-                const blendedHue = Math.round(baseComponents[0] * (1 - rippleEffect.influence) + rippleEffect.hue * rippleEffect.influence);
-                const dotColor = `hsl(${blendedHue}, 100%, 50%)`;
+                // Parse the base color to get its HSL components
+                const baseHSL = this.parseHSL(baseColor);
+                // Create a more gradual blend between base color and ripple color
+                // Using a smooth transition in both hue and saturation
+                const blendFactor = rippleEffect.influence;
+                // Interpolate hue with shortest path around the color wheel
+                let hueDiff = rippleEffect.hue - baseHSL.h;
+                if (hueDiff > 180)
+                    hueDiff -= 360;
+                if (hueDiff < -180)
+                    hueDiff += 360;
+                const blendedHue = (baseHSL.h + hueDiff * blendFactor) % 360;
+                // Increase saturation slightly to make ripple colors pop more
+                const blendedSaturation = Math.min(100, baseHSL.s + (25 * blendFactor));
+                // Slightly lighten the color for more vibrant effect
+                const blendedLightness = baseHSL.l + (5 * blendFactor);
+                // Apply a subtle opacity effect to make the transition even smoother
+                const dotOpacity = 0.8 + (0.2 * blendFactor);
+                const dotColor = `hsla(${blendedHue}, ${blendedSaturation}%, ${blendedLightness}%, ${dotOpacity})`;
                 this.compositeCtx.fillStyle = dotColor;
             }
             else {
@@ -448,7 +530,7 @@ export class NoiseAnimation {
      */
     getColorRippleInfluence(x, y) {
         const currentTime = performance.now();
-        const rippleDuration = 2.0; // seconds
+        const rippleDuration = 3.0; // Increased from 2.0 to 3.0 seconds for longer fading
         const maxRippleRadius = 300; // maximum radius the ripple can reach
         // Remove old ripples
         this.colorRipples = this.colorRipples.filter(ripple => (currentTime - ripple.startTime) / 1000 <= rippleDuration);
@@ -464,14 +546,28 @@ export class NoiseAnimation {
             const age = (currentTime - ripple.startTime) / 1000;
             // Calculate current radius based on age
             const currentRadius = (age / rippleDuration) * maxRippleRadius;
-            const rippleWidth = maxRippleRadius * 0.2; // Width of the ripple ring
+            const rippleWidth = maxRippleRadius * 0.3; // Increased from 0.2 to 0.3 for wider influence area
             // Calculate distance from the expanding ripple ring
             const distanceFromRing = Math.abs(distance - currentRadius);
             if (distanceFromRing <= rippleWidth) {
                 // Calculate influence based on distance from ring and age
-                const ringInfluence = 1 - (distanceFromRing / rippleWidth);
-                const ageInfluence = 1 - (age / rippleDuration);
-                const influence = ringInfluence * ageInfluence;
+                // Smoother falloff using cubic easing for the ring influence
+                const normalizedDistance = distanceFromRing / rippleWidth;
+                const ringInfluence = 1 - (normalizedDistance * normalizedDistance * normalizedDistance);
+                // Create a more gradual age influence curve
+                // Start strong, then fade out slowly using a custom curve
+                let ageInfluence;
+                if (age < rippleDuration * 0.3) {
+                    // First 30% of lifetime: gentle fade in
+                    ageInfluence = Math.pow(age / (rippleDuration * 0.3), 2) * 0.4 + 0.6;
+                }
+                else {
+                    // Remaining 70%: slow fade out with eased curve
+                    const normalizedRemainingAge = (age - rippleDuration * 0.3) / (rippleDuration * 0.7);
+                    ageInfluence = 1 - Math.pow(normalizedRemainingAge, 1.5);
+                }
+                // Combine both influences with emphasis on smooth transition
+                const influence = ringInfluence * ageInfluence * 0.8; // Reduced by 20% for subtler effect
                 if (influence > maxInfluence) {
                     maxInfluence = influence;
                     resultHue = ripple.hue;
@@ -479,6 +575,22 @@ export class NoiseAnimation {
             }
         }
         return maxInfluence > 0 ? { hue: resultHue, influence: maxInfluence } : null;
+    }
+    /**
+     * Parse HSL color string into components
+     */
+    parseHSL(hslString) {
+        const regex = /hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/;
+        const match = hslString.match(regex);
+        if (match && match.length >= 4) {
+            return {
+                h: parseInt(match[1], 10),
+                s: parseInt(match[2], 10),
+                l: parseInt(match[3], 10)
+            };
+        }
+        // Default values if parsing fails
+        return { h: 0, s: 70, l: 80 };
     }
     findNearestRipple(x, y) {
         if (this.ripples.length === 0)
