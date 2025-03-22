@@ -263,31 +263,35 @@ document.addEventListener('DOMContentLoaded', function() {
   const exportBtn = document.getElementById("exportBtn");
   if (exportBtn) {
     exportBtn.addEventListener("click", async function() {
-      // Get workflow title from the input and sanitize it
-      const workflowTitleInput = document.getElementById("workflowTitle") as HTMLInputElement;
-      const workflowTitle = workflowTitleInput?.value.trim() || "workflow";
-      const safeTitle = workflowTitle.replace(/\s+/g, '-');
-      
-      // Get the output JSON from the output editor
-      const outputJsonStr = outputEditor.getValue();
-      
-      // Get the input JSON from the input editor
-      const inputJsonStr = editor.getValue();
-      
       try {
+        // Get workflow title from the input and sanitize it
+        const workflowTitleInput = document.getElementById("workflowTitle") as HTMLInputElement;
+        const workflowTitle = workflowTitleInput?.value.trim() || "workflow";
+        const safeTitle = workflowTitle.replace(/\s+/g, '-');
+        
+        // Get the output JSON from the output editor
+        const outputJsonStr = outputEditor.getValue();
+        
+        // Get the input JSON from the input editor
+        const inputJsonStr = editor.getValue();
+
+        // Check if we should include manifest
+        const includeManifest = (document.getElementById("includeManifest") as HTMLInputElement)?.checked;
+
         // Create ZIP file with the workflow files
         const zipBlob = await converter.createWorkflowZip(
           inputJsonStr,
           outputJsonStr,
           workflowTitle,
-          workflowImageFile || undefined
+          workflowImageFile || undefined,
+          includeManifest
         );
         
         // Download the ZIP file
         const zipFileName = `${safeTitle}.zip`;
         converter.downloadZip(zipBlob, zipFileName);
       } catch (error) {
-        showErrorModal(`Error creating ZIP file: ${error instanceof Error ? error.message : String(error)}`);
+        showErrorModal(`Error exporting workflow: ${error instanceof Error ? error.message : String(error)}`);
       }
     });
   }

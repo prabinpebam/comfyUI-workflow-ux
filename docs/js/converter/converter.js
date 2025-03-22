@@ -168,13 +168,50 @@ export class WorkflowConverter {
         return selectionMap;
     }
     /**
-     * Create a ZIP file with the workflow files
+     * Generate an updated manifest that includes the new workflow
+     * @param workflowId - The ID of the workflow to add
+     * @returns Promise that resolves with the updated manifest content
+     */
+    async generateUpdatedManifest(workflowId) {
+        try {
+            // Fetch current manifest
+            const response = await fetch('workflow/manifest.json');
+            if (!response.ok) {
+                throw new Error('Failed to load manifest');
+            }
+            const manifest = await response.json();
+            // Check if workflow already exists
+            const existingIndex = manifest.workflows.findIndex(w => w.id === workflowId);
+            if (existingIndex >= 0) {
+                // Update existing entry
+                manifest.workflows[existingIndex].path = workflowId;
+            }
+            else {
+                // Add new entry
+                manifest.workflows.push({
+                    id: workflowId,
+                    path: workflowId
+                });
+            }
+            // Sort workflows by ID
+            manifest.workflows.sort((a, b) => a.id.localeCompare(b.id));
+            // Return the formatted manifest JSON
+            return JSON.stringify(manifest, null, 2);
+        }
+        catch (error) {
+            console.error('Error generating manifest:', error);
+            throw error;
+        }
+    }
+    /**
+     * Create a ZIP file with the workflow files including manifest
      * @param inputJson - Original workflow JSON
      * @param outputJson - User-editable parameters JSON
      * @param workflowTitle - Title of the workflow
      * @param imageBlob - Optional workflow preview image
+     * @param includeManifest - Whether to include updated manifest.json
      */
-    async createWorkflowZip(inputJson, outputJson, workflowTitle, imageBlob) {
+    async createWorkflowZip(inputJson, outputJson, workflowTitle, imageBlob, includeManifest = false) {
         // Safe title for file names (replace spaces with hyphens)
         const safeTitle = workflowTitle.replace(/\s+/g, '-');
         // Prepare file names
@@ -187,13 +224,22 @@ export class WorkflowConverter {
             imageFileName = `${safeTitle}${ext}`;
         }
         // Create a new JSZip instance
-        // Note: JSZip is expected to be available globally
         const zip = new window.JSZip();
-        // Add files to the ZIP
+        // Add workflow files to the ZIP
         zip.file(outputFileName, outputJson);
         zip.file(inputFileName, inputJson);
         if (imageBlob) {
             zip.file(imageFileName, imageBlob);
+        }
+        // If requested, include the updated manifest
+        if (includeManifest) {
+            try {
+                const manifestJson = await this.generateUpdatedManifest(safeTitle);
+                zip.file('manifest.json', manifestJson);
+            }
+            catch (error) {
+                console.warn('Failed to include manifest in ZIP:', error);
+            }
         }
         // Generate the ZIP file
         return await zip.generateAsync({ type: "blob" });

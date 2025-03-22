@@ -71,24 +71,18 @@ export class WorkflowBrowser {
     async loadWorkflows() {
         try {
             this.workflows = [];
-            // Fetch directory listing for the workflow folder
-            const response = await fetch('workflow/');
-            if (!response.ok) {
-                throw new Error('Failed to load workflows directory');
+            // Fetch the workflow manifest
+            const manifestResponse = await fetch('workflow/manifest.json', {
+                headers: { 'Cache-Control': 'no-cache' }
+            });
+            if (!manifestResponse.ok) {
+                throw new Error('Failed to load workflows manifest');
             }
-            const text = await response.text();
-            // Parse the directory listing HTML to find workflow folders
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a')).map(a => a.getAttribute('href') || '');
-            // Filter for directory entries (they end with /)
-            const workflowPaths = links
-                .filter(href => href.endsWith('/'))
-                .map(href => href.slice(0, -1)); // Remove trailing slash
+            const manifest = await manifestResponse.json();
             // Load each workflow's metadata from its user-editable-parameters.json file
-            for (const workflowPath of workflowPaths) {
+            for (const workflow of manifest.workflows) {
                 try {
-                    const response = await fetch(`workflow/${workflowPath}/${workflowPath}-user-editable-parameters.json`, {
+                    const response = await fetch(`workflow/${workflow.path}/${workflow.path}-user-editable-parameters.json`, {
                         // Add cache busting to ensure we're getting the latest version of the file
                         headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' },
                         cache: 'no-store'
@@ -101,14 +95,14 @@ export class WorkflowBrowser {
                     // Ensure we're using the exact title without any transformations
                     const workflowTitle = String(paramsJson.workflowDetails.title);
                     this.workflows.push({
-                        id: workflowPath,
+                        id: workflow.path,
                         title: workflowTitle,
                         description: paramsJson.workflowDetails.description || '',
-                        previewImage: `workflow/${workflowPath}/${paramsJson.workflowDetails.image || `${workflowPath}.png`}`
+                        previewImage: `workflow/${workflow.path}/${paramsJson.workflowDetails.image || `${workflow.path}.png`}`
                     });
                 }
                 catch (error) {
-                    console.warn(`Failed to load workflow ${workflowPath}:`, error);
+                    console.warn(`Failed to load workflow ${workflow.path}:`, error);
                     // Skip this workflow but continue loading others
                     continue;
                 }
