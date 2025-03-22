@@ -1,47 +1,61 @@
-# New Tab Background Generator
+# Comfyui Workflow UX
 
-This project is a web application that allows users to generate and set a custom background image for a new browser tab. The application provides a user-friendly interface for uploading an image, generating a stylized background, and setting it as the background for the new tab.
-The image generation is done using ComfyUI which is running in the background.
+This project is a web application that allows users to generate and set custom background images using ComfyUI workflows. The application provides a user-friendly interface for customizing workflow parameters, generating stylized images, and managing the generation process.
 
 ## Features
 
-- **Image Upload**: Users can upload an image to be used as a style reference.
-- **Background Generation**: The application generates a stylized background image based on the uploaded image.
-- **Preview and Selection**: Users can preview the generated images and select one to set as the background.
-- **Local Storage**: The selected background image is saved in the browser's local storage and applied as the background for the new tab.
+- **Workflow Selection**: Browse and select from multiple available workflows with preview images
+- **Parameter Customization**: User-friendly interface for editing workflow parameters including images, numbers, and text inputs
+- **Live Generation Progress**: Real-time progress tracking with elapsed time counter and animated noise background
+- **Image Preview**: Grid view of generated images with lightbox support for detailed viewing
+- **Image Interaction**: Zoom and pan functionality in the lightbox view for detailed image inspection
+- **Responsive Design**: Bootstrap-based responsive interface that works across different screen sizes
+- **Workflow Management**: Tools for converting and managing ComfyUI workflows with user-editable parameters
 
 ## Technologies Used
 
-- **HTML**: Structure of the web application.
-- **CSS**: Styling of the web application.
-- **JavaScript**: Functionality and interactivity of the web application.
-- **Bootstrap**: Responsive design and UI components.
-- **jQuery**: Simplified DOM manipulation and event handling.
+- **TypeScript**: Type-safe implementation of the application logic
+- **Bootstrap 5**: Responsive design and UI components
+- **WebGL**: Advanced visual effects for the noise animation background
+- **WebSocket**: Real-time communication with the ComfyUI server
+- **Modular Architecture**: Clean separation of concerns with specialized classes
+  - Parameter Editor: Handles workflow parameter UI and validation
+  - Image Generator: Coordinates the image generation process
+  - Workflow Browser: Manages workflow selection and metadata
+  - UI State Manager: Controls application state transitions
+  - Lightbox Manager: Handles image preview and interaction
+  - API Client: Manages communication with the ComfyUI server
 
-## File Structure
+## Project Structure
 
-- `newtab.html`: The main HTML file that contains the structure of the web application.
-- `css/style.css`: The CSS file that contains the styles for the web application.
-- `js/main.js`: The JavaScript file that contains the functionality and interactivity of the web application.
-- `workflow/Win11-stylized-wallpaper.json`: The JSON file that defines the workflow for generating the stylized background.
+### Source Code (`/src`)
+- `/app`: Core application logic
+  - `api-client.ts`: ComfyUI server communication
+  - `image-generator.ts`: Image generation coordination
+  - `lightbox-manager.ts`: Image preview functionality
+  - `parameter-editor.ts`: Workflow parameter management
+  - `ui-state-manager.ts`: Application state control
+  - `workflow-browser.ts`: Workflow selection interface
+- `/shared`: Shared utilities and types
+  - `image-utility.ts`: Image processing utilities
+  - `noise-animation.ts`: Background animation effects
+  - `types.ts`: TypeScript type definitions
+  - `utils.ts`: General utility functions
 
-## How to Use
+### Web Assets (`/docs`)
+- `/js`: Compiled JavaScript output
+- `/css`: Stylesheets
+- `/lib`: Third-party libraries
+- `/workflow`: ComfyUI workflow definitions and parameters
 
-1. **Open the Application**: Open the `newtab.html` file in a web browser.
-2. **Upload an Image**: Click on the "Generate Background" button to open the right pane. In the "File Upload Area", drag and drop an image or click to select a file from your computer.
-3. **Generate Background**: Click the "Generate" button to start the background generation process. The file upload area will collapse, and the generated grid area will expand to show the preview of the generated images.
-4. **Select and Set Background**: Click on a generated image to select it. The selected image will be highlighted. Click the "Set as new tab background" button to save the selected image in local storage and set it as the background for the new tab.
+### Build Configuration
+- `tsconfig.json`: TypeScript compiler settings
+- `package.json`: Project dependencies and scripts
 
-## Code Overview
+## Development
 
-### HTML
-The `newtab.html` file contains the structure of the web application, including the right pane for image upload and background generation.
-
-### CSS
-The `css/style.css` file contains the styles for the web application, including the styles for the right pane and the generated grid.
-
-### JavaScript
-The `js/main.js` file contains the functionality and interactivity of the web application, including the logic for the right pane and the generated grid.
-
-### Workflow JSON
-The `workflow/Win11-stylized-wallpaper.json` file defines the workflow for generating the stylized background.
+The project uses Node.js and npm for development. Key npm scripts:
+- `npm run build`: Compile TypeScript code
+- `npm run watch`: Watch for changes and recompile
+- `npm run serve`: Start a development server
+- `npm run dev`: Run watch and serve in parallel
