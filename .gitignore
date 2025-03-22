@@ -13,6 +13,8 @@ build/
 azure-automation-template/
 *.publishsettings
 *.azurePubxml
+parameters.json
+template.json
 
 # Environment variables
 .env
