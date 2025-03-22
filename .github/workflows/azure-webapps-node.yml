@@ -60,9 +60,9 @@ jobs:
     - name: Login to Azure using OIDC
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: 'e6a68635-3fff-4129-8cad-778636d18143'      # From managed identity
+        tenant-id: 'a4190f7e-d2ed-4eba-a23b-f436c5195d42'      # From managed identity
+        subscription-id: '0675b2b4-5a9e-41bc-8f24-7d6d09a0ce48' # From parameters.json
 
     - name: Get MongoDB Connection String
       run: |
