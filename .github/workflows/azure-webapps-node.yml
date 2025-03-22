@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'ComfyUI-workflow'    # From your parameters.json
+  AZURE_WEBAPP_NAME: 'ComfyUI-workflow'    # From parameters.json
   AZURE_WEBAPP_PACKAGE_PATH: '.'      
-  NODE_VERSION: '20.x'                # Matches your linuxFxVersion in parameters.json
-  COSMOS_DB_NAME: 'comfyui-workflow-server' # From your parameters.json
+  NODE_VERSION: '20.x'                # From parameters.json linuxFxVersion
+  COSMOS_DB_NAME: 'comfyui-workflow-database' # From parameters.json
 
 permissions:
   id-token: write  # Required for OIDC
@@ -60,9 +60,9 @@ jobs:
     - name: Login to Azure using OIDC
       uses: azure/login@v1
       with:
-        client-id: 'e6a68635-3fff-4129-8cad-778636d18143'      # From managed identity
-        tenant-id: 'a4190f7e-d2ed-4eba-a23b-f436c5195d42'      # From managed identity
-        subscription-id: '0675b2b4-5a9e-41bc-8f24-7d6d09a0ce48' # From parameters.json
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Get MongoDB Connection String
       run: |
