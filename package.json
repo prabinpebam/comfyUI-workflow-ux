@@ -18,7 +18,7 @@
     "build:prod:static": "npm run copy:assets && npm run copy:html && npm run copy:workflow && npm run copy:package",
     "copy:assets": "copyfiles -u 2 \"docs/{css,icons,images,lib}/**/*\" dist/public/",
     "copy:html": "copyfiles -u 1 \"docs/*.html\" dist/public/",
-    "copy:workflow": "copyfiles -u 2 \"docs/workflow/**/*\" dist/public/workflow/",
+    "copy:workflow": "copyfiles -u 1 \"docs/workflow/**/*\" dist/public/workflow/",
     "copy:package": "copyfiles package.json dist/"
   },
   "keywords": [],
