@@ -1,0 +1,40 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Create workflow directory
+        run: mkdir -p docs/workflow
+        
+      - name: Build production files
+        run: |
+          rimraf dist
+          mkdir -p dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server
+          npm run build:prod:server
+          npm run build:prod:browser
+          npm run copy:assets
+          npm run copy:html
+          cp -r docs/workflow/* dist/public/workflow/ || echo "No workflow files to copy"
+          cp package.json dist/
+        env:
+          NODE_ENV: production
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
