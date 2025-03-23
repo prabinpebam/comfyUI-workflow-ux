@@ -33,43 +33,31 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbConfig = void 0;
-exports.connectToDatabase = connectToDatabase;
-exports.getDb = getDb;
-const mongodb_1 = require("mongodb");
-const dotenv = __importStar(require("dotenv"));
-dotenv.config();
-const connectionString = process.env.DATABASE_URL || 'mongodb://localhost:27017/comfyui-workflow-database';
-exports.dbConfig = {
-    url: connectionString,
-    options: {
-        serverApi: {
-            version: mongodb_1.ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
+exports.LoggerService = void 0;
+const fs = __importStar(require("fs/promises"));
+const path = __importStar(require("path"));
+class LoggerService {
+    static async ensureLogDirectory() {
+        const logDir = path.dirname(this.logFilePath);
+        try {
+            await fs.access(logDir);
+        }
+        catch (_a) {
+            await fs.mkdir(logDir, { recursive: true });
         }
     }
-};
-let client = null;
-async function connectToDatabase() {
-    if (client) {
-        return client;
-    }
-    try {
-        client = new mongodb_1.MongoClient(exports.dbConfig.url, exports.dbConfig.options);
-        await client.connect();
-        console.log('Successfully connected to MongoDB.');
-        return client;
-    }
-    catch (err) {
-        console.error('Failed to connect to MongoDB:', err);
-        throw err;
+    static async log(message, data) {
+        await this.ensureLogDirectory();
+        const timestamp = new Date().toISOString();
+        const logEntry = `[${timestamp}] ${message}\n${data ? JSON.stringify(data, null, 2) + '\n' : ''}\n`;
+        try {
+            await fs.appendFile(this.logFilePath, logEntry, 'utf8');
+        }
+        catch (error) {
+            console.error('Failed to write to log file:', error);
+        }
     }
 }
-async function getDb() {
-    if (!client) {
-        client = await connectToDatabase();
-    }
-    return client.db();
-}
-//# sourceMappingURL=db.config.js.map
+exports.LoggerService = LoggerService;
+LoggerService.logFilePath = path.join(process.cwd(), 'logs', 'workflow-operations.log');
+//# sourceMappingURL=logger.service.js.map

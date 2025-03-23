@@ -32,11 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     generateButton.addEventListener("click", async () => {
         const selectedWorkflow = workflowBrowser.getSelectedWorkflow();
-        if (selectedWorkflow) {
+        const selectedMetadata = workflowBrowser.getSelectedWorkflowMetadata();
+        if (selectedWorkflow && selectedMetadata) {
             // Get user-edited values and update workflow
             const userValues = paramEditor.getUserEditableValues();
             const workflowToGenerate = {
                 id: selectedWorkflow,
+                path: selectedMetadata.path, // Add the path from metadata
                 ...paramEditor.updateWorkflowWithUserValues({})
             };
             // Start image generation
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     // Connect the workflow selection to the parameter editor
     workflowBrowser.setOnWorkflowSelectedCallback(async (workflowId, metadata) => {
-        await paramEditor.setWorkflow(workflowId, metadata.title);
+        await paramEditor.setWorkflow(workflowId, metadata.title, metadata.path);
     });
     // Load workflows on page load and handle initial state
     workflowBrowser.loadWorkflows().then(() => {
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedMetadata = workflowBrowser.getSelectedWorkflowMetadata();
         if (selectedWorkflow && selectedMetadata) {
             // This will refresh the title in the UI from the JSON file
-            paramEditor.setWorkflow(selectedWorkflow, selectedMetadata.title);
+            paramEditor.setWorkflow(selectedWorkflow, selectedMetadata.title, selectedMetadata.path);
         }
     }).catch(console.error);
 });

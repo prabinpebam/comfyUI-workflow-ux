@@ -11,6 +11,7 @@ export class ParameterEditor {
     constructor(containerElement, statusElement, generateButton) {
         this.userEditableValues = {};
         this.currentWorkflowId = null;
+        this.currentWorkflowPath = null;
         this.editableFieldsContainer = containerElement;
         this.statusElement = statusElement;
         this.generateButton = generateButton;
@@ -25,9 +26,11 @@ export class ParameterEditor {
      * Set the workflow to edit parameters for
      * @param workflowId - The ID of the workflow to load
      * @param workflowTitle - The title to display for the workflow
+     * @param workflowPath - The path where the workflow files are stored
      */
-    async setWorkflow(workflowId, workflowTitle) {
+    async setWorkflow(workflowId, workflowTitle, workflowPath) {
         this.currentWorkflowId = workflowId;
+        this.currentWorkflowPath = workflowPath;
         // Set the title in the UI
         this.updateWorkflowTitle(workflowTitle);
         // Enable the generate button
@@ -52,10 +55,10 @@ export class ParameterEditor {
         // Reset previous values
         this.userEditableValues = {};
         try {
-            if (!this.currentWorkflowId) {
+            if (!this.currentWorkflowId || !this.currentWorkflowPath) {
                 throw new Error("No workflow selected");
             }
-            const response = await fetch(`workflow/${this.currentWorkflowId}/${this.currentWorkflowId}-user-editable-parameters.json`, {
+            const response = await fetch(`workflow/${this.currentWorkflowPath}/${this.currentWorkflowPath}-user-editable-parameters.json`, {
                 // Add cache busting to ensure we're getting the latest version of the file
                 headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' },
                 cache: 'no-store'

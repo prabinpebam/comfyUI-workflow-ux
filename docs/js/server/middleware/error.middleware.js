@@ -1,4 +1,7 @@
-export class ApiError extends Error {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorHandler = exports.ApiError = void 0;
+class ApiError extends Error {
     constructor(statusCode, message, details) {
         super(message);
         this.statusCode = statusCode;
@@ -6,7 +9,8 @@ export class ApiError extends Error {
         this.name = 'ApiError';
     }
 }
-export const errorHandler = (err, req, res, next) => {
+exports.ApiError = ApiError;
+const errorHandler = (err, req, res, next) => {
     console.error('Error:', err);
     if (err instanceof ApiError) {
         return res.status(err.statusCode).json({
@@ -38,4 +42,5 @@ export const errorHandler = (err, req, res, next) => {
         } : {})
     });
 };
+exports.errorHandler = errorHandler;
 //# sourceMappingURL=error.middleware.js.map

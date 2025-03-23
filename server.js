@@ -1,12 +1,18 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { connectToDatabase } = require('./dist/database/config/db.config.js');
-const { addWorkflow, updateWorkflow, listWorkflows, getWorkflow, deleteWorkflow } = require('./dist/server/controllers/workflow.controller');
-const { upload } = require('./dist/server/middleware/upload.middleware');
-const { FileService } = require('./dist/server/services/file.service');
-const { errorHandler } = require('./dist/server/middleware/error.middleware');
-const { validateWorkflowCreate, validateWorkflowUpdate } = require('./dist/server/middleware/validation.middleware');
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// IMPORTANT: This project compiles TypeScript to ./docs/js - DO NOT change these paths
+// See tsconfig.json for project architecture details
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+const { connectToDatabase } = require('./docs/js/database/config/db.config.js');
+const { addWorkflow, updateWorkflow, listWorkflows, getWorkflow, deleteWorkflow } = require('./docs/js/server/controllers/workflow.controller');
+const { upload } = require('./docs/js/server/middleware/upload.middleware');
+const { FileService } = require('./docs/js/server/services/file.service');
+const { errorHandler } = require('./docs/js/server/middleware/error.middleware');
+const { validateWorkflowCreate, validateWorkflowUpdate } = require('./docs/js/server/middleware/validation.middleware');
 const fs = require('fs').promises;
 const asyncHandler = require('express-async-handler');
 

@@ -7,8 +7,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "tsc && tsc --project tsconfig.browser.json",
+    "watch": "concurrently \"tsc --watch\" \"tsc --project tsconfig.browser.json --watch\"",
     "serve": "npx http-server docs -o -c-1 --mimetypes mime.types",
     "start": "node server.js",
     "dev": "concurrently \"npm run watch\" \"npm run serve\"",

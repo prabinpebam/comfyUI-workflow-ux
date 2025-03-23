@@ -180,22 +180,27 @@ export class WorkflowConverter {
                 throw new Error('Failed to load manifest');
             }
             const manifest = await response.json();
-            // Normalize the workflowId by removing any file extension or path separators
-            const normalizedId = workflowId.replace(/\.[^/.]+$/, "").replace(/[/\\]/g, "-");
+            // First normalize by removing .json extension and path separators
+            const baseId = workflowId
+                .replace(/\.json$/, "") // Remove .json extension if present
+                .replace(/[/\\]/g, "-") // Replace slashes with hyphens
+                .replace(/\s+/g, "-"); // Replace spaces with hyphens
+            // Remove any duplicate hyphens and create the clean folder name
+            const cleanId = baseId.replace(/-+/g, "-");
             // Check if workflow already exists
-            const existingIndex = manifest.workflows.findIndex(w => w.id === normalizedId);
+            const existingIndex = manifest.workflows.findIndex(w => w.id === cleanId || w.path === cleanId);
             if (existingIndex >= 0) {
-                // Update existing entry with consistent path format
+                // Update existing entry with consistent format
                 manifest.workflows[existingIndex] = {
-                    id: normalizedId,
-                    path: normalizedId
+                    id: cleanId,
+                    path: cleanId // Use same cleanId for path (no .json extension)
                 };
             }
             else {
-                // Add new entry with consistent path format
+                // Add new entry with consistent format
                 manifest.workflows.push({
-                    id: normalizedId,
-                    path: normalizedId
+                    id: cleanId,
+                    path: cleanId // Use same cleanId for path (no .json extension)
                 });
             }
             // Sort workflows by ID

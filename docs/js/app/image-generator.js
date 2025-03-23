@@ -45,19 +45,17 @@ export class ImageGenerator {
         this.uiStateManager.updateStatus("Loading workflow...");
         console.log("[ImageGenerator] Starting generation process");
         try {
-            let baseWorkflowPath = "";
+            // Get both ID and path from workflow
             const workflowId = workflow.id;
-            // Remove the id property from workflow before sending to server
+            const workflowPath = workflow.path;
+            // Remove the id and path properties before sending to server
             const workflowToSend = { ...workflow };
             delete workflowToSend.id;
-            // Determine the workflow file path
-            if (workflowId) {
-                baseWorkflowPath = `workflow/${workflowId}/${workflowId}.json`;
-            }
-            else {
-                // Default to Win11 for backwards compatibility
-                baseWorkflowPath = "workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.json";
-            }
+            delete workflowToSend.path;
+            // Determine the workflow file path using the path (folder name)
+            const baseWorkflowPath = workflowPath
+                ? `workflow/${workflowPath}/${workflowPath}.json`
+                : "workflow/Win11-stylized-wallpaper/Win11-stylized-wallpaper.json"; // Default for backwards compatibility
             console.log(`[ImageGenerator] Loading base workflow from: ${baseWorkflowPath}`);
             const workflowResponse = await fetch(baseWorkflowPath);
             if (!workflowResponse.ok)
@@ -84,10 +82,8 @@ export class ImageGenerator {
                                         this.currentWorkflow[nodeId].inputs = {};
                                     }
                                     // Set the parameter value
-                                    if (typeof this.currentWorkflow[nodeId] === 'object') {
-                                        this.currentWorkflow[nodeId].inputs[inputKey] = value;
-                                        console.log(`[ImageGenerator] Updated parameter: ${nodeId}.${inputKey} = ${JSON.stringify(value)}`);
-                                    }
+                                    this.currentWorkflow[nodeId].inputs[inputKey] = value;
+                                    console.log(`[ImageGenerator] Updated parameter: ${nodeId}.${inputKey} = ${JSON.stringify(value)}`);
                                 }
                             }
                         }

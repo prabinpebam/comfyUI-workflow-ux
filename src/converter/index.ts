@@ -344,11 +344,33 @@ document.addEventListener('DOMContentLoaded', function() {
           formData.append('preview', workflowImageFile, imageFileName);
         }
 
+        // Log the FormData contents
+        console.log('🔍 Adding workflow with title:', workflowTitle);
+        console.log('🔍 Safe title:', safeTitle);
+        console.log('🔍 Form data entries:');
+        for (const [key, value] of formData.entries()) {
+          if (value instanceof Blob) {
+            console.log(`🔍 ${key}:`, {
+              name: (value as any).name,
+              type: value.type,
+              size: value.size
+            });
+          } else {
+            console.log(`🔍 ${key}:`, value);
+          }
+        }
+        console.log('🔍 Workflow JSON:', workflowJson);
+        console.log('🔍 Parameters JSON:', parametersJson);
+
         // Upload to server
         const response = await fetch('/api/workflows', {
           method: 'POST',
           body: formData
         });
+
+        // Log the server response
+        const responseData = await response.clone().json();
+        console.log('🔍 Server response:', responseData);
 
         if (!response.ok) {
           const error = await response.json();
@@ -373,6 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
           dropArea.style.backgroundImage = '';
         }
       } catch (error) {
+        console.error('🔍 Error adding workflow:', error);
         showErrorModal(`Error adding workflow: ${error instanceof Error ? error.message : String(error)}`);
       }
     });

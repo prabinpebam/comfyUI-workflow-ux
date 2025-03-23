@@ -1,0 +1,452 @@
+[2025-03-23T12:48:13.642Z] Starting workflow addition
+{
+  "title": "Landscape in a bottle",
+  "description": "",
+  "version": "1.0.0",
+  "files": [
+    {
+      "fieldname": "workflow",
+      "originalname": "Landscape-in-a-bottle.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+    },
+    {
+      "fieldname": "parameters",
+      "originalname": "Landscape-in-a-bottle-user-editable-parameters.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle-user-editable-parameters.json"
+    },
+    {
+      "fieldname": "preview",
+      "originalname": "Landscape-in-a-bottle.png",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.png"
+    }
+  ]
+}
+
+[2025-03-23T12:48:13.643Z] Validating workflow files
+
+[2025-03-23T12:48:13.645Z] Clean workflow name created
+{
+  "workflowName": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T12:48:13.680Z] Files moved successfully
+{
+  "movedFiles": {
+    "workflow": "Landscape-in-a-bottle",
+    "parameters": "Landscape-in-a-bottle",
+    "preview": "Landscape-in-a-bottle"
+  }
+}
+
+[2025-03-23T12:48:13.681Z] Using manifest path
+{
+  "manifestPath": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T12:48:13.681Z] Creating workflow in database
+{
+  "dto": {
+    "title": "Landscape in a bottle",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    }
+  }
+}
+
+[2025-03-23T12:48:13.682Z] Generated clean workflow name
+{
+  "original": "Landscape in a bottle",
+  "cleaned": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T12:48:13.683Z] Inserting workflow document
+{
+  "workflow": {
+    "id": "67e0030db3bbe46641a1e661",
+    "title": "Landscape in a bottle",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    },
+    "created": "2025-03-23T12:48:13.682Z",
+    "modified": "2025-03-23T12:48:13.682Z",
+    "metadata": {}
+  }
+}
+
+[2025-03-23T12:48:13.688Z] Starting manifest update
+{
+  "workflowId": "67e0030db3bbe46641a1e661"
+}
+
+[2025-03-23T12:48:13.691Z] Current manifest content
+{
+  "manifest": {
+    "workflows": [
+      {
+        "id": "67dff64269a16e7ef5315f61",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "67dff6dc56d902b50ade74fc",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "67dff882c4ccce4fb3b41b15",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "Win11-stylized-wallpaper",
+        "path": "Win11-stylized-wallpaper"
+      }
+    ]
+  }
+}
+
+[2025-03-23T12:48:13.692Z] Processed workflow name for manifest
+{
+  "original": "Landscape-in-a-bottle",
+  "processed": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T12:48:13.692Z] Adding new manifest entry
+
+[2025-03-23T12:48:13.700Z] Writing updated manifest
+{
+  "updatedManifest": {
+    "workflows": [
+      {
+        "id": "67dff64269a16e7ef5315f61",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "67dff6dc56d902b50ade74fc",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "67dff882c4ccce4fb3b41b15",
+        "path": "workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+      },
+      {
+        "id": "67e0030db3bbe46641a1e661",
+        "path": "Landscape-in-a-bottle"
+      },
+      {
+        "id": "Win11-stylized-wallpaper",
+        "path": "Win11-stylized-wallpaper"
+      }
+    ]
+  }
+}
+
+[2025-03-23T12:48:13.702Z] Workflow created in database
+{
+  "workflow": {
+    "id": "67e0030db3bbe46641a1e661",
+    "title": "Landscape in a bottle",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    },
+    "created": "2025-03-23T12:48:13.682Z",
+    "modified": "2025-03-23T12:48:13.682Z",
+    "metadata": {},
+    "_id": "67e0030db3bbe46641a1e662"
+  }
+}
+
+[2025-03-23T13:08:51.226Z] Starting workflow addition
+{
+  "title": "Win11 stylized wallpaper",
+  "description": "",
+  "version": "1.0.0",
+  "files": [
+    {
+      "fieldname": "workflow",
+      "originalname": "Win11-stylized-wallpaper.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Win11-stylized-wallpaper\\Win11-stylized-wallpaper.json"
+    },
+    {
+      "fieldname": "parameters",
+      "originalname": "Win11-stylized-wallpaper-user-editable-parameters.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Win11-stylized-wallpaper\\Win11-stylized-wallpaper-user-editable-parameters.json"
+    },
+    {
+      "fieldname": "preview",
+      "originalname": "Win11-stylized-wallpaper.png",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Win11-stylized-wallpaper\\Win11-stylized-wallpaper.png"
+    }
+  ]
+}
+
+[2025-03-23T13:08:51.227Z] Validating workflow files
+
+[2025-03-23T13:08:51.238Z] Clean workflow name created
+{
+  "workflowName": "Win11-stylized-wallpaper"
+}
+
+[2025-03-23T13:08:51.241Z] Files moved successfully
+{
+  "movedFiles": {
+    "workflow": "Win11-stylized-wallpaper",
+    "parameters": "Win11-stylized-wallpaper",
+    "preview": "Win11-stylized-wallpaper"
+  }
+}
+
+[2025-03-23T13:08:51.242Z] Using manifest path
+{
+  "manifestPath": "Win11-stylized-wallpaper"
+}
+
+[2025-03-23T13:08:51.242Z] Creating workflow in database
+{
+  "dto": {
+    "title": "Win11 stylized wallpaper",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Win11-stylized-wallpaper",
+      "parameters": "Win11-stylized-wallpaper",
+      "preview": "Win11-stylized-wallpaper"
+    }
+  }
+}
+
+[2025-03-23T13:08:51.243Z] Generated clean workflow name
+{
+  "original": "Win11 stylized wallpaper",
+  "cleaned": "Win11-stylized-wallpaper"
+}
+
+[2025-03-23T13:08:51.244Z] Inserting workflow document
+{
+  "workflow": {
+    "id": "67e007e3ccef9a1c5bf5eb8c",
+    "title": "Win11 stylized wallpaper",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Win11-stylized-wallpaper",
+      "parameters": "Win11-stylized-wallpaper",
+      "preview": "Win11-stylized-wallpaper"
+    },
+    "created": "2025-03-23T13:08:51.244Z",
+    "modified": "2025-03-23T13:08:51.244Z",
+    "metadata": {}
+  }
+}
+
+[2025-03-23T13:08:51.249Z] Starting manifest update
+{
+  "workflowId": "67e007e3ccef9a1c5bf5eb8c"
+}
+
+[2025-03-23T13:08:51.252Z] Current manifest content
+{
+  "manifest": {
+    "workflows": [
+      {
+        "id": "67e0030db3bbe46641a1e661",
+        "path": "Landscape-in-a-bottle"
+      },
+      {
+        "id": "Win11-stylized-wallpaper",
+        "path": "Win11-stylized-wallpaper"
+      }
+    ]
+  }
+}
+
+[2025-03-23T13:08:51.253Z] Processed workflow name for manifest
+{
+  "original": "Win11-stylized-wallpaper",
+  "processed": "Win11-stylized-wallpaper"
+}
+
+[2025-03-23T13:08:51.253Z] Adding new manifest entry
+
+[2025-03-23T13:08:51.261Z] Writing updated manifest
+{
+  "updatedManifest": {
+    "workflows": [
+      {
+        "id": "67e0030db3bbe46641a1e661",
+        "path": "Landscape-in-a-bottle"
+      },
+      {
+        "id": "67e007e3ccef9a1c5bf5eb8c",
+        "path": "Win11-stylized-wallpaper"
+      },
+      {
+        "id": "Win11-stylized-wallpaper",
+        "path": "Win11-stylized-wallpaper"
+      }
+    ]
+  }
+}
+
+[2025-03-23T13:08:51.262Z] Workflow created in database
+{
+  "workflow": {
+    "id": "67e007e3ccef9a1c5bf5eb8c",
+    "title": "Win11 stylized wallpaper",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Win11-stylized-wallpaper",
+      "parameters": "Win11-stylized-wallpaper",
+      "preview": "Win11-stylized-wallpaper"
+    },
+    "created": "2025-03-23T13:08:51.244Z",
+    "modified": "2025-03-23T13:08:51.244Z",
+    "metadata": {},
+    "_id": "67e007e3ccef9a1c5bf5eb8d"
+  }
+}
+
+[2025-03-23T13:10:51.312Z] Starting workflow addition
+{
+  "title": "Landscape in a bottle",
+  "description": "Default comfyUI workflow",
+  "version": "1.0.0",
+  "files": [
+    {
+      "fieldname": "workflow",
+      "originalname": "Landscape-in-a-bottle.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.json"
+    },
+    {
+      "fieldname": "parameters",
+      "originalname": "Landscape-in-a-bottle-user-editable-parameters.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle-user-editable-parameters.json"
+    },
+    {
+      "fieldname": "preview",
+      "originalname": "Landscape-in-a-bottle.png",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Landscape-in-a-bottle\\Landscape-in-a-bottle.png"
+    }
+  ]
+}
+
+[2025-03-23T13:10:51.312Z] Validating workflow files
+
+[2025-03-23T13:10:51.314Z] Clean workflow name created
+{
+  "workflowName": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T13:10:51.316Z] Files moved successfully
+{
+  "movedFiles": {
+    "workflow": "Landscape-in-a-bottle",
+    "parameters": "Landscape-in-a-bottle",
+    "preview": "Landscape-in-a-bottle"
+  }
+}
+
+[2025-03-23T13:10:51.317Z] Using manifest path
+{
+  "manifestPath": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T13:10:51.317Z] Creating workflow in database
+{
+  "dto": {
+    "title": "Landscape in a bottle",
+    "description": "Default comfyUI workflow",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    }
+  }
+}
+
+[2025-03-23T13:10:51.317Z] Generated clean workflow name
+{
+  "original": "Landscape in a bottle",
+  "cleaned": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T13:10:51.318Z] Inserting workflow document
+{
+  "workflow": {
+    "id": "67e0085bccef9a1c5bf5eb8e",
+    "title": "Landscape in a bottle",
+    "description": "Default comfyUI workflow",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    },
+    "created": "2025-03-23T13:10:51.318Z",
+    "modified": "2025-03-23T13:10:51.318Z",
+    "metadata": {}
+  }
+}
+
+[2025-03-23T13:10:51.319Z] Starting manifest update
+{
+  "workflowId": "67e0085bccef9a1c5bf5eb8e"
+}
+
+[2025-03-23T13:10:51.321Z] Current manifest content
+{
+  "manifest": {
+    "workflows": []
+  }
+}
+
+[2025-03-23T13:10:51.322Z] Processed workflow name for manifest
+{
+  "original": "Landscape-in-a-bottle",
+  "processed": "Landscape-in-a-bottle"
+}
+
+[2025-03-23T13:10:51.322Z] Adding new manifest entry
+
+[2025-03-23T13:10:51.322Z] Writing updated manifest
+{
+  "updatedManifest": {
+    "workflows": [
+      {
+        "id": "67e0085bccef9a1c5bf5eb8e",
+        "path": "Landscape-in-a-bottle"
+      }
+    ]
+  }
+}
+
+[2025-03-23T13:10:51.323Z] Workflow created in database
+{
+  "workflow": {
+    "id": "67e0085bccef9a1c5bf5eb8e",
+    "title": "Landscape in a bottle",
+    "description": "Default comfyUI workflow",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Landscape-in-a-bottle",
+      "parameters": "Landscape-in-a-bottle",
+      "preview": "Landscape-in-a-bottle"
+    },
+    "created": "2025-03-23T13:10:51.318Z",
+    "modified": "2025-03-23T13:10:51.318Z",
+    "metadata": {},
+    "_id": "67e0085bccef9a1c5bf5eb8f"
+  }
+}
+

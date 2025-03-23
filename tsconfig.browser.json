@@ -1,15 +1,14 @@
 {
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // IMPORTANT: Configuration for server-side TypeScript code (database/, server/)
-  // For browser code, see tsconfig.browser.json
+  // IMPORTANT: Configuration for browser-side TypeScript code (app/, converter/, shared/)
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   "compilerOptions": {
     "target": "ES2018",
-    "lib": ["ES2020"],
-    "module": "CommonJS",  // Server code uses CommonJS for Node.js compatibility
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ES2015",  // Browser code needs ES modules
     "rootDir": "./src",
     "moduleResolution": "node",
-    "outDir": "./docs/js",  // DO NOT CHANGE - Project serves directly from /docs
+    "outDir": "./docs/js", // important, do not change
     "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,6 +16,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "declaration": false,
+    "jsx": "preserve",
     "baseUrl": "./src",
     "paths": {
       "*": ["*"]
@@ -27,8 +27,10 @@
     ]
   },
   "include": [
-    "src/database/**/*",
-    "src/server/**/*"
+    "src/app/**/*",
+    "src/converter/**/*",
+    "src/shared/**/*",
+    "src/types/**/*"
   ],
   "exclude": ["node_modules"]
 }

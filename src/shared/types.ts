@@ -1,6 +1,7 @@
 // Interface for workflow metadata
 export interface WorkflowMetadata {
   id: string;
+  path: string;
   title: string;
   description: string;
   previewImage: string;

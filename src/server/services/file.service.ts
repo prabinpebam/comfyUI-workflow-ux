@@ -1,5 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { LoggerService } from './logger.service';
 
 export class FileService {
   private readonly workflowsDir: string;
@@ -47,32 +48,66 @@ export class FileService {
     }
   }
 
-  async moveWorkflowFiles(
-    tempPath: string,
-    workflowName: string,
-    files: {
-      workflow?: Express.Multer.File[];
-      parameters?: Express.Multer.File[];
-      preview?: Express.Multer.File[];
+  private async moveFile(file: Express.Multer.File, destinationPath: string): Promise<void> {
+    try {
+      await fs.rename(file.path, destinationPath);
+    } catch (error) {
+      // If rename fails (e.g., across devices), fallback to copy and delete
+      await fs.copyFile(file.path, destinationPath);
+      await fs.unlink(file.path);
     }
-  ): Promise<{
-    workflow?: string;
-    parameters?: string;
-    preview?: string;
-  }> {
-    const finalDir = await this.ensureWorkflowDirectory(workflowName);
-    const results: any = {};
+  }
 
-    for (const [key, fileArray] of Object.entries(files)) {
-      if (fileArray && fileArray.length > 0) {
-        const file = fileArray[0];
-        const finalPath = path.join(finalDir, path.basename(file.path));
-        await fs.rename(file.path, finalPath);
-        results[key] = path.relative(path.join(process.cwd(), 'docs'), finalPath);
+  async moveWorkflowFiles(tempPath: string, workflowName: string, files: { [key: string]: Express.Multer.File[] }): Promise<{ workflow?: string; parameters?: string; preview?: string }> {
+    try {
+      console.log('📁 Moving workflow files');
+      console.log('📁 Workflow name:', workflowName);
+      
+      const workflowDirPath = path.join(process.cwd(), 'docs', 'workflow', workflowName);
+      await fs.mkdir(workflowDirPath, { recursive: true });
+      console.log('📁 Created directory:', workflowDirPath);
+
+      const movedFiles: { workflow?: string; parameters?: string; preview?: string } = {};
+
+      // Process workflow file
+      if (files.workflow?.[0]) {
+        // Just store the clean name
+        movedFiles.workflow = workflowName;
+        const destPath = path.join(workflowDirPath, `${workflowName}.json`);
+        console.log('📁 Moving workflow file to:', destPath);
+        console.log('📁 Storing clean name:', movedFiles.workflow);
+        await this.moveFile(files.workflow[0], destPath);
       }
-    }
 
-    return results;
+      // Process parameters file
+      if (files.parameters?.[0]) {
+        // Just store the clean name
+        movedFiles.parameters = workflowName;
+        const destPath = path.join(workflowDirPath, `${workflowName}-user-editable-parameters.json`);
+        console.log('📁 Moving parameters file to:', destPath);
+        console.log('📁 Storing clean name:', movedFiles.parameters);
+        await this.moveFile(files.parameters[0], destPath);
+      }
+
+      // Process preview image if present
+      if (files.preview?.[0]) {
+        const ext = path.extname(files.preview[0].originalname);
+        // Just store the clean name
+        movedFiles.preview = workflowName;
+        const destPath = path.join(workflowDirPath, `${workflowName}${ext}`);
+        console.log('📁 Moving preview file to:', destPath);
+        console.log('📁 Storing clean name:', movedFiles.preview);
+        await this.moveFile(files.preview[0], destPath);
+      }
+
+      console.log('📁 Final moved files object:', movedFiles);
+      return movedFiles;
+      
+    } catch (error) {
+      console.error('📁 Error in moveWorkflowFiles:', error);
+      await this.cleanWorkflowDirectory(workflowName);
+      throw error;
+    }
   }
 
   async validateWorkflowFiles(

@@ -134,7 +134,8 @@ export class WorkflowBrowser {
           const workflowTitle = String(paramsJson.workflowDetails.title);
 
           this.workflows.push({
-            id: workflow.path,
+            id: workflow.id,  // Use the ID from manifest instead of path
+            path: workflow.path, // Keep path as separate property
             title: workflowTitle,
             description: paramsJson.workflowDetails.description || '',
             previewImage: `workflow/${workflow.path}/${paramsJson.workflowDetails.image || `${workflow.path}.png`}`
@@ -169,8 +170,11 @@ export class WorkflowBrowser {
     if (!this.selectedWorkflow) return;
     
     try {
-      const workflowPath = this.selectedWorkflow;
-      const response = await fetch(`workflow/${workflowPath}/${workflowPath}-user-editable-parameters.json`, {
+      // Find the workflow to get its path
+      const workflow = this.workflows.find(w => w.id === this.selectedWorkflow);
+      if (!workflow) return;
+
+      const response = await fetch(`workflow/${workflow.path}/${workflow.path}-user-editable-parameters.json`, {
         // Add cache busting to ensure we're getting the latest version of the file
         headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' },
         cache: 'no-store'
@@ -193,15 +197,16 @@ export class WorkflowBrowser {
       const workflowIndex = this.workflows.findIndex(w => w.id === this.selectedWorkflow);
       if (workflowIndex >= 0) {
         this.workflows[workflowIndex] = {
-          id: workflowPath,
+          id: workflow.id,
+          path: workflow.path,
           title: workflowTitle,
           description: paramsJson.workflowDetails.description || '',
-          previewImage: `workflow/${workflowPath}/${paramsJson.workflowDetails.image || `${workflowPath}.png`}`
+          previewImage: `workflow/${workflow.path}/${paramsJson.workflowDetails.image || `${workflow.path}.png`}`
         };
         
         // If we have a callback, notify it of the updated metadata
         if (this.onWorkflowSelectedCallback) {
-          this.onWorkflowSelectedCallback(workflowPath, this.workflows[workflowIndex]);
+          this.onWorkflowSelectedCallback(workflow.id, this.workflows[workflowIndex]);
         }
       }
     } catch (error) {

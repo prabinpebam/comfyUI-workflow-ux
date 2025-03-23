@@ -46,10 +46,20 @@ if not exist "temp" (
   mkdir "temp"
 )
 
+REM First compile TypeScript to check for errors
+echo ===== Checking TypeScript compilation =====
+call npx tsc && call npx tsc --project tsconfig.browser.json
+if errorlevel 1 (
+  echo TypeScript compilation failed! Please fix the errors above.
+  pause
+  exit /b 1
+)
+
 REM Start TypeScript compiler in watch mode and the development server
 echo ===== Starting TypeScript compiler in watch mode and development server =====
 echo Press Ctrl+C in this window to stop all processes
-start "TypeScript Watch" cmd /k "npm run watch"
+start "TypeScript Server Watch" cmd /k "npx tsc --watch"
+start "TypeScript Browser Watch" cmd /k "npx tsc --project tsconfig.browser.json --watch --pretty"
 timeout /t 2
 start "Development Server" cmd /k "node server.js"
 
@@ -57,7 +67,8 @@ REM Keep the main script running to handle cleanup when terminated
 echo ===== Environment is ready =====
 echo The following processes are running:
 echo - MongoDB Server
-echo - TypeScript Watch
+echo - TypeScript Server Watch
+echo - TypeScript Browser Watch
 echo - Development Server
 echo.
 echo Press Ctrl+C in this window to stop all processes
@@ -66,7 +77,8 @@ pause
 REM When the script is terminated, clean up all processes
 echo ===== Cleaning up processes =====
 taskkill /FI "WINDOWTITLE eq MongoDB Server" /F
-taskkill /FI "WINDOWTITLE eq TypeScript Watch" /F
+taskkill /FI "WINDOWTITLE eq TypeScript Server Watch" /F
+taskkill /FI "WINDOWTITLE eq TypeScript Browser Watch" /F
 taskkill /FI "WINDOWTITLE eq Development Server" /F
 
 echo ===== Development environment has been stopped =====
