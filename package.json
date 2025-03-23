@@ -11,9 +11,17 @@
     "dev": "start-dev.bat",
     "build": "npm run build:dev",
     "build:dev": "tsc && tsc --project tsconfig.browser.json",
+    "build:prod": "rimraf dist && npm run build:prod:server && npm run build:prod:browser && npm run build:prod:static",
     "build:prod:server": "tsc -p tsconfig.prod.json",
     "build:prod:browser": "tsc -p tsconfig.prod.browser.json",
-    "build:prod": "npm run build:prod:server && npm run build:prod:browser"
+    "build:prod:static": "npm run copy:assets && npm run copy:html && npm run copy:package",
+    "copy:public": "copyfiles \"src/public/**/*\" dist/",
+    "copy:views": "copyfiles \"src/server/views/**/*\" dist/server/",
+    "copy:assets": "copyfiles -u 2 \"docs/{css,icons,images,lib}/**/*\" dist/public/",
+    "copy:html": "copyfiles -u 1 \"docs/*.html\" dist/public/",
+    "copy:package": "copyfiles package.json dist/",
+    "watch": "concurrently \"tsc --watch\" \"tsc --project tsconfig.browser.json --watch\"",
+    "serve": "npx http-server docs -o -c-1 --mimetypes mime.types"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +47,8 @@
     "@types/multer": "^1.4.12",
     "@types/proper-lockfile": "^4.1.4",
     "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^5.0.10",
     "typescript": "^5.8.2"
   }
 }

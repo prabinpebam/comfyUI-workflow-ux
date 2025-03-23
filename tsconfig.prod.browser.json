@@ -1,12 +1,14 @@
 {
   "extends": "./tsconfig.browser.json",
   "compilerOptions": {
-    "outDir": "./dist/public",
+    "outDir": "./dist/public/js",
     "sourceMap": false,
-    "removeComments": true
+    "removeComments": true,
+    "module": "ES2015"
   },
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts"
+  "include": [
+    "src/app/**/*",
+    "src/converter/**/*",
+    "src/shared/**/*"
   ]
 }
