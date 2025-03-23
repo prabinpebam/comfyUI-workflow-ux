@@ -40,18 +40,20 @@ jobs:
           MONGODB_USER: ${{ secrets.MONGODB_USER }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: |
-          # Build server-side code (CommonJS)
-          npm run build:prod:server
+          # Create dist directories
+          mkdir -p dist/server
+          mkdir -p dist/public
+          mkdir -p dist/docs/workflow
           
-          # Build browser-side code (ES2015)
-          npm run build:prod:browser
+          # Build server and browser code
+          npm run build:prod
           
           # Copy static files
-          cp -r docs/workflow dist/
-          cp -r public/* dist/public/
+          cp -r docs/workflow/* dist/docs/workflow/
+          [ -d "public" ] && cp -r public/* dist/public/ || echo "No public directory"
 
       - name: Zip artifact
-        run: zip -r release.zip ./*
+        run: cd dist && zip -r ../release.zip ./*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
