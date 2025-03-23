@@ -1,0 +1,16 @@
+{
+  "60": {
+    "inputs": {
+      "text": {
+        "value": "Weekend finally!",
+        "selectedType": "String",
+        "label": "Prompt"
+      }
+    }
+  },
+  "workflowDetails": {
+    "title": "Meme-Generator",
+    "image": "Meme-Generator.png",
+    "description": ""
+  }
+}

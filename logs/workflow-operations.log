@@ -450,3 +450,146 @@
   }
 }
 
+[2025-03-23T15:03:27.245Z] Starting workflow addition
+{
+  "title": "Meme-Generator",
+  "description": "",
+  "version": "1.0.0",
+  "files": [
+    {
+      "fieldname": "workflow",
+      "originalname": "Meme-Generator.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Meme-Generator\\Meme-Generator.json"
+    },
+    {
+      "fieldname": "parameters",
+      "originalname": "Meme-Generator-user-editable-parameters.json",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Meme-Generator\\Meme-Generator-user-editable-parameters.json"
+    },
+    {
+      "fieldname": "preview",
+      "originalname": "Meme-Generator.png",
+      "path": "E:\\Projects\\Work\\AI Project\\Comfyui-workflow-ux\\docs\\workflow\\Meme-Generator\\Meme-Generator.png"
+    }
+  ]
+}
+
+[2025-03-23T15:03:27.245Z] Validating workflow files
+
+[2025-03-23T15:03:27.248Z] Clean workflow name created
+{
+  "workflowName": "Meme-Generator"
+}
+
+[2025-03-23T15:03:27.251Z] Files moved successfully
+{
+  "movedFiles": {
+    "workflow": "Meme-Generator",
+    "parameters": "Meme-Generator",
+    "preview": "Meme-Generator"
+  }
+}
+
+[2025-03-23T15:03:27.252Z] Using manifest path
+{
+  "manifestPath": "Meme-Generator"
+}
+
+[2025-03-23T15:03:27.252Z] Creating workflow in database
+{
+  "dto": {
+    "title": "Meme-Generator",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Meme-Generator",
+      "parameters": "Meme-Generator",
+      "preview": "Meme-Generator"
+    }
+  }
+}
+
+[2025-03-23T15:03:27.253Z] Generated clean workflow name
+{
+  "original": "Meme-Generator",
+  "cleaned": "Meme-Generator"
+}
+
+[2025-03-23T15:03:27.253Z] Inserting workflow document
+{
+  "workflow": {
+    "id": "67e022bf64358cf8f377c05f",
+    "title": "Meme-Generator",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Meme-Generator",
+      "parameters": "Meme-Generator",
+      "preview": "Meme-Generator"
+    },
+    "created": "2025-03-23T15:03:27.253Z",
+    "modified": "2025-03-23T15:03:27.253Z",
+    "metadata": {}
+  }
+}
+
+[2025-03-23T15:03:27.258Z] Starting manifest update
+{
+  "workflowId": "67e022bf64358cf8f377c05f"
+}
+
+[2025-03-23T15:03:27.262Z] Current manifest content
+{
+  "manifest": {
+    "workflows": [
+      {
+        "id": "67e0085bccef9a1c5bf5eb8e",
+        "path": "Landscape-in-a-bottle"
+      }
+    ]
+  }
+}
+
+[2025-03-23T15:03:27.263Z] Processed workflow name for manifest
+{
+  "original": "Meme-Generator",
+  "processed": "Meme-Generator"
+}
+
+[2025-03-23T15:03:27.263Z] Adding new manifest entry
+
+[2025-03-23T15:03:27.270Z] Writing updated manifest
+{
+  "updatedManifest": {
+    "workflows": [
+      {
+        "id": "67e0085bccef9a1c5bf5eb8e",
+        "path": "Landscape-in-a-bottle"
+      },
+      {
+        "id": "67e022bf64358cf8f377c05f",
+        "path": "Meme-Generator"
+      }
+    ]
+  }
+}
+
+[2025-03-23T15:03:27.272Z] Workflow created in database
+{
+  "workflow": {
+    "id": "67e022bf64358cf8f377c05f",
+    "title": "Meme-Generator",
+    "description": "",
+    "version": "1.0.0",
+    "files": {
+      "workflow": "Meme-Generator",
+      "parameters": "Meme-Generator",
+      "preview": "Meme-Generator"
+    },
+    "created": "2025-03-23T15:03:27.253Z",
+    "modified": "2025-03-23T15:03:27.253Z",
+    "metadata": {},
+    "_id": "67e022bf64358cf8f377c060"
+  }
+}
+
