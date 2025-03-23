@@ -11,9 +11,21 @@ export class WorkflowBrowser {
         this.selectedWorkflow = null;
         this.workflows = [];
         this.modalElement = null;
+        this.deleteConfirmModal = null;
+        this.workflowToDelete = null;
         this.onWorkflowSelectedCallback = null;
         this.container = containerElement;
         this.modalElement = modalElement;
+        // Initialize delete confirmation modal
+        const deleteModalElement = document.getElementById('deleteWorkflowModal');
+        if (deleteModalElement) {
+            this.deleteConfirmModal = new window.bootstrap.Modal(deleteModalElement);
+            // Set up delete confirmation button handler
+            const confirmDeleteBtn = document.getElementById('confirmDeleteWorkflow');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', () => this.handleDeleteConfirm());
+            }
+        }
     }
     /**
      * Get the currently selected workflow
@@ -163,11 +175,68 @@ export class WorkflowBrowser {
         }
     }
     /**
+     * Handle confirmed workflow deletion
+     */
+    async handleDeleteConfirm() {
+        var _a;
+        if (!this.workflowToDelete)
+            return;
+        try {
+            // Send delete request to server
+            const response = await fetch(`/api/workflows/${this.workflowToDelete}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                let errorMessage;
+                try {
+                    const error = await response.json();
+                    errorMessage = error.message || 'Failed to delete workflow';
+                }
+                catch (_b) {
+                    // If response is not JSON or is empty, use status text
+                    errorMessage = response.statusText || `Server returned ${response.status}`;
+                }
+                throw new Error(errorMessage);
+            }
+            // Remove workflow from local array
+            this.workflows = this.workflows.filter(w => w.id !== this.workflowToDelete);
+            // If this was the selected workflow, clear selection
+            if (this.selectedWorkflow === this.workflowToDelete) {
+                this.selectedWorkflow = null;
+            }
+            // Hide delete confirmation modal
+            (_a = this.deleteConfirmModal) === null || _a === void 0 ? void 0 : _a.hide();
+            // Re-render workflows
+            this.renderWorkflows();
+        }
+        catch (error) {
+            console.error('Error deleting workflow:', error);
+            alert(`Failed to delete workflow: ${error instanceof Error ? error.message : String(error)}`);
+        }
+        finally {
+            this.workflowToDelete = null;
+        }
+    }
+    /**
+     * Prompt for workflow deletion
+     */
+    confirmDelete(workflowId, workflowTitle) {
+        var _a;
+        this.workflowToDelete = workflowId;
+        // Update modal content with workflow name
+        const workflowNameElement = document.getElementById('deleteWorkflowName');
+        if (workflowNameElement) {
+            workflowNameElement.textContent = workflowTitle;
+        }
+        // Show the modal
+        (_a = this.deleteConfirmModal) === null || _a === void 0 ? void 0 : _a.show();
+    }
+    /**
      * Render the workflows in the container as cards
      */
     renderWorkflows() {
         this.container.innerHTML = "";
-        this.workflows.forEach((workflow, index) => {
+        this.workflows.forEach((workflow) => {
             const card = document.createElement("div");
             card.classList.add("card", "workflow-card");
             if (workflow.id === this.selectedWorkflow) {
@@ -181,17 +250,33 @@ export class WorkflowBrowser {
             </div>
           </div>
           <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">${workflow.title}</h5>
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h5 class="card-title mb-0">${workflow.title}</h5>
+                <button class="btn btn-sm btn-outline-danger delete-workflow" title="Delete workflow">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
               <p class="card-text">${workflow.description}</p>
             </div>
           </div>
         </div>
       `;
-            // Make the entire card clickable
-            card.addEventListener("click", () => {
-                this.selectWorkflow(workflow.id);
+            // Add click handlers
+            card.addEventListener("click", (e) => {
+                // Don't select workflow if delete button was clicked
+                if (!e.target.closest('.delete-workflow')) {
+                    this.selectWorkflow(workflow.id);
+                }
             });
+            // Add delete button handler
+            const deleteBtn = card.querySelector('.delete-workflow');
+            if (deleteBtn) {
+                deleteBtn.addEventListener("click", (e) => {
+                    e.stopPropagation(); // Prevent card selection
+                    this.confirmDelete(workflow.id, workflow.title);
+                });
+            }
             this.container.appendChild(card);
         });
     }
@@ -207,7 +292,8 @@ export class WorkflowBrowser {
             // Update UI to show which workflow is selected
             const cards = this.container.querySelectorAll(".workflow-card");
             cards.forEach(card => {
-                if (card.querySelector(`.card-title`)?.textContent === selectedWorkflowMetadata.title) {
+                var _a;
+                if (((_a = card.querySelector(`.card-title`)) === null || _a === void 0 ? void 0 : _a.textContent) === selectedWorkflowMetadata.title) {
                     card.classList.add("selected");
                 }
                 else {

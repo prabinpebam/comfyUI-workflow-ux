@@ -1,6 +1,10 @@
 {
   "workflows": [
     {
+      "id": "67df03cc152df32385e12257",
+      "path": "Meme-generator.json"
+    },
+    {
       "id": "landscape-in-a-bottle",
       "path": "landscape-in-a-bottle"
     },

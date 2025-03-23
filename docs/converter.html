@@ -133,6 +133,7 @@
               </label>
             </div>
             <button id="exportBtn" class="btn btn-sm btn-outline-secondary">Export JSON</button>
+            <button id="addWorkflowBtn" class="btn btn-sm btn-primary ms-2">Add Workflow</button>
           </div>
         </div>
         <div id="output-container" class="scrollable">
@@ -162,6 +163,41 @@
     </div>
   </div>
   
+  <!-- Upload Progress Modal -->
+  <div class="modal fade" id="uploadProgressModal" tabindex="-1" aria-labelledby="uploadProgressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadProgressModalLabel">Uploading Workflow</h5>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+          </div>
+          <p id="uploadStatus" class="mt-2">Preparing files...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Success</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Workflow has been successfully added!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- jQuery, Bootstrap JS, Ace Editor, and custom JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -120,11 +120,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Show error modal with a given message
   function showErrorModal(message: string) {
-    const messageElement = document.getElementById("errorModalMessage");
-    if (messageElement) {
-      messageElement.textContent = message;
+    const modalElement = document.getElementById('errorModal');
+    if (modalElement) {
+      const messageElement = modalElement.querySelector('#errorModalMessage');
+      if (messageElement) {
+        messageElement.textContent = message;
+      }
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
+    } else {
+      alert(message); // Fallback if modal element not found
     }
-    ($ as any)("#errorModal").modal("show");
   }
 
   // Initial rendering on page load
@@ -292,6 +298,82 @@ document.addEventListener('DOMContentLoaded', function() {
         converter.downloadZip(zipBlob, zipFileName);
       } catch (error) {
         showErrorModal(`Error exporting workflow: ${error instanceof Error ? error.message : String(error)}`);
+      }
+    });
+  }
+
+  // Add Workflow functionality
+  const addWorkflowBtn = document.getElementById("addWorkflowBtn");
+  if (addWorkflowBtn) {
+    addWorkflowBtn.addEventListener("click", async function() {
+      try {
+        // Validate required fields
+        const workflowTitle = (document.getElementById("workflowTitle") as HTMLInputElement)?.value.trim();
+        if (!workflowTitle) {
+          throw new Error('Workflow title is required');
+        }
+
+        // Show upload progress modal
+        const uploadProgressModal = new (window as any).bootstrap.Modal(document.getElementById('uploadProgressModal'));
+        uploadProgressModal.show();
+
+        // Get the files
+        const workflowJson = editor.getValue();
+        const parametersJson = outputEditor.getValue();
+
+        // Create safe title for folder and file names
+        const safeTitle = workflowTitle.replace(/\s+/g, '-');
+
+        // Create form data
+        const formData = new FormData();
+        formData.append('title', workflowTitle);
+        formData.append('description', (document.getElementById("workflowDescription") as HTMLTextAreaElement)?.value || '');
+        formData.append('version', '1.0.0');
+
+        // Add workflow files with consistent naming
+        const workflowBlob = new Blob([workflowJson], { type: 'application/json' });
+        formData.append('workflow', workflowBlob, `${safeTitle}.json`);
+
+        const parametersBlob = new Blob([parametersJson], { type: 'application/json' });
+        formData.append('parameters', parametersBlob, `${safeTitle}-user-editable-parameters.json`);
+
+        // Add preview image if available
+        if (workflowImageFile) {
+          const ext = workflowImageFile.name.substring(workflowImageFile.name.lastIndexOf('.'));
+          const imageFileName = `${safeTitle}${ext}`;
+          formData.append('preview', workflowImageFile, imageFileName);
+        }
+
+        // Upload to server
+        const response = await fetch('/api/workflows', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to upload workflow');
+        }
+
+        // Hide progress modal
+        uploadProgressModal.hide();
+
+        // Show success modal
+        const successModal = new (window as any).bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+
+        // Clear the workflow image
+        workflowImageFile = null;
+        const dropArea = document.getElementById("workflowImageDropArea");
+        if (dropArea) {
+          const span = dropArea.querySelector('span');
+          if (span) {
+            span.textContent = 'Drag & drop image here';
+          }
+          dropArea.style.backgroundImage = '';
+        }
+      } catch (error) {
+        showErrorModal(`Error adding workflow: ${error instanceof Error ? error.message : String(error)}`);
       }
     });
   }

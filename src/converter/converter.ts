@@ -266,16 +266,22 @@ export class WorkflowConverter {
       }
       const manifest: ManifestData = await response.json();
 
+      // Normalize the workflowId by removing any file extension or path separators
+      const normalizedId = workflowId.replace(/\.[^/.]+$/, "").replace(/[/\\]/g, "-");
+
       // Check if workflow already exists
-      const existingIndex = manifest.workflows.findIndex(w => w.id === workflowId);
+      const existingIndex = manifest.workflows.findIndex(w => w.id === normalizedId);
       if (existingIndex >= 0) {
-        // Update existing entry
-        manifest.workflows[existingIndex].path = workflowId;
+        // Update existing entry with consistent path format
+        manifest.workflows[existingIndex] = {
+          id: normalizedId,
+          path: normalizedId
+        };
       } else {
-        // Add new entry
+        // Add new entry with consistent path format
         manifest.workflows.push({
-          id: workflowId,
-          path: workflowId
+          id: normalizedId,
+          path: normalizedId
         });
       }
 

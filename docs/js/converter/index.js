@@ -103,11 +103,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Show error modal with a given message
     function showErrorModal(message) {
-        const messageElement = document.getElementById("errorModalMessage");
-        if (messageElement) {
-            messageElement.textContent = message;
+        const modalElement = document.getElementById('errorModal');
+        if (modalElement) {
+            const messageElement = modalElement.querySelector('#errorModalMessage');
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+            const modal = new window.bootstrap.Modal(modalElement);
+            modal.show();
         }
-        $("#errorModal").modal("show");
+        else {
+            alert(message); // Fallback if modal element not found
+        }
     }
     // Initial rendering on page load
     updateAll();
@@ -134,17 +141,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         // Handle drop event
         dropArea.addEventListener("drop", function (e) {
+            var _a;
             e.preventDefault();
             e.stopPropagation();
             dropArea.style.borderColor = "#ccc";
-            if (e.dataTransfer?.files.length && e.dataTransfer.files.length > 0) {
+            if (((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.files.length) && e.dataTransfer.files.length > 0) {
                 const file = e.dataTransfer.files[0];
                 // Only accept image files
                 if (file.type.startsWith("image/")) {
                     workflowImageFile = file; // Store the file globally
                     const reader = new FileReader();
                     reader.onload = function (event) {
-                        if (event.target?.result) {
+                        var _a;
+                        if ((_a = event.target) === null || _a === void 0 ? void 0 : _a.result) {
                             // Set the drop area's background to the image preview
                             dropArea.style.backgroundImage = `url(${event.target.result})`;
                             dropArea.style.backgroundSize = "cover";
@@ -185,9 +194,10 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
     });
     document.addEventListener("drop", function (e) {
+        var _a;
         e.preventDefault();
         e.stopPropagation();
-        if (e.dataTransfer?.files.length && e.dataTransfer.files.length > 0) {
+        if (((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.files.length) && e.dataTransfer.files.length > 0) {
             handleFile(e.dataTransfer.files[0]);
         }
     });
@@ -199,7 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const reader = new FileReader();
         reader.onload = function (event) {
-            if (event.target?.result) {
+            var _a;
+            if ((_a = event.target) === null || _a === void 0 ? void 0 : _a.result) {
                 const fileContent = event.target.result;
                 try {
                     JSON.parse(fileContent); // Validate JSON
@@ -226,17 +237,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const exportBtn = document.getElementById("exportBtn");
     if (exportBtn) {
         exportBtn.addEventListener("click", async function () {
+            var _a;
             try {
                 // Get workflow title from the input and sanitize it
                 const workflowTitleInput = document.getElementById("workflowTitle");
-                const workflowTitle = workflowTitleInput?.value.trim() || "workflow";
+                const workflowTitle = (workflowTitleInput === null || workflowTitleInput === void 0 ? void 0 : workflowTitleInput.value.trim()) || "workflow";
                 const safeTitle = workflowTitle.replace(/\s+/g, '-');
                 // Get the output JSON from the output editor
                 const outputJsonStr = outputEditor.getValue();
                 // Get the input JSON from the input editor
                 const inputJsonStr = editor.getValue();
                 // Check if we should include manifest
-                const includeManifest = document.getElementById("includeManifest")?.checked;
+                const includeManifest = (_a = document.getElementById("includeManifest")) === null || _a === void 0 ? void 0 : _a.checked;
                 // Create ZIP file with the workflow files
                 const zipBlob = await converter.createWorkflowZip(inputJsonStr, outputJsonStr, workflowTitle, workflowImageFile || undefined, includeManifest);
                 // Download the ZIP file
@@ -245,6 +257,71 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             catch (error) {
                 showErrorModal(`Error exporting workflow: ${error instanceof Error ? error.message : String(error)}`);
+            }
+        });
+    }
+    // Add Workflow functionality
+    const addWorkflowBtn = document.getElementById("addWorkflowBtn");
+    if (addWorkflowBtn) {
+        addWorkflowBtn.addEventListener("click", async function () {
+            var _a, _b;
+            try {
+                // Validate required fields
+                const workflowTitle = (_a = document.getElementById("workflowTitle")) === null || _a === void 0 ? void 0 : _a.value.trim();
+                if (!workflowTitle) {
+                    throw new Error('Workflow title is required');
+                }
+                // Show upload progress modal
+                const uploadProgressModal = new window.bootstrap.Modal(document.getElementById('uploadProgressModal'));
+                uploadProgressModal.show();
+                // Get the files
+                const workflowJson = editor.getValue();
+                const parametersJson = outputEditor.getValue();
+                // Create safe title for folder and file names
+                const safeTitle = workflowTitle.replace(/\s+/g, '-');
+                // Create form data
+                const formData = new FormData();
+                formData.append('title', workflowTitle);
+                formData.append('description', ((_b = document.getElementById("workflowDescription")) === null || _b === void 0 ? void 0 : _b.value) || '');
+                formData.append('version', '1.0.0');
+                // Add workflow files with consistent naming
+                const workflowBlob = new Blob([workflowJson], { type: 'application/json' });
+                formData.append('workflow', workflowBlob, `${safeTitle}.json`);
+                const parametersBlob = new Blob([parametersJson], { type: 'application/json' });
+                formData.append('parameters', parametersBlob, `${safeTitle}-user-editable-parameters.json`);
+                // Add preview image if available
+                if (workflowImageFile) {
+                    const ext = workflowImageFile.name.substring(workflowImageFile.name.lastIndexOf('.'));
+                    const imageFileName = `${safeTitle}${ext}`;
+                    formData.append('preview', workflowImageFile, imageFileName);
+                }
+                // Upload to server
+                const response = await fetch('/api/workflows', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Failed to upload workflow');
+                }
+                // Hide progress modal
+                uploadProgressModal.hide();
+                // Show success modal
+                const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+                // Clear the workflow image
+                workflowImageFile = null;
+                const dropArea = document.getElementById("workflowImageDropArea");
+                if (dropArea) {
+                    const span = dropArea.querySelector('span');
+                    if (span) {
+                        span.textContent = 'Drag & drop image here';
+                    }
+                    dropArea.style.backgroundImage = '';
+                }
+            }
+            catch (error) {
+                showErrorModal(`Error adding workflow: ${error instanceof Error ? error.message : String(error)}`);
             }
         });
     }

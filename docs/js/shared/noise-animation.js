@@ -593,9 +593,10 @@ export class NoiseAnimation {
         return { h: 0, s: 70, l: 80 };
     }
     findNearestRipple(x, y) {
+        var _a;
         if (this.ripples.length === 0)
             return null;
-        return this.ripples.reduce((nearest, ripple) => {
+        return ((_a = this.ripples.reduce((nearest, ripple) => {
             const dx = ripple.x - x;
             const dy = ripple.y - y;
             const distSq = dx * dx + dy * dy;
@@ -603,7 +604,7 @@ export class NoiseAnimation {
                 return { ripple, distSq };
             }
             return nearest;
-        }, null)?.ripple || null;
+        }, null)) === null || _a === void 0 ? void 0 : _a.ripple) || null;
     }
     /**
      * Draw noise image onto composite canvas
@@ -654,6 +655,7 @@ export class NoiseAnimation {
      * Get color from gradient based on position (0-1)
      */
     getGradientColor(position) {
+        var _a, _b;
         const p = position * 100;
         // Find the surrounding colors
         const lower = this.colorGradient.reduce((prev, curr) => curr.position <= p ? curr : prev, this.colorGradient[0]);
@@ -667,8 +669,8 @@ export class NoiseAnimation {
         const range = upper.position - lower.position;
         const factor = (p - lower.position) / range;
         // Parse colors to interpolate
-        const color1 = lower.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
-        const color2 = upper.color.match(/\d+/g)?.map(Number) || [0, 0, 0];
+        const color1 = ((_a = lower.color.match(/\d+/g)) === null || _a === void 0 ? void 0 : _a.map(Number)) || [0, 0, 0];
+        const color2 = ((_b = upper.color.match(/\d+/g)) === null || _b === void 0 ? void 0 : _b.map(Number)) || [0, 0, 0];
         // Return interpolated color
         return `hsl(${Math.round(color1[0] + (color2[0] - color1[0]) * factor)}, 70%, 80%)`;
     }

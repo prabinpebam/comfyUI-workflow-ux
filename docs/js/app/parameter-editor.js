@@ -187,10 +187,11 @@ export class ParameterEditor {
             dropArea.classList.remove("border-primary");
         });
         dropArea.addEventListener("drop", (e) => {
+            var _a;
             e.preventDefault();
             dropArea.style.borderColor = "#ccc";
             dropArea.classList.remove("border-primary");
-            if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+            if (((_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.files) && e.dataTransfer.files.length > 0) {
                 this.handleEditableFile(e.dataTransfer.files[0], nodeId, inputKey, fieldId);
             }
         });
@@ -234,13 +235,14 @@ export class ParameterEditor {
      * Handle file upload for editable image fields
      */
     async handleEditableFile(file, nodeId, inputKey, fieldId) {
+        var _a;
         const previewImg = document.getElementById(`preview-${fieldId}`);
         const fileInput = document.getElementById(`fileInput-${fieldId}`);
         const dropArea = document.getElementById(`dropArea-${fieldId}`);
         const uploadStatus = document.getElementById(`status-${fieldId}`);
         // Safely get elements, using optional chaining and null checks
         const instructionEl = dropArea.querySelector(".text-secondary");
-        const iconEl = dropArea.querySelector("svg")?.parentElement;
+        const iconEl = (_a = dropArea.querySelector("svg")) === null || _a === void 0 ? void 0 : _a.parentElement;
         try {
             // Show loading state in the upload status element
             if (uploadStatus) {

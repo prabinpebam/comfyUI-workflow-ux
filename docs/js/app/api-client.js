@@ -149,8 +149,9 @@ export class APIClient {
      * @param workflow - The current workflow with node information
      */
     extractGeneratedImagesInfo(historyData, workflow) {
+        var _a;
         let allImages = [];
-        if (!this.promptId || !historyData[this.promptId]?.outputs) {
+        if (!this.promptId || !((_a = historyData[this.promptId]) === null || _a === void 0 ? void 0 : _a.outputs)) {
             return allImages;
         }
         const outputs = historyData[this.promptId].outputs;
