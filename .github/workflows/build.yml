@@ -22,14 +22,21 @@ jobs:
         
       - name: Build production files
         run: |
-          rimraf dist
+          # Clean and create directories
+          rm -rf dist
           mkdir -p dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server
+          
+          # Build TypeScript
           npm run build:prod:server
           npm run build:prod:browser
+          
+          # Copy static files
           npm run copy:assets
           npm run copy:html
+          npm run copy:package
+          
+          # Copy workflow files directly
           cp -r docs/workflow/* dist/public/workflow/ || echo "No workflow files to copy"
-          cp package.json dist/
         env:
           NODE_ENV: production
           
