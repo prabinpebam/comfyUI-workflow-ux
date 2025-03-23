@@ -12,13 +12,13 @@
     "build": "npm run build:dev",
     "build:dev": "tsc && tsc --project tsconfig.browser.json",
     "build:prod": "rimraf dist && npm run build:prod:dirs && npm run build:prod:server && npm run build:prod:browser && npm run build:prod:static",
-    "build:prod:dirs": "mkdir -p dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server",
+    "build:prod:dirs": "mkdirp dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server",
     "build:prod:server": "tsc -p tsconfig.prod.json",
     "build:prod:browser": "tsc -p tsconfig.prod.browser.json",
     "build:prod:static": "npm run copy:assets && npm run copy:html && npm run copy:workflow && npm run copy:package",
     "copy:assets": "copyfiles \"docs/{css,icons,images,lib}/**/*\" dist/public/",
     "copy:html": "copyfiles \"docs/*.html\" dist/public/",
-    "copy:workflow": "copyfiles -f \"docs/workflow/**/*\" dist/public/workflow/",
+    "copy:workflow": "copyfiles \"docs/workflow/**/*\" dist/public/workflow/",
     "copy:package": "copyfiles package.json dist/"
   },
   "keywords": [],
@@ -46,6 +46,7 @@
     "@types/proper-lockfile": "^4.1.4",
     "concurrently": "^8.2.2",
     "copyfiles": "^2.4.1",
+    "mkdirp": "^3.0.1",
     "rimraf": "^5.0.10",
     "typescript": "^5.8.2"
   }
