@@ -9,12 +9,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "start-dev.bat",
-    "build": "npm run build:prod",
+    "build": "npm run build:dev",
     "build:dev": "tsc && tsc --project tsconfig.browser.json",
-    "build:prod": "cross-env NODE_ENV=production tsc -p tsconfig.prod.json",
-    "test": "jest",
-    "serve": "npx http-server docs -o -c-1 --mimetypes mime.types",
-    "watch": "concurrently \"tsc --watch\" \"tsc --project tsconfig.browser.json --watch\"",
+    "build:prod": "tsc && tsc --project tsconfig.browser.json",
     "postinstall": "npm run build"
   },
   "keywords": [],
