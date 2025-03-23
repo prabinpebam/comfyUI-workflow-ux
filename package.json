@@ -7,11 +7,14 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc && tsc --project tsconfig.browser.json",
-    "watch": "concurrently \"tsc --watch\" \"tsc --project tsconfig.browser.json --watch\"",
-    "serve": "npx http-server docs -o -c-1 --mimetypes mime.types",
     "start": "node server.js",
-    "dev": "concurrently \"npm run watch\" \"npm run serve\"",
+    "dev": "start-dev.bat",
+    "build": "npm run build:prod",
+    "build:dev": "tsc && tsc --project tsconfig.browser.json",
+    "build:prod": "cross-env NODE_ENV=production tsc -p tsconfig.prod.json",
+    "test": "jest",
+    "serve": "npx http-server docs -o -c-1 --mimetypes mime.types",
+    "watch": "concurrently \"tsc --watch\" \"tsc --project tsconfig.browser.json --watch\"",
     "postinstall": "npm run build"
   },
   "keywords": [],
