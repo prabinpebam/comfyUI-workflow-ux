@@ -40,19 +40,31 @@ jobs:
           MONGODB_USER: ${{ secrets.MONGODB_USER }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: |
-          # Create dist directories
+          # Clean and create dist directories
+          rm -rf dist
           mkdir -p dist/server
-          mkdir -p dist.public
-          mkdir -p dist/docs/workflow
+          mkdir -p dist/public/js
+          mkdir -p dist/public/css
+          mkdir -p dist/public/lib
+          mkdir -p dist/public/workflow
           
           # Build server and browser code
-          npm run build:prod
+          npm run build:prod:server
+          npm run build:prod:browser
           
-          # Copy static files and configs
-          cp -r docs/workflow/* dist/docs/workflow/
-          [ -d "public" ] && cp -r public/* dist/public/ || echo "No public directory"
-          cp package*.json dist/
-          cp web.config dist/ || echo "No web.config file"
+          # Copy static assets (HTML, CSS, JS libraries)
+          cp -r docs/*.html dist/public/
+          cp -r docs/css dist/public/
+          cp -r docs/icons dist/public/
+          cp -r docs/images dist/public/
+          cp -r docs/lib dist/public/
+          
+          # Copy workflow files directly (fixing the problematic path)
+          cp -r docs/workflow/* dist/public/workflow/ || echo "No workflow files to copy"
+          
+          # Copy other configurations
+          cp package.json dist/
+          [ -f "web.config" ] && cp web.config dist/ || echo "No web.config file"
 
       - name: Zip artifact
         run: cd dist && zip -r ../release.zip ./*
