@@ -1,0 +1,53 @@
+{
+  "name": "comfyui-workflow-ux",
+  "version": "1.0.0",
+  "description": "This project is a web application that allows users to generate and set a custom background image for a new browser tab. The application provides a user-friendly interface for uploading an image, generating a stylized background, and setting it as the background for the new tab.\r The image generation is done using ComfyUI which is running in the background.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node dist/server/index.js",
+    "dev": "start-dev.bat",
+    "build": "npm run build:dev",
+    "build:dev": "tsc && tsc --project tsconfig.browser.json",
+    "build:prod": "rimraf dist && npm run build:prod:dirs && npm run build:prod:server && npm run build:prod:browser && npm run build:prod:static",
+    "build:prod:dirs": "mkdirp dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server",
+    "build:prod:server": "tsc -p tsconfig.prod.json",
+    "build:prod:browser": "tsc -p tsconfig.prod.browser.json",
+    "build:prod:static": "npm run copy:assets && npm run copy:html && npm run copy:workflow && npm run copy:package",
+    "copy:assets": "copyfiles \"docs/{css,icons,images,lib}/**/*\" dist/public/",
+    "copy:html": "copyfiles \"docs/*.html\" dist/public/",
+    "copy:workflow": "bash -c \"mkdir -p dist/public/workflow && cp -r docs/workflow/* dist/public/workflow/ || echo No workflow files to copy\"",
+    "copy:package": "copyfiles package.json dist/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22.13.11",
+    "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "http-server": "^14.1.1",
+    "mongodb": "^6.15.0",
+    "multer": "^1.4.5-lts.1",
+    "proper-lockfile": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/ace": "^0.0.52",
+    "@types/bootstrap": "^5.2.10",
+    "@types/express": "^4.17.21",
+    "@types/jquery": "^3.5.32",
+    "@types/multer": "^1.4.12",
+    "@types/proper-lockfile": "^4.1.4",
+    "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^5.0.10",
+    "typescript": "^5.8.2"
+  }
+}

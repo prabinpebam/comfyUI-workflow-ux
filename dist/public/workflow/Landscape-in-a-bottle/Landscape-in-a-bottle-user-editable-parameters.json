@@ -1,0 +1,39 @@
+{
+  "3": {
+    "inputs": {
+      "seed": {
+        "value": 156680208700286,
+        "selectedType": "Number",
+        "label": "seed"
+      }
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": {
+        "value": 1024,
+        "selectedType": "Number",
+        "label": "Width"
+      },
+      "height": {
+        "value": 1024,
+        "selectedType": "Number",
+        "label": "Height"
+      }
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": {
+        "value": "beautiful scenery nature glass bottle landscape, , purple galaxy bottle,",
+        "selectedType": "String",
+        "label": "Prompt"
+      }
+    }
+  },
+  "workflowDetails": {
+    "title": "Landscape in a bottle",
+    "image": "Landscape-in-a-bottle.png",
+    "description": "Default comfyUI workflow"
+  }
+}

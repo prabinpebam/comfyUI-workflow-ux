@@ -1,0 +1,310 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background-image: url(./../images/bg-light.png);
+}
+
+/* Style for drag and drop area */
+#node169DropArea {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* Wrapper for the generated grid */
+#gridWrapper {
+  max-width: 50vw;
+  min-width: 400px;
+  margin: 0 auto;
+}
+
+/* Grid for images */
+#imagesContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  width: 526px;
+}
+
+#noiseAnimationContainer {
+  width: 600px;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#noiseCanvas {
+  width: 600px;
+  height: 600px;
+  border-radius: 8px;  
+}
+
+/* Right pane */
+#rightPane {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  max-width: 600px;
+  width: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1050;
+}
+
+#rightPane.show {
+  transform: translateX(0);
+}
+
+/* Left parameter editing pane */
+.left-pane {
+  width: 600px;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #dee2e6;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+}
+
+.parameter-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 70px; /* Space for the sticky bottom */
+  margin-bottom: 60px;
+}
+
+.sticky-bottom {
+  background-color: white;
+  border-top: 1px solid #dee2e6;
+  position: sticky;
+  bottom: 0;
+}
+
+/* Main content area for generated images */
+.main-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Workflow selection modal */
+.workflow-container {
+  max-height: 70vh;
+  overflow-y: auto;
+  display: grid;  
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.workflow-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.workflow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.workflow-card.selected {
+  border-color: var(--bs-primary);
+  background-color: rgba(var(--bs-primary-rgb), 0.05);
+}
+
+.workflow-card .delete-workflow {
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.workflow-card:hover .delete-workflow {
+  opacity: 1;
+}
+
+.workflow-card .delete-workflow:hover {
+  background-color: var(--bs-danger);
+  color: white;
+}
+
+.workflow-card .square-img-container {
+  position: relative;
+  padding-bottom: 100%;
+  height: 0;
+  overflow: hidden;
+}
+
+.workflow-card .square-img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Image upload/display areas */
+.image-upload-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.image-upload-area:hover {
+  border-color: var(--bs-primary);
+}
+
+.image-upload-area img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Generated images grid */
+#generatedImagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+#generatedImagesGrid img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+#generatedImagesGrid img:hover {
+  transform: scale(1.03);
+}
+
+/* Lightbox for image preview */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  user-select: none;
+  cursor: grab;
+}
+
+.lightbox img:active {
+  cursor: grabbing;
+}
+
+#closeLightbox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2010;
+  cursor: pointer;
+}
+
+#prevImage, #nextImage {
+  position: fixed;
+  top: 50vh;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2010;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: background-color 0.2s ease;
+}
+
+#prevImage {
+  left: 32px;
+}
+
+#nextImage {
+  right: 32px;
+}
+
+#prevImage:hover, #nextImage:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+#prevImage i, #nextImage i {
+  font-size: 24px;
+  color: #000;
+}
+
+.lightbox-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Progress display */
+#progressStatus {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: var(--bs-secondary);
+}
+

@@ -4,11 +4,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Build outputs
-dist/
-build/
-*.js.map
-
 # Azure deployment files
 azure-automation-template/
 *.publishsettings

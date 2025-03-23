@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workflow editable parameters</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent body-level scrolling */
+    }
+    /* Full viewport height container */
+    .full-height {
+      height: 100vh;
+    }
+    /* Column header: flex container with space-between */
+    .column-header {
+      background-color: #f8f9fa;
+      padding: 10px;
+      font-weight: bold;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .column-header label{
+      font-weight: normal;
+    }
+
+    /* Each column uses flex-column so header remains fixed */
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    /* Scrollable area fills remaining space and scrolls independently */
+    .scrollable {
+      flex: 1;
+      overflow-y: auto;
+    }
+    /* Extra options: fixed 150px width, 20px left padding, arranged in one row */
+    .extra-options {
+      padding-left: 20px;
+      width: 300px;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+    }
+    li.d-flex:hover .extra-options,
+    li.d-flex.persist .extra-options {
+      visibility: visible;
+    }
+    .extra-options select {
+      flex: 1;
+    }
+    /* Ensure each list item has a minimum height */
+    li.d-flex {
+      min-height: 56px;
+    }
+    /* Inverted (persisted) styles for various Bootstrap contextual classes */
+    li.d-flex.persist.list-group-item-success {
+      background-color: #218838 !important;
+      color: #fff !important;
+    }
+    li.d-flex.persist.list-group-item-warning {
+      background-color: #d39e00 !important;
+      color: #fff !important;
+    }
+    li.d-flex.persist.list-group-item-info {
+      background-color: #117a8b !important;
+      color: #fff !important;
+    }
+    li.d-flex.persist:not(.list-group-item-success):not(.list-group-item-warning):not(.list-group-item-info) {
+      background-color: #343a40 !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid full-height">
+    <div class="row h-100">
+      <!-- Left Column: ComfyUI workflow with Upload button in header -->
+      <div class="col-md-4 p-0 flex-column" style="border-right: 1px solid #dee2e6;">
+        <div class="column-header">
+          <span>ComfyUI workflow</span>
+          <button id="uploadBtn" class="btn btn-sm btn-outline-secondary">Upload JSON</button>
+          <input type="file" id="fileInput" accept=".json" style="display: none;">
+        </div>
+        <div id="editor-container" class="scrollable">
+          <div id="editor" style="height: 100%; width: 100%;"></div>
+        </div>
+      </div>
+      <!-- Middle Column: Workflow nodes preview -->
+      <div class="col-md-4 p-0 flex-column" style="border-right: 1px solid #dee2e6;">
+        <div class="column-header">Workflow nodes preview</div>
+        <div id="middleScrollContainer" class="scrollable">
+          <!-- Updated Workflow Section -->
+          <div id="workflowSection" class="p-3">
+            <div class="form-group">
+              <label for="workflowTitle">Workflow Title</label>
+              <input type="text" class="form-control" id="workflowTitle" placeholder="Enter workflow title">
+            </div>
+            <div class="form-group text-center">
+              <label>Workflow Image</label>
+              <div id="workflowImageDropArea" style="border: 2px dashed #ccc; width: 300px; height: 300px; margin: 0 auto; position: relative;">
+                <span id="dropAreaText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #aaa;">
+                  Drag &amp; drop image here
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="workflowDescription">Workflow Description</label>
+              <textarea class="form-control" id="workflowDescription" placeholder="Enter workflow description" rows="3"></textarea>
+            </div>
+          </div>
+          <!-- Existing cards container -->
+          <div id="cards-container" class="p-3"></div>
+        </div>
+      </div>
+
+
+      <!-- Right Column: Output json with Export button in header -->
+      <div class="col-md-4 p-0 flex-column">
+        <div class="column-header">
+          <span>Output json</span>
+          <div class="d-flex align-items-center">
+            <div class="form-check me-2">
+              <input class="form-check-input" type="checkbox" value="" id="includeManifest" checked>
+              <label class="form-check-label" for="includeManifest" data-bs-toggle="tooltip" data-bs-placement="left" title="Includes an updated manifest.json in the ZIP file. You'll need to manually copy this file to your server's workflow directory.">
+                Include updated manifest.json
+                <i class="bi bi-info-circle-fill text-primary ms-1"></i>
+              </label>
+            </div>
+            <button id="exportBtn" class="btn btn-sm btn-outline-secondary">Download JSON</button>
+            <button id="addWorkflowBtn" class="btn btn-sm btn-primary ms-2">Add Workflow</button>
+          </div>
+        </div>
+        <div id="output-container" class="scrollable">
+          <div id="output-editor" style="height: 100%; width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Error Modal -->
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="errorModalLabel" class="modal-title">Error</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="errorModalMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Upload Progress Modal -->
+  <div class="modal fade" id="uploadProgressModal" tabindex="-1" aria-labelledby="uploadProgressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadProgressModalLabel">Uploading Workflow</h5>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+          </div>
+          <p id="uploadStatus" class="mt-2">Preparing files...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Success</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Workflow has been successfully added!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery, Bootstrap JS, Ace Editor, and custom JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+  <!-- JSZip library for zipping files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+  <!-- Updated paths to TypeScript-compiled JavaScript files with type="module" -->
+  <script type="module" src="js/converter/converter.js"></script>
+  <script type="module" src="js/converter/index.js"></script>
+</body>
+</html>
