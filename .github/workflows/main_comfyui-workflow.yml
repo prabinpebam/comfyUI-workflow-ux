@@ -42,15 +42,17 @@ jobs:
         run: |
           # Create dist directories
           mkdir -p dist/server
-          mkdir -p dist/public
+          mkdir -p dist.public
           mkdir -p dist/docs/workflow
           
           # Build server and browser code
           npm run build:prod
           
-          # Copy static files
+          # Copy static files and configs
           cp -r docs/workflow/* dist/docs/workflow/
           [ -d "public" ] && cp -r public/* dist/public/ || echo "No public directory"
+          cp package*.json dist/
+          cp web.config dist/ || echo "No web.config file"
 
       - name: Zip artifact
         run: cd dist && zip -r ../release.zip ./*
@@ -95,3 +97,35 @@ jobs:
           app-name: 'ComfyUI-workflow'
           slot-name: 'Production'
           package: .
+
+      - name: Configure App Settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'ComfyUI-workflow'
+          app-settings-json: |
+            [
+              {
+                "name": "NODE_ENV",
+                "value": "production"
+              },
+              {
+                "name": "MONGODB_USER",
+                "value": "${{ secrets.MONGODB_USER }}"
+              },
+              {
+                "name": "MONGODB_PASSWORD",
+                "value": "${{ secrets.MONGODB_PASSWORD }}"
+              },
+              {
+                "name": "MONGODB_HOST",
+                "value": "${{ secrets.MONGODB_HOST }}"
+              },
+              {
+                "name": "MONGODB_PORT",
+                "value": "${{ secrets.MONGODB_PORT }}"
+              },
+              {
+                "name": "MONGODB_REPLICA_SET",
+                "value": "${{ secrets.MONGODB_REPLICA_SET }}"
+              }
+            ]

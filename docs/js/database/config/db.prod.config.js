@@ -34,43 +34,24 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbConfig = void 0;
-exports.connectToDatabase = connectToDatabase;
-exports.getDb = getDb;
 const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
-const db_prod_config_1 = require("./db.prod.config");
 dotenv.config();
-const isDevelopment = process.env.NODE_ENV !== 'production';
-exports.dbConfig = isDevelopment ? {
-    url: process.env.DATABASE_URL || 'mongodb://localhost:27017/comfyui-workflow-database',
+const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/?ssl=true&replicaSet=${process.env.MONGODB_REPLICA_SET || 'globaldb'}`;
+exports.dbConfig = {
+    url: COSMOS_CONNECTION,
     options: {
         serverApi: {
             version: mongodb_1.ServerApiVersion.v1,
             strict: true,
             deprecationErrors: true,
-        }
+        },
+        ssl: true,
+        replicaSet: process.env.MONGODB_REPLICA_SET || 'globaldb',
+        retryWrites: false,
+        maxIdleTimeMS: 120000,
+        authSource: '$external',
+        authMechanism: 'SCRAM-SHA-256' // Type assertion to make it match AuthMechanism
     }
-} : db_prod_config_1.dbConfig;
-let client = null;
-async function connectToDatabase() {
-    if (client) {
-        return client;
-    }
-    try {
-        client = new mongodb_1.MongoClient(exports.dbConfig.url, exports.dbConfig.options);
-        await client.connect();
-        console.log('Successfully connected to MongoDB.');
-        return client;
-    }
-    catch (err) {
-        console.error('Failed to connect to MongoDB:', err);
-        throw err;
-    }
-}
-async function getDb() {
-    if (!client) {
-        client = await connectToDatabase();
-    }
-    return client.db();
-}
-//# sourceMappingURL=db.config.js.map
+};
+//# sourceMappingURL=db.prod.config.js.map

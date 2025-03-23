@@ -1,0 +1,192 @@
+Connected!
+2025-03-23T18:10:09  Welcome, you are now connected to log-streaming service.Starting Log Tail -n 10 of existing logs ----/home/LogFiles/__lastCheckTime.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/__lastCheckTime.txt)03/23/2025 18:10:06/home/LogFiles/kudu/trace/92f0c8d5f523-11341daf-cf05-4d5b-988d-cdaa3ed097ad.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/92f0c8d5f523-11341daf-cf05-4d5b-988d-cdaa3ed097ad.txt)
+2025-03-23T13:40:45    Outgoing response, type: response, statusCode: 404, statusText: NotFound/home/LogFiles/kudu/trace/92f0c8d5f523-b4ca5669-ab58-4b42-bd63-83fead01c56f.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/92f0c8d5f523-b4ca5669-ab58-4b42-bd63-83fead01c56f.txt)
+2025-03-23T13:32:23  Startup Request, url: /api/deployments/latest?deployer=OneDeploy&time=2025-03-23_13-26-43Z, method: GET, type: request, pid: 823,1,15, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-447e8478-7122df0f-2b7f-43d5-b78d-d89db892bc5a.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-447e8478-7122df0f-2b7f-43d5-b78d-d89db892bc5a.txt)
+2025-03-22T06:45:59  Startup Request, url: /api/deployments/?$orderby=ReceivedTime%20desc&$top=20&api-version=2022-03-01, method: GET, type: request, pid: 823,1,3, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-68e30c7a-1a752f2b-3aa7-414f-9da9-57d688c6beb3.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-68e30c7a-1a752f2b-3aa7-414f-9da9-57d688c6beb3.txt)
+2025-03-23T07:11:59  Startup Request, url: /api/settings, method: GET, type: request, pid: 823,1,5, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-69939183-1742d044-eb96-4e62-973d-863d29e793a8.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-69939183-1742d044-eb96-4e62-973d-863d29e793a8.txt)
+2025-03-23T07:44:23  Startup Request, url: /detectors, method: GET, type: request, pid: 825,1,5, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-887726d6-143a-471b-980b-3faa363b63bc.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-887726d6-143a-471b-980b-3faa363b63bc.txt)
+2025-03-22T06:39:48    Outgoing response, type: response, statusCode: 409, statusText: Conflict/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-98eb7cdd-6b99-4a05-8273-779a5c2e338c.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-98eb7cdd-6b99-4a05-8273-779a5c2e338c.txt)
+2025-03-22T06:39:22    Outgoing response, type: response, statusCode: 409, statusText: Conflict/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-b7beb361-5986-46a6-ae34-832e17dab92b.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-b7beb361-5986-46a6-ae34-832e17dab92b.txt)
+2025-03-22T06:34:40  Startup Request, url: /api/deployments/?$orderby=ReceivedTime%20desc&$top=20&api-version=2022-03-01, method: GET, type: request, pid: 822,1,7, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-b8d8a271-5403-4c42-9a2c-19e9f5af9072.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-b8d8a271-5403-4c42-9a2c-19e9f5af9072.txt)
+2025-03-22T06:40:21    Outgoing response, type: response, statusCode: 409, statusText: Conflict/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-e46cc1d3-03aa-4fde-bb8d-4105a6d89b13.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-e46cc1d3-03aa-4fde-bb8d-4105a6d89b13.txt)
+2025-03-22T06:39:17    Outgoing response, type: response, statusCode: 409, statusText: Conflict/home/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-ed7f2a48-d4b7-4f9d-a290-aec2e842551f.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-a7c39352-ed7f2a48-d4b7-4f9d-a290-aec2e842551f.txt)
+2025-03-22T06:39:31    Outgoing response, type: response, statusCode: 409, statusText: Conflict/home/LogFiles/kudu/trace/comfyui-wo-kudu-b03f25fc-ad5d63c2-759b-4235-8617-ee524e645782.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-b03f25fc-ad5d63c2-759b-4235-8617-ee524e645782.txt)
+2025-03-23T13:26:26  Startup Request, url: /api/settings, method: GET, type: request, pid: 823,1,5, ScmType: GitHubAction/home/LogFiles/kudu/trace/comfyui-wo-kudu-b03f25fc-bfcbb93e-4992-4a8f-bc76-566e4df428da.txt  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/kudu/trace/comfyui-wo-kudu-b03f25fc-bfcbb93e-4992-4a8f-bc76-566e4df428da.txt)
+2025-03-23T13:27:36    Outgoing response, type: response, statusCode: 404, statusText: NotFound/home/LogFiles/2025_03_22_lw0sdlwk0000SV_docker.log  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/2025_03_22_lw0sdlwk0000SV_docker.log)
+2025-03-22T07:34:47.9747577Z Container start method finished after 6132 ms.
+2025-03-22T07:35:33.2195942Z Site startup probe succeeded after 45.1292027 seconds.
+2025-03-22T07:35:33.2763894Z Site started.
+2025-03-22T07:35:33.3295015Z Site is running with deployment version: e53d6e45-b952-434d-8a1e-615c868e0977
+2025-03-22T07:35:53.5018518Z Container is terminating. Grace period: 5 seconds.
+2025-03-22T07:35:53.5709094Z Stop and delete container. Retry count = 0
+2025-03-22T07:35:53.5794417Z Stopping container: f0c54f9e_comfyui-workflow.
+2025-03-22T07:35:53.9412581Z Deleting container: f0c54f9e_comfyui-workflow. Retry count = 0
+2025-03-22T07:35:54.4420187Z Container spec TerminationMessagePolicy  path
+2025-03-22T07:35:54.4506019Z Container is terminated. Total time elapsed: 932 ms./home/LogFiles/2025_03_23_lw0sdlwk0000SV_default_docker.log  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/2025_03_23_lw0sdlwk0000SV_default_docker.log)
+2025-03-23T16:03:50.101090167Z     }
+2025-03-23T16:03:50.101093367Z   }
+2025-03-23T16:03:50.101096567Z }
+2025-03-23T16:03:50.130606033Z npm http fetch GET 200 https://registry.npmjs.org/npm 796ms
+2025-03-23T16:03:50.159721297Z npm notice
+2025-03-23T16:03:50.159777098Z npm notice New major version of npm available! 10.8.2 -> 11.2.0
+2025-03-23T16:03:50.159783798Z npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+2025-03-23T16:03:50.159787798Z npm notice To update run: npm install -g npm@11.2.0
+2025-03-23T16:03:50.159791298Z npm notice/home/LogFiles/2025_03_23_lw0sdlwk0000SV_docker.log  (https://comfyui-workflow-f9gkh0gveshsh6ed.scm.eastus2-01.azurewebsites.net/api/vfs/LogFiles/2025_03_23_lw0sdlwk0000SV_docker.log)
+2025-03-23T16:03:03.623Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_aa41884c. Elapsed time = 35.6921005 sec
+2025-03-23T16:03:21.310Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_aa41884c. Elapsed time = 53.3787659 sec
+2025-03-23T16:03:36.825Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_aa41884c. Elapsed time = 68.8941691 sec
+2025-03-23T16:03:51.171Z ERROR - Container comfyui-workflow_1_aa41884c for site comfyui-workflow has exited, failing site start
+2025-03-23T16:03:51.191Z ERROR - Container comfyui-workflow_1_aa41884c didn't respond to HTTP pings on port: 8080, failing site start. See container logs for debugging.
+2025-03-23T16:03:51.405Z INFO  - Stopping site comfyui-workflow because it failed during startup.
+2025-03-23T18:10:08.302Z INFO  - Starting container for site
+2025-03-23T18:10:08.304Z INFO  - docker run -d --expose=8080 --name comfyui-workflow_1_d9325eeb -e WEBSITE_USE_DIAGNOSTIC_SERVER=true -e WEBSITE_SITE_NAME=ComfyUI-workflow -e WEBSITE_AUTH_ENABLED=False -e PORT=8080 -e WEBSITE_ROLE_INSTANCE_ID=0 -e WEBSITE_HOSTNAME=comfyui-workflow-f9gkh0gveshsh6ed.eastus2-01.azurewebsites.net -e WEBSITE_INSTANCE_ID=dde5c56be0feb606c9726894eeaae8bfec235a4ac8e67bd07775d04483672b60 -e NODE_OPTIONS=--require /agents/nodejs/build/src/Loader.js appsvc/node:20-lts_20250213.3.tuxprod
+2025-03-23T18:10:08.304Z INFO  - Logging is not enabled for this container.Please use https://aka.ms/linux-diagnostics to enable logging to see container logs here.Ending Log Tail of existing logs ---Starting Live Log Stream ---
+2025-03-23T18:10:08.302Z INFO  - Starting container for site
+2025-03-23T18:10:08.304Z INFO  - docker run -d --expose=8080 --name comfyui-workflow_1_d9325eeb -e WEBSITE_USE_DIAGNOSTIC_SERVER=true -e WEBSITE_SITE_NAME=ComfyUI-workflow -e WEBSITE_AUTH_ENABLED=False -e PORT=8080 -e WEBSITE_ROLE_INSTANCE_ID=0 -e WEBSITE_HOSTNAME=comfyui-workflow-f9gkh0gveshsh6ed.eastus2-01.azurewebsites.net -e WEBSITE_INSTANCE_ID=dde5c56be0feb606c9726894eeaae8bfec235a4ac8e67bd07775d04483672b60 -e NODE_OPTIONS=--require /agents/nodejs/build/src/Loader.js appsvc/node:20-lts_20250213.3.tuxprod
+2025-03-23T18:10:08.304Z INFO  - Logging is not enabled for this container.Please use https://aka.ms/linux-diagnostics to enable logging to see container logs here.
+2025-03-23T18:10:13.525Z INFO  - Initiating warmup request to container comfyui-workflow_1_d9325eeb for site comfyui-workflow
+2025-03-23T18:10:31.537Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_d9325eeb. Elapsed time = 18.0122143 sec
+2025-03-23T18:10:49.023Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_d9325eeb. Elapsed time = 35.4989446 sec
+2025-03-23T18:11:04.999Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_d9325eeb. Elapsed time = 51.4750217 sec
+2025-03-23T18:11:20.434Z INFO  - Waiting for response to warmup request for container comfyui-workflow_1_d9325eeb. Elapsed time = 66.9100577 sec
+2025-03-23T18:10:11.651397367Z    _____
+2025-03-23T18:10:11.651480468Z   /  _  \ __________ _________   ____
+2025-03-23T18:10:11.651486768Z  /  /_\  \\___   /  |  \_  __ \_/ __ \
+2025-03-23T18:10:11.651490568Z /    |    \/    /|  |  /|  | \/\  ___/
+2025-03-23T18:10:11.651494568Z \____|__  /_____ \____/ |__|    \___  >
+2025-03-23T18:10:11.651498468Z         \/      \/                  \/
+2025-03-23T18:10:11.651502568Z A P P   S E R V I C E   O N   L I N U X
+2025-03-23T18:10:11.651505968Z
+2025-03-23T18:10:11.651509468Z Documentation: http://aka.ms/webapp-linux
+2025-03-23T18:10:11.651512868Z NodeJS quickstart: https://aka.ms/node-qs
+2025-03-23T18:10:11.651516368Z NodeJS Version : v20.18.1
+2025-03-23T18:10:11.651519768Z Note: Any data outside '/home' is not persisted
+2025-03-23T18:10:11.651523568Z
+2025-03-23T18:10:16.485116596Z Starting OpenBSD Secure Shell server: sshd.
+2025-03-23T18:10:16.543084816Z WEBSITES_INCLUDE_CLOUD_CERTS is not set to true.
+2025-03-23T18:10:16.635661967Z Updating certificates in /etc/ssl/certs...
+2025-03-23T18:10:31.737156041Z rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+2025-03-23T18:10:31.871589591Z 2 added, 0 removed; done.
+2025-03-23T18:10:31.871637191Z Running hooks in /etc/ca-certificates/update.d...
+2025-03-23T18:10:31.873572996Z done.
+2025-03-23T18:10:31.921172520Z CA certificates copied and updated successfully.
+2025-03-23T18:10:32.235023836Z Starting periodic command scheduler: cron.
+2025-03-23T18:10:32.417128509Z Could not find build manifest file at '/home/site/wwwroot/oryx-manifest.toml'
+2025-03-23T18:10:32.417160009Z Could not find operation ID in manifest. Generating an operation id...
+2025-03-23T18:10:32.417826111Z Build Operation ID: 7418e881-16a9-480a-9b9f-98def94762f1
+2025-03-23T18:10:33.574522218Z Environment Variables for Application Insight's IPA Codeless Configuration exists..
+2025-03-23T18:10:33.623151144Z Writing output script to '/opt/startup/startup.sh'
+2025-03-23T18:10:33.765942216Z Running #!/bin/sh
+2025-03-23T18:10:33.766085316Z
+2025-03-23T18:10:33.766090516Z # Enter the source directory to make sure the script runs where the user expects
+2025-03-23T18:10:33.766094516Z cd "/home/site/wwwroot"
+2025-03-23T18:10:33.766098416Z
+2025-03-23T18:10:33.766101816Z export NODE_PATH=/usr/local/lib/node_modules:$NODE_PATH
+2025-03-23T18:10:33.766105316Z if [ -z "$PORT" ]; then
+2025-03-23T18:10:33.766108816Z 		export PORT=8080
+2025-03-23T18:10:33.766121516Z fi
+2025-03-23T18:10:33.766125816Z
+2025-03-23T18:10:33.782261358Z npm start
+2025-03-23T18:10:45.935078480Z npm info using npm@10.8.2
+2025-03-23T18:10:45.936799887Z npm info using node@v20.18.1
+2025-03-23T18:10:50.486723367Z
+2025-03-23T18:10:50.486772667Z > comfyui-workflow-ux@1.0.0 start
+2025-03-23T18:10:50.486778467Z > node server.js
+2025-03-23T18:10:50.486782367Z
+2025-03-23T18:11:28.234054633Z Failed to connect to MongoDB: MongoServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.234111233Z     at Topology.selectServer (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:321:38)
+2025-03-23T18:11:28.234116333Z     at async Topology._connect (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:200:28)
+2025-03-23T18:11:28.234120133Z     at async Topology.connect (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:152:13)
+2025-03-23T18:11:28.234123933Z     at async topologyConnect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:233:17)
+2025-03-23T18:11:28.234127433Z     at async MongoClient._connect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:246:13)
+2025-03-23T18:11:28.234131833Z     at async MongoClient.connect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:171:13)
+2025-03-23T18:11:28.234135433Z     at async connectToDatabase (/home/site/wwwroot/docs/js/database/config/db.config.js:60:9)
+2025-03-23T18:11:28.234139033Z     at async Promise.all (index 0) {
+2025-03-23T18:11:28.234142333Z   errorLabelSet: Set(0) {},
+2025-03-23T18:11:28.234145633Z   reason: TopologyDescription {
+2025-03-23T18:11:28.234148833Z     type: 'Unknown',
+2025-03-23T18:11:28.234152133Z     servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+2025-03-23T18:11:28.234155933Z     stale: false,
+2025-03-23T18:11:28.234159233Z     compatible: true,
+2025-03-23T18:11:28.234221033Z     heartbeatFrequencyMS: 10000,
+2025-03-23T18:11:28.234226033Z     localThresholdMS: 15,
+2025-03-23T18:11:28.234229333Z     setName: null,
+2025-03-23T18:11:28.234232533Z     maxElectionId: null,
+2025-03-23T18:11:28.234235733Z     maxSetVersion: null,
+2025-03-23T18:11:28.234239033Z     commonWireVersion: 0,
+2025-03-23T18:11:28.234242233Z     logicalSessionTimeoutMinutes: null
+2025-03-23T18:11:28.234245633Z   },
+2025-03-23T18:11:28.234248833Z   code: undefined,
+2025-03-23T18:11:28.234252133Z   [cause]: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.234255533Z       at Socket.<anonymous> (/home/site/wwwroot/node_modules/mongodb/lib/cmap/connect.js:285:44)
+2025-03-23T18:11:28.234259133Z       at Object.onceWrapper (node:events:633:26)
+2025-03-23T18:11:28.234262433Z       at Socket.emit (node:events:518:28)
+2025-03-23T18:11:28.234265733Z       at emitErrorNT (node:internal/streams/destroy:169:8)
+2025-03-23T18:11:28.234296734Z       at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+2025-03-23T18:11:28.234301734Z       at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+2025-03-23T18:11:28.234305034Z     errorLabelSet: Set(1) { 'ResetPool' },
+2025-03-23T18:11:28.234308434Z     beforeHandshake: false,
+2025-03-23T18:11:28.234311634Z     [cause]: Error: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.234319234Z         at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2025-03-23T18:11:28.234322634Z         at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-03-23T18:11:28.234326034Z       errno: -111,
+2025-03-23T18:11:28.234329234Z       code: 'ECONNREFUSED',
+2025-03-23T18:11:28.234334634Z       syscall: 'connect',
+2025-03-23T18:11:28.234337934Z       address: '127.0.0.1',
+2025-03-23T18:11:28.234341234Z       port: 27017
+2025-03-23T18:11:28.234344434Z     }
+2025-03-23T18:11:28.234347634Z   }
+2025-03-23T18:11:28.234350734Z }
+2025-03-23T18:11:28.255119011Z Failed to start server: MongoServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.255156111Z     at Topology.selectServer (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:321:38)
+2025-03-23T18:11:28.255160811Z     at async Topology._connect (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:200:28)
+2025-03-23T18:11:28.255164511Z     at async Topology.connect (/home/site/wwwroot/node_modules/mongodb/lib/sdam/topology.js:152:13)
+2025-03-23T18:11:28.255168211Z     at async topologyConnect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:233:17)
+2025-03-23T18:11:28.255171811Z     at async MongoClient._connect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:246:13)
+2025-03-23T18:11:28.255175511Z     at async MongoClient.connect (/home/site/wwwroot/node_modules/mongodb/lib/mongo_client.js:171:13)
+2025-03-23T18:11:28.255179011Z     at async connectToDatabase (/home/site/wwwroot/docs/js/database/config/db.config.js:60:9)
+2025-03-23T18:11:28.255182411Z     at async Promise.all (index 0) {
+2025-03-23T18:11:28.255185711Z   errorLabelSet: Set(0) {},
+2025-03-23T18:11:28.255189011Z   reason: TopologyDescription {
+2025-03-23T18:11:28.255192111Z     type: 'Unknown',
+2025-03-23T18:11:28.255195411Z     servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+2025-03-23T18:11:28.255199011Z     stale: false,
+2025-03-23T18:11:28.255202211Z     compatible: true,
+2025-03-23T18:11:28.255205611Z     heartbeatFrequencyMS: 10000,
+2025-03-23T18:11:28.255208911Z     localThresholdMS: 15,
+2025-03-23T18:11:28.255212111Z     setName: null,
+2025-03-23T18:11:28.255215211Z     maxElectionId: null,
+2025-03-23T18:11:28.255236111Z     maxSetVersion: null,
+2025-03-23T18:11:28.255239911Z     commonWireVersion: 0,
+2025-03-23T18:11:28.255243211Z     logicalSessionTimeoutMinutes: null
+2025-03-23T18:11:28.255246511Z   },
+2025-03-23T18:11:28.255256712Z   code: undefined,
+2025-03-23T18:11:28.255260012Z   [cause]: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.255263412Z       at Socket.<anonymous> (/home/site/wwwroot/node_modules/mongodb/lib/cmap/connect.js:285:44)
+2025-03-23T18:11:28.255267012Z       at Object.onceWrapper (node:events:633:26)
+2025-03-23T18:11:28.255270312Z       at Socket.emit (node:events:518:28)
+2025-03-23T18:11:28.255273612Z       at emitErrorNT (node:internal/streams/destroy:169:8)
+2025-03-23T18:11:28.255276912Z       at emitErrorCloseNT (node:internal/streams/destroy:128:3)
+2025-03-23T18:11:28.255280212Z       at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+2025-03-23T18:11:28.255283412Z     errorLabelSet: Set(1) { 'ResetPool' },
+2025-03-23T18:11:28.255286812Z     beforeHandshake: false,
+2025-03-23T18:11:28.255290012Z     [cause]: Error: connect ECONNREFUSED 127.0.0.1:27017
+2025-03-23T18:11:28.255293312Z         at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2025-03-23T18:11:28.255296612Z         at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-03-23T18:11:28.255300012Z       errno: -111,
+2025-03-23T18:11:28.255303212Z       code: 'ECONNREFUSED',
+2025-03-23T18:11:28.255306412Z       syscall: 'connect',
+2025-03-23T18:11:28.255310612Z       address: '127.0.0.1',
+2025-03-23T18:11:28.255313912Z       port: 27017
+2025-03-23T18:11:28.255317212Z     }
+2025-03-23T18:11:28.255320412Z   }
+2025-03-23T18:11:28.255323512Z }
+2025-03-23T18:11:28.283133115Z npm http fetch GET 200 https://registry.npmjs.org/npm 1190ms
+2025-03-23T18:11:28.329796189Z npm notice
+2025-03-23T18:11:28.329822689Z npm notice New major version of npm available! 10.8.2 -> 11.2.0
+2025-03-23T18:11:28.329828689Z npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+2025-03-23T18:11:28.329832589Z npm notice To update run: npm install -g npm@11.2.0
+2025-03-23T18:11:28.329836089Z npm notice
+2025-03-23T18:11:28.940Z ERROR - Container comfyui-workflow_1_d9325eeb for site comfyui-workflow has exited, failing site start
+2025-03-23T18:11:28.970Z ERROR - Container comfyui-workflow_1_d9325eeb didn't respond to HTTP pings on port: 8080, failing site start. See container logs for debugging.
+2025-03-23T18:11:29.027Z INFO  - Stopping site comfyui-workflow because it failed during startup.
