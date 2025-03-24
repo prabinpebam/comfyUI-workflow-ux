@@ -1,16 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/server",
+    "outDir": "./dist",
     "sourceMap": false,
     "removeComments": true,
-    "module": "CommonJS",
     "rootDir": "./src"
   },
   "include": [
     "src/server/**/*",
-    "src/database/**/*",
-    "src/server/index.ts"  // Explicitly include entry point
+    "src/database/**/*"
   ],
   "exclude": ["node_modules"]
 }
