@@ -42,7 +42,7 @@ jobs:
         run: |
           # Clean and create directories using Linux commands
           rm -rf dist deploy
-          mkdir -p dist/server dist/public/{js,css,workflow}
+          mkdir -p dist/server dist.public/{js,css,workflow}
           
           # Build TypeScript
           echo "Building server..."
@@ -69,6 +69,7 @@ jobs:
             echo "Content of deploy/server:"
             ls -R deploy/server/
             exit 1
+          fi
           
           cd deploy && zip -r ../release.zip .
 
