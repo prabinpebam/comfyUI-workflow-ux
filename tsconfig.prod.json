@@ -4,12 +4,13 @@
     "outDir": "./dist/server",
     "sourceMap": false,
     "removeComments": true,
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "rootDir": "./src"
   },
   "include": [
-    "src/server/index.ts",    // Ensure entry point is included
     "src/server/**/*",
-    "src/database/**/*"
+    "src/database/**/*",
+    "src/server/index.ts"  // Explicitly include entry point
   ],
   "exclude": ["node_modules"]
 }

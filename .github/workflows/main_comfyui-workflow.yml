@@ -41,15 +41,29 @@ jobs:
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: |
           # Clean and create directories
-          rm -rf dist
+          rm -rf dist deploy
           mkdir -p dist/server
           mkdir -p dist/public/js
           mkdir -p dist/public/css
           mkdir -p dist/public/workflow
           
-          # Build TypeScript without views copy
+          # Verify source files exist
+          if [ ! -f "src/server/index.ts" ]; then
+            echo "Error: Source entry point missing at src/server/index.ts"
+            exit 1
+          fi
+          
+          # Build TypeScript
+          echo "Building server..."
           npm run build:prod:server
+          echo "Building browser..."
           npm run build:prod:browser
+          
+          # Verify build output
+          if [ ! -f "dist/server/index.js" ]; then
+            echo "Error: Build failed - server entry point not found at dist/server/index.js"
+            exit 1
+          fi
           
           # Create deployment structure
           mkdir -p deploy/server
@@ -58,9 +72,10 @@ jobs:
           cp package*.json deploy/
           cp web.config deploy/
           
-          # Verify entry point
+          # Final verification
           if [ ! -f "deploy/server/index.js" ]; then
-            echo "Error: Server entry point missing at deploy/server/index.js"
+            echo "Error: Deployment prep failed - server entry point missing at deploy/server/index.js"
+            ls -la deploy/server/
             exit 1
           fi
           
