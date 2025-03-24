@@ -44,30 +44,25 @@ jobs:
           rm -rf dist
           mkdir -p dist/server
           mkdir -p dist/public/js
-          mkdir -p dist/public/css
-          mkdir -p dist.public/lib
-          mkdir -p dist.public/workflow
           
           # Build TypeScript
-          npm run build:prod:server
-          npm run build:prod:browser
+          npm run build:prod
           
-          # Create deployment structure
-          mkdir -p deploy/server
-          cp -r dist/server/* deploy/server/
-          cp -r dist/public/* deploy/
-          cp package*.json deploy/
-          cp web.config deploy/
-          
-          # Verify entry point
-          if [ ! -f "deploy/server/index.js" ]; then
-            echo "Error: Server entry point not found!"
+          # Verify server entry point exists
+          if [ ! -f "dist/server/index.js" ]; then
+            echo "Error: Server entry point not found at dist/server/index.js"
             exit 1
           fi
           
-          # Create the release archive from deploy directory
-          cd deploy
-          zip -r ../release.zip .
+          # Create deployment structure
+          mkdir -p deploy
+          cp -r dist/server deploy/
+          cp -r dist/public deploy/
+          cp package*.json deploy/
+          cp web.config deploy/
+          
+          # Create release archive
+          cd deploy && zip -r ../release.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

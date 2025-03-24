@@ -3,10 +3,13 @@
   "compilerOptions": {
     "outDir": "./dist/server",
     "sourceMap": false,
-    "removeComments": true
+    "removeComments": true,
+    "module": "CommonJS"
   },
   "include": [
+    "src/server/index.ts",    // Ensure entry point is included
     "src/server/**/*",
     "src/database/**/*"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
