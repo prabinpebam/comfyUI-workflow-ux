@@ -34,23 +34,16 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbConfig = void 0;
-const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/?ssl=true&replicaSet=${process.env.MONGODB_REPLICA_SET || 'globaldb'}`;
+const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComponent(process.env.MONGODB_PASSWORD || '')}@${process.env.MONGODB_HOST}:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${process.env.MONGODB_USER}@`;
 exports.dbConfig = {
     url: COSMOS_CONNECTION,
     options: {
-        serverApi: {
-            version: mongodb_1.ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
-        },
         ssl: true,
-        replicaSet: process.env.MONGODB_REPLICA_SET || 'globaldb',
-        retryWrites: false,
-        maxIdleTimeMS: 120000,
-        authSource: '$external',
-        authMechanism: 'SCRAM-SHA-256'
+        maxPoolSize: 10,
+        minPoolSize: 0,
+        connectTimeoutMS: 30000,
+        socketTimeoutMS: 360000
     }
 };
