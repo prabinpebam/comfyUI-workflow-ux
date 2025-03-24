@@ -4,11 +4,12 @@
     "outDir": "./dist/server",
     "sourceMap": false,
     "removeComments": true,
-    "rootDir": "./src/server",  // Changed to flatten server structure
-    "baseUrl": "./src/server"
+    "rootDir": "./src",  // Changed from "./src/server" to "./src"
+    "baseUrl": "./src"
   },
   "include": [
-    "src/server/**/*"
+    "src/server/**/*",
+    "src/database/**/*"
   ],
   "exclude": ["node_modules"]
 }
