@@ -50,28 +50,37 @@ jobs:
           echo "Building browser..."
           npm run build:prod:browser
           
-          # Create deployment structure
-          mkdir -p deploy/server
+          # Debug output
+          echo "Showing build output structure:"
+          ls -la dist/server/
           
-          # Copy with correct structure
-          if [ -d "dist/server" ]; then
-            # Copy server files maintaining flat structure
-            cp -rv dist/server/{controllers,services,middleware,index.js} deploy/server/
+          # Create deployment structure
+          mkdir -p deploy/server/{controllers,services,middleware}
+          
+          # Fix the server directory structure
+          if [ -d "dist/server/server" ]; then
+            # Copy server files to the correct structure
+            cp -rv dist/server/server/controllers/* deploy/server/controllers/ || true
+            cp -rv dist/server/server/services/* deploy/server/services/ || true  
+            cp -rv dist/server/server/middleware/* deploy/server/middleware/ || true
+            cp -rv dist/server/server/index.js deploy/server/index.js || true
+            cp -rv dist/server/database deploy/server/ || true
           else
-            echo "Error: Server build output not found"
+            echo "Error: Server build output structure unexpected"
+            ls -R dist/
             exit 1
           fi
           
           # Copy remaining files
-          cp -rv dist/public/* deploy/
+          cp -rv dist/public/* deploy/ || true
           cp package*.json deploy/
           cp web.config deploy/
           
-          # Verify structure
+          # Verify final structure
           echo "Verifying deployment structure..."
           if [ ! -f "deploy/server/index.js" ]; then
             echo "Error: Missing server entry point"
-            ls -R deploy/server/
+            ls -R deploy/
             exit 1
           fi
           
@@ -149,3 +158,9 @@ jobs:
                 "value": "${{ secrets.MONGODB_REPLICA_SET }}"
               }
             ]
+
+      - name: Set App Service startup command
+        uses: azure/cli@v1.0.0
+        with:
+          inlineScript: |
+            az webapp config set --name ComfyUI-workflow --resource-group Web-apps --startup-command "node server/index.js"
