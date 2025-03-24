@@ -75,8 +75,13 @@ setInterval(() => {
 
 // Initialize services and start server
 const port = process.env.PORT || 8080;
+
+// Failsafe startup - continue even if MongoDB connection fails
 Promise.all([
-  connectToDatabase(),
+  connectToDatabase().catch(err => {
+    console.error('WARNING: Failed to connect to MongoDB but continuing server startup:', err.message);
+    return null; // Return null instead of rejecting to continue server startup
+  }),
   fileService.initialize()
 ])
 .then(() => {
