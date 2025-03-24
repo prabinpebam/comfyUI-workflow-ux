@@ -13,7 +13,7 @@
     "build:dev": "tsc && tsc --project tsconfig.browser.json",
     "build:prod": "npm run build:prod:server && npm run build:prod:browser",
     "build:prod:dirs": "mkdirp dist/public/js dist/public/css dist/public/lib dist/public/workflow dist/server",
-    "build:prod:server": "tsc -p tsconfig.prod.json && cp -r src/server/views dist/server/views",
+    "build:prod:server": "tsc -p tsconfig.prod.json",
     "build:prod:browser": "tsc -p tsconfig.prod.browser.json",
     "build:prod:static": "npm run copy:assets && npm run copy:html && npm run copy:workflow && npm run copy:package",
     "copy:assets": "copyfiles \"docs/{css,icons,images,lib}/**/*\" dist/public/",
