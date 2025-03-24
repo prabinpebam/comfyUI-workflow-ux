@@ -20,18 +20,19 @@ export const dbConfig: { url: string; options: MongoClientOptions } = {
 
 let client: MongoClient | null = null;
 
+// Ensure this is exported properly
 export async function connectToDatabase(): Promise<MongoClient> {
     if (client) {
         return client;
     }
 
     try {
-        console.log(`Connecting to MongoDB at ${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT || '10255'}...`);
+        console.log(`Connecting to MongoDB at ${process.env.MONGODB_HOST}:10255...`);
         
         // Create client with the correct options
         client = new MongoClient(dbConfig.url, dbConfig.options);
         
-        // Connect WITHOUT any additional options/parameters
+        // Connect without any additional parameters
         await client.connect();
         
         console.log('Successfully connected to MongoDB.');
@@ -40,4 +41,12 @@ export async function connectToDatabase(): Promise<MongoClient> {
         console.error('Failed to connect to MongoDB:', err);
         throw err;
     }
+}
+
+// Also export a getDb function to ensure consistency
+export async function getDb() {
+    if (!client) {
+        client = await connectToDatabase();
+    }
+    return client.db();
 }
