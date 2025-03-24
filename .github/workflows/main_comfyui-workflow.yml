@@ -52,21 +52,18 @@ jobs:
           npm run build:prod:server
           npm run build:prod:browser
           
-          # Verify server entry point exists and is in correct location
-          if [ ! -f "dist/server/index.js" ]; then
+          # Create deployment structure
+          mkdir -p deploy/server
+          cp -r dist/server/* deploy/server/
+          cp -r dist/public/* deploy/
+          cp package*.json deploy/
+          cp web.config deploy/
+          
+          # Verify entry point
+          if [ ! -f "deploy/server/index.js" ]; then
             echo "Error: Server entry point not found!"
             exit 1
           fi
-          
-          # Create deployment structure
-          mkdir -p deploy
-          
-          # Move files to match Azure's expected structure
-          cp -r dist/public/* deploy/
-          cp -r dist/server deploy/
-          cp package.json deploy/
-          cp package-lock.json deploy/ || true
-          [ -f "web.config" ] && cp web.config deploy/
           
           # Create the release archive from deploy directory
           cd deploy

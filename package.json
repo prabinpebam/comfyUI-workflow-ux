@@ -7,7 +7,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "node dist/server/index.js",
+    "start": "node server/index.js",
     "dev": "start-dev.bat",
     "build": "npm run build:dev",
     "build:dev": "tsc && tsc --project tsconfig.browser.json",
