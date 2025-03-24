@@ -1,15 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/server",  // Changed from ./dist to ./dist/server
+    "outDir": "./dist/server",
     "sourceMap": false,
     "removeComments": true,
-    "rootDir": "./src",
-    "baseUrl": "./src"
+    "rootDir": "./src/server",  // Changed to flatten server structure
+    "baseUrl": "./src/server"
   },
   "include": [
-    "src/server/**/*",
-    "src/database/**/*"
+    "src/server/**/*"
   ],
   "exclude": ["node_modules"]
 }

@@ -40,9 +40,9 @@ jobs:
           MONGODB_USER: ${{ secrets.MONGODB_USER }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
         run: |
-          # Clean and create directories using Linux commands
+          # Clean and create directories
           rm -rf dist deploy
-          mkdir -p dist/server dist.public/{js,css,workflow}
+          mkdir -p dist/{server,public/{js,css,workflow}}
           
           # Build TypeScript
           echo "Building server..."
@@ -50,23 +50,27 @@ jobs:
           echo "Building browser..."
           npm run build:prod:browser
           
-          # Debug output
-          echo "Checking server build output..."
-          ls -la dist/server/
-          
           # Create deployment structure
           mkdir -p deploy/server
           
-          # Copy files with correct structure
-          cp -rv dist/server/* deploy/server/
-          cp -rv dist/public/* deploy/ || true
+          # Copy with correct structure
+          if [ -d "dist/server" ]; then
+            # Copy server files maintaining flat structure
+            cp -rv dist/server/{controllers,services,middleware,index.js} deploy/server/
+          else
+            echo "Error: Server build output not found"
+            exit 1
+          fi
+          
+          # Copy remaining files
+          cp -rv dist/public/* deploy/
           cp package*.json deploy/
           cp web.config deploy/
           
-          # Verify final structure
+          # Verify structure
+          echo "Verifying deployment structure..."
           if [ ! -f "deploy/server/index.js" ]; then
-            echo "Error: Server entry point missing at deploy/server/index.js"
-            echo "Content of deploy/server:"
+            echo "Error: Missing server entry point"
             ls -R deploy/server/
             exit 1
           fi
