@@ -9,16 +9,9 @@ const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComp
 export const dbConfig: { url: string; options: MongoClientOptions } = {
     url: COSMOS_CONNECTION,
     options: {
-        // Legacy connection options for MongoDB 4.0 compatibility
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        
         // Cosmos DB specific settings
         ssl: true,
         retryWrites: false,
-        
-        // Disable ServerApi for MongoDB 4.0
-        serverApi: undefined,
         
         // Connection management
         maxPoolSize: 100,
