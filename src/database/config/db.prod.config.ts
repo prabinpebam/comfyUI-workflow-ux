@@ -1,23 +1,29 @@
-import { MongoClient, ServerApiVersion, MongoClientOptions } from 'mongodb';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/?ssl=true&replicaSet=${process.env.MONGODB_REPLICA_SET || 'globaldb'}`;
+// Azure Cosmos DB MongoDB API 4.0 connection string format
+const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComponent(process.env.MONGODB_PASSWORD || '')}@${process.env.MONGODB_HOST}:443/?ssl=true&replicaSet=${process.env.MONGODB_REPLICA_SET || 'globaldb'}&authSource=admin`;
 
 export const dbConfig: { url: string; options: MongoClientOptions } = {
     url: COSMOS_CONNECTION,
     options: {
-        serverApi: {
-            version: ServerApiVersion.v1,
-            strict: true,
-            deprecationErrors: true,
-        },
+        // Legacy connection options for MongoDB 4.0 compatibility
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        
+        // Cosmos DB specific settings
         ssl: true,
-        replicaSet: process.env.MONGODB_REPLICA_SET || 'globaldb',
         retryWrites: false,
-        maxIdleTimeMS: 120000,
-        authSource: '$external',
-        authMechanism: 'SCRAM-SHA-256' as const // Type assertion to make it match AuthMechanism
+        
+        // Disable ServerApi for MongoDB 4.0
+        serverApi: undefined,
+        
+        // Connection management
+        maxPoolSize: 100,
+        minPoolSize: 0,
+        maxIdleTimeMS: 30000,
+        connectTimeoutMS: 30000
     }
 };
