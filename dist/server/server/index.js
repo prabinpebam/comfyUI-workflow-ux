@@ -6,7 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
-const dbConfig = require('../database/config/db.prod.config');
+let dbModule;
+try {
+    const dbConfigPath = path_1.default.resolve(__dirname, '../database/config/db.prod.config.js');
+    console.log('Loading database config from:', dbConfigPath);
+    dbModule = require(dbConfigPath);
+    if (!dbModule.connectToDatabase) {
+        console.log('Falling back to relative path import');
+        dbModule = require('../database/config/db.prod.config');
+    }
+    console.log('DB module exports:', Object.keys(dbModule));
+}
+catch (err) {
+    console.error('Failed to load database config:', err);
+    process.exit(1);
+}
 const workflow_controller_1 = require("./controllers/workflow.controller");
 const upload_middleware_1 = require("./middleware/upload.middleware");
 const file_service_1 = require("./services/file.service");
@@ -49,12 +63,12 @@ setInterval(() => {
         .catch(err => console.error('Error cleaning up temp files:', err));
 }, 60 * 60 * 1000);
 const port = process.env.PORT || 8080;
-console.log('dbConfig loaded:', dbConfig);
-console.log('dbConfig keys:', Object.keys(dbConfig));
-console.log('connectToDatabase type:', typeof dbConfig.connectToDatabase);
+console.log('dbConfig loaded:', dbModule);
+console.log('dbConfig keys:', Object.keys(dbModule));
+console.log('connectToDatabase type:', typeof dbModule.connectToDatabase);
 console.log('Starting server initialization...');
 Promise.all([
-    dbConfig.connectToDatabase(),
+    dbModule.connectToDatabase(),
     fileService.initialize()
 ])
     .then(() => {
