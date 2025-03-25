@@ -1,16 +1,15 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist/server",
     "sourceMap": false,
     "removeComments": true,
     "rootDir": "./src",  // Changed from "./src/server" to "./src"
-    "baseUrl": "./src",
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "baseUrl": "./src"
   },
-  // Make sure database files are included in compilation
   "include": [
-    "src/**/*.ts"
-  ]
+    "src/server/**/*",
+    "src/database/**/*"
+  ],
+  "exclude": ["node_modules"]
 }

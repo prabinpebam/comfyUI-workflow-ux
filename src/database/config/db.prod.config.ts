@@ -50,10 +50,3 @@ export async function getDb() {
     }
     return client.db();
 }
-
-// This ensures the function is correctly exposed
-module.exports = {
-  connectToDatabase,
-  getDb,
-  dbConfig
-};
