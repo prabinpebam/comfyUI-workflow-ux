@@ -86,7 +86,7 @@ app.get('/api/workflows/:id', workflow_controller_1.getWorkflow);
 app.delete('/api/workflows/:id', (0, express_async_handler_1.default)(workflow_controller_1.deleteWorkflow));
 const staticPath = process.env.NODE_ENV === 'production'
     ? path_1.default.join(__dirname, '../public')
-    : path_1.default.join(__dirname, '../../../docs');
+    : path_1.default.join(__dirname, '../../docs');
 app.use(express_1.default.static(staticPath));
 app.use(error_middleware_1.errorHandler);
 app.get('*', (req, res) => {
@@ -114,3 +114,14 @@ Promise.all([
     console.error('Failed to start server:', err);
     process.exit(1);
 });
+console.log('Node.js version:', process.version);
+console.log('Current directory:', __dirname);
+console.log('Working directory:', process.cwd());
+try {
+    console.log('Controller path:', require.resolve('./controllers/workflow.controller'));
+    console.log('Middleware path:', require.resolve('./middleware/upload.middleware'));
+    console.log('Services path:', require.resolve('./services/file.service'));
+}
+catch (err) {
+    console.error('Error resolving module paths:', err);
+}

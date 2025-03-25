@@ -38,8 +38,16 @@ const fs = __importStar(require("fs/promises"));
 const path = __importStar(require("path"));
 class FileService {
     constructor() {
-        this.workflowsDir = path.join(process.cwd(), 'docs', 'workflow');
-        this.tempDir = path.join(process.cwd(), 'temp');
+        if (process.env.NODE_ENV === 'production') {
+            this.workflowsDir = path.join(process.cwd(), 'public', 'workflow');
+            this.tempDir = path.join(process.cwd(), 'temp');
+        }
+        else {
+            this.workflowsDir = path.join(process.cwd(), 'docs', 'workflow');
+            this.tempDir = path.join(process.cwd(), 'temp');
+        }
+        console.log(`FileService initialized with workflowsDir: ${this.workflowsDir}`);
+        console.log(`FileService initialized with tempDir: ${this.tempDir}`);
     }
     async initialize() {
         try {
@@ -90,7 +98,9 @@ class FileService {
         try {
             console.log('📁 Moving workflow files');
             console.log('📁 Workflow name:', workflowName);
-            const workflowDirPath = path.join(process.cwd(), 'docs', 'workflow', workflowName);
+            const workflowDirPath = path.join(process.env.NODE_ENV === 'production'
+                ? path.join(process.cwd(), 'public', 'workflow')
+                : path.join(process.cwd(), 'docs', 'workflow'), workflowName);
             await fs.mkdir(workflowDirPath, { recursive: true });
             console.log('📁 Created directory:', workflowDirPath);
             const movedFiles = {};
