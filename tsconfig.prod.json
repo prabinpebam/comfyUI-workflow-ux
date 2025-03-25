@@ -4,8 +4,10 @@
     "outDir": "./dist/server",
     "sourceMap": false,
     "removeComments": true,
-    "rootDir": "./src",  // Changed from "./src/server" to "./src"
-    "baseUrl": "./src"
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "module": "CommonJS",      // Add this explicitly
+    "esModuleInterop": true    // Add this to improve compatibility
   },
   "include": [
     "src/server/**/*",

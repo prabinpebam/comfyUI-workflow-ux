@@ -73,6 +73,10 @@ setInterval(() => {
 
 // Start server
 const port = process.env.PORT || 8080;
+console.log('dbConfig loaded:', dbConfig);
+console.log('dbConfig keys:', Object.keys(dbConfig));
+console.log('connectToDatabase type:', typeof dbConfig.connectToDatabase);
+console.log('Starting server initialization...');
 Promise.all([
   dbConfig.connectToDatabase(),
   fileService.initialize()
