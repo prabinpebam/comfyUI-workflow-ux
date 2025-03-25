@@ -8,18 +8,52 @@ const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 let dbModule;
 try {
-    const dbConfigPath = path_1.default.resolve(__dirname, '../database/config/db.prod.config.js');
-    console.log('Loading database config from:', dbConfigPath);
-    dbModule = require(dbConfigPath);
+    const correctPath = path_1.default.join(__dirname, 'database/config/db.prod.config.js');
+    console.log('Trying direct server path:', correctPath);
+    dbModule = require(correctPath);
     if (!dbModule.connectToDatabase) {
-        console.log('Falling back to relative path import');
-        dbModule = require('../database/config/db.prod.config');
+        throw new Error('connectToDatabase not found in module');
     }
-    console.log('DB module exports:', Object.keys(dbModule));
+    console.log('Successfully loaded database module with direct path');
 }
 catch (err) {
-    console.error('Failed to load database config:', err);
-    process.exit(1);
+    console.error('Failed to load database with direct path:', err);
+    try {
+        console.log('Creating inline database connection as fallback');
+        const { MongoClient } = require('mongodb');
+        const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComponent(process.env.MONGODB_PASSWORD || '')}@${process.env.MONGODB_HOST}:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${process.env.MONGODB_USER}@&authMechanism=SCRAM-SHA-256&authSource=admin`;
+        let client = null;
+        dbModule = {
+            connectToDatabase: async function () {
+                if (client)
+                    return client;
+                console.log('Connecting with inline function...');
+                client = new MongoClient(COSMOS_CONNECTION, {
+                    ssl: true,
+                    directConnection: true,
+                    maxPoolSize: 10
+                });
+                if (client) {
+                    await client.connect();
+                    console.log('Inline connection successful');
+                    return client;
+                }
+                throw new Error('Failed to create MongoDB client');
+            },
+            getDb: async function () {
+                if (!client)
+                    client = await this.connectToDatabase();
+                if (client) {
+                    return client.db();
+                }
+                throw new Error('MongoDB client is null');
+            }
+        };
+    }
+    catch (fallbackErr) {
+        console.error('All connection attempts failed:', fallbackErr);
+        process.exit(1);
+    }
 }
 const workflow_controller_1 = require("./controllers/workflow.controller");
 const upload_middleware_1 = require("./middleware/upload.middleware");
