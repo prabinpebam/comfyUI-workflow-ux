@@ -57,25 +57,22 @@ jobs:
           echo "Showing build output structure:"
           ls -la dist/server/
           
-          # Create deployment structure
-          mkdir -p deploy/server/{controllers,services,middleware}
+          # Create clean deployment structure
+          mkdir -p deploy/{server,public/{js,css,workflow}}
           
-          # Fix the server directory structure
-          if [ -d "dist/server/server" ]; then
-            # Copy server files to the correct structure
-            cp -rv dist/server/server/controllers/* deploy/server/controllers/ || true
-            cp -rv dist/server/server/services/* deploy/server/services/ || true  
-            cp -rv dist/server/server/middleware/* deploy/server/middleware/ || true
-            cp -rv dist/server/server/index.js deploy/server/index.js || true
-            cp -rv dist/server/database deploy/server/ || true
-          else
-            echo "Error: Server build output structure unexpected"
-            ls -R dist/
-            exit 1
-          fi
+          # Copy ONLY the needed server files - avoid duplicates
+          echo "Creating clean deployment structure..."
           
-          # Copy remaining files
-          cp -rv dist/public/* deploy/ || true
+          # First copy server modules
+          cp -rv dist/server/server/* deploy/server/ || true
+          
+          # Then copy database as a child of server ONLY
+          cp -rv dist/server/database deploy/server/ || true
+          
+          # Copy client-side files
+          cp -rv dist/public/* deploy/public/ || true
+          
+          # Copy config files
           cp package*.json deploy/
           cp web.config deploy/
           
@@ -86,6 +83,9 @@ jobs:
             ls -R deploy/
             exit 1
           fi
+          
+          echo "Final deployment structure:"
+          find deploy -type f | sort
           
           cd deploy && zip -r ../release.zip .
 

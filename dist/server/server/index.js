@@ -85,7 +85,7 @@ app.get('/api/workflows', workflow_controller_1.listWorkflows);
 app.get('/api/workflows/:id', workflow_controller_1.getWorkflow);
 app.delete('/api/workflows/:id', (0, express_async_handler_1.default)(workflow_controller_1.deleteWorkflow));
 const staticPath = process.env.NODE_ENV === 'production'
-    ? path_1.default.join(__dirname, '../../public')
+    ? path_1.default.join(__dirname, '../public')
     : path_1.default.join(__dirname, '../../../docs');
 app.use(express_1.default.static(staticPath));
 app.use(error_middleware_1.errorHandler);

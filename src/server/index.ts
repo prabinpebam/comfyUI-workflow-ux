@@ -105,7 +105,7 @@ app.delete('/api/workflows/:id', asyncHandler(deleteWorkflow));
 
 // Static file serving
 const staticPath = process.env.NODE_ENV === 'production' 
-  ? path.join(__dirname, '../../public')
+  ? path.join(__dirname, '../public')
   : path.join(__dirname, '../../../docs');
 
 app.use(express.static(staticPath));
