@@ -75,8 +75,8 @@ async function getDb() {
     return client.db();
 }
 module.exports = {
-    connectToDatabase,
-    getDb,
+    connectToDatabase: connectToDatabase,
+    getDb: getDb,
     dbConfig: exports.dbConfig
 };
 console.log('db.prod.config module loaded');

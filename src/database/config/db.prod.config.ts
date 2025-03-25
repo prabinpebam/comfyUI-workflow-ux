@@ -51,12 +51,11 @@ export async function getDb() {
     return client.db();
 }
 
-// Add this at the end of the file after your existing exports
 // This makes the exports compatible with CommonJS require()
 module.exports = {
-  connectToDatabase,
-  getDb,
-  dbConfig
+  connectToDatabase: connectToDatabase,
+  getDb: getDb,
+  dbConfig: dbConfig
 };
 
 // Optional: add this to help with debugging
