@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import path from 'path';
 import cors from 'cors';
-import { connectToDatabase } from '../database/config/db.prod.config';
+import * as dbConfig from '../database/config/db.prod.config';
 import { addWorkflow, updateWorkflow, listWorkflows, getWorkflow, deleteWorkflow } from './controllers/workflow.controller';
 import { upload } from './middleware/upload.middleware';
 import { FileService } from './services/file.service';
@@ -74,7 +74,7 @@ setInterval(() => {
 // Start server
 const port = process.env.PORT || 8080;
 Promise.all([
-  connectToDatabase(),
+  dbConfig.connectToDatabase(),
   fileService.initialize()
 ])
 .then(() => {

@@ -34,16 +34,43 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbConfig = void 0;
+exports.connectToDatabase = connectToDatabase;
+exports.getDb = getDb;
+const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComponent(process.env.MONGODB_PASSWORD || '')}@${process.env.MONGODB_HOST}:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${process.env.MONGODB_USER}@`;
+const COSMOS_CONNECTION = `mongodb://${process.env.MONGODB_USER}:${encodeURIComponent(process.env.MONGODB_PASSWORD || '')}@${process.env.MONGODB_HOST}:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${process.env.MONGODB_USER}@&authMechanism=SCRAM-SHA-256&authSource=admin`;
 exports.dbConfig = {
     url: COSMOS_CONNECTION,
     options: {
         ssl: true,
+        directConnection: true,
         maxPoolSize: 10,
         minPoolSize: 0,
         connectTimeoutMS: 30000,
         socketTimeoutMS: 360000
     }
 };
+let client = null;
+async function connectToDatabase() {
+    if (client) {
+        return client;
+    }
+    try {
+        console.log(`Connecting to MongoDB at ${process.env.MONGODB_HOST}:10255...`);
+        client = new mongodb_1.MongoClient(exports.dbConfig.url, exports.dbConfig.options);
+        await client.connect();
+        console.log('Successfully connected to MongoDB.');
+        return client;
+    }
+    catch (err) {
+        console.error('Failed to connect to MongoDB:', err);
+        throw err;
+    }
+}
+async function getDb() {
+    if (!client) {
+        client = await connectToDatabase();
+    }
+    return client.db();
+}
